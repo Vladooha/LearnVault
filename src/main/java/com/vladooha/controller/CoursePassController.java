@@ -19,12 +19,6 @@ import java.util.Map;
 public class CoursePassController {
     private static final Logger logger = LogManager.getLogger(CoursePassController.class);
 
-    private static final String TEXT_PAGE = "text";
-    private static final String TEST_PAGE = "test";
-    private static final String TEST_TEXT_PAGE = "text";
-    private static final String TEST_RADIO_PAGE = "radio";
-    private static final String TEST_CHECKBOX_PAGE = "checkbox";
-
     private static final String DELIMITER = "\\|\\}\\|\\{ona\\|";
 
     public static final long END_OF_LIST = -1L;
@@ -37,7 +31,6 @@ public class CoursePassController {
     @GetMapping("/course/{course_id}")
     public String getCourse(@PathVariable("course_id") long course_id,
                             @RequestParam(value = "page_num", defaultValue = "0") int page_num,
-                            @RequestParam(value = "ans", defaultValue = "") String ans,
                             Map<String, Object> model,
                             Principal principal) {
         //model.put("categories", courseService.getCategories());
@@ -48,6 +41,8 @@ public class CoursePassController {
         CoursePage coursePage = courseService.getCoursePageByNumIfAllowed(principal.getName(), course_id, page_num);
 
         if (coursePage != null) {
+
+
             Course course = courseService.getCourse(course_id);
 
             List<CoursePage> pageList = new ArrayList<>(courseService.getCoursePages(course_id));
@@ -56,12 +51,12 @@ public class CoursePassController {
 
             List<String> pageNameList = new ArrayList<>();
             for (CoursePage page : pageList) {
-                if (page.getPageType().equals(TEXT_PAGE)) {
+                if (page.getPageType().equals(CourseService.TEXT_PAGE)) {
                     CourseTextPage courseTextPage = (CourseTextPage) courseService.getCastablePage(page.getId());
                     pageNameList.add(courseTextPage.getTitle());
                 }
 
-                if (page.getPageType().equals(TEST_PAGE)) {
+                if (page.getPageType().equals(CourseService.TEST_PAGE)) {
                     CourseTestPage courseTestPage = (CourseTestPage) courseService.getCastablePage(page.getId());
                     pageNameList.add(courseTestPage.getTitle());
                 }
@@ -72,7 +67,7 @@ public class CoursePassController {
             model.put("course_id", course.getId());
             model.put("course_name", course.getName());
 
-            if (coursePage.getPageType().equals(TEXT_PAGE)) {
+            if (coursePage.getPageType().equals(CourseService.TEXT_PAGE)) {
                 CourseTextPage courseTextPage = (CourseTextPage) courseService.getCastablePage(coursePage.getId());
 
                 model.put("title", courseTextPage.getTitle());
@@ -81,13 +76,26 @@ public class CoursePassController {
                 return "/course/course_page_theory";
             }
 
-            if (coursePage.getPageType().equals(TEST_PAGE)) {
+            if (coursePage.getPageType().equals(CourseService.TEST_PAGE)) {
                 CourseTestPage courseTestPage = (CourseTestPage) courseService.getCastablePage(coursePage.getId());
-                if (courseTestPage.getType().equals(TEST_TEXT_PAGE)) {
-                    model.put("title", courseTestPage.getTitle());
-                    model.put("question", courseTestPage.getQuestion());
 
+                model.put("title", courseTestPage.getTitle());
+                model.put("question", courseTestPage.getQuestion());
+
+                if (courseTestPage.getType().equals(CourseService.TEST_TEXT_PAGE)) {
                     return "/course/course_page_test_write_answers";
+                }
+
+                String allAns = courseTestPage.getAns();
+                allAns = allAns.replace(" ", "&nbsp;");
+                model.put("answers", allAns.split(DELIMITER));
+
+                if (courseTestPage.getType().equals(CourseService.TEST_CHECKBOX_PAGE)) {
+                    return "/course/course_page_checkbox";
+                }
+
+                if (courseTestPage.getType().equals(CourseService.TEST_RADIO_PAGE)) {
+                    return "/course/course_page_radio";
                 }
 
                 return "";
@@ -111,7 +119,9 @@ public class CoursePassController {
         logger.debug("Page id - " + page_num);
         logger.debug("Answer - " + ans);
 
-        if (courseService.checkAnswer(principal.getName(), course_id, page_num, ans)) {
+        String ansFixed = ans.replace((char)160, ' ');
+
+        if (courseService.checkAnswer(principal.getName(), course_id, page_num, ansFixed)) {
             logger.debug("Answer is OK");
 
             return "OK";

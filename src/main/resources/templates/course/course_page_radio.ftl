@@ -23,30 +23,38 @@
 <body>
 <!-- body code goes here -->
 <div class="main-layer">
-    <div class="paige_of_course_name" id="name_of_course">{{name_of_course}}</div>
+    <div class="paige_of_course_name" id="name_of_course">${course_name}</div>
     <@m.pagelist course_id, pages/>
     <div class="theory-panel">
-        <div class="page_title" id="name_of_page">{{name_of_page}}</div>
+        <div class="page_title" id="name_of_page">${title}</div>
         <div><textarea name="text_of_paige" cols="100" rows="7" id="textArea" readonly
-                       style="resize:none;overflow-y: auto; border-style:none;"> {{Question}} </textarea></div>
+                       style="resize:none;overflow-y: auto; border-style:none;"> ${question} </textarea></div>
         <!--Список ответов-->
         <div class="link-list col-xl-10">
             <ul class="col-xl-6" id="list-links" style="padding: 0;">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <div id="option_list">
-                            <div><label><input type="radio" aria-label="placeholder text" id="caption0">
-                                    {{Answer0}}</label></div>
+                            <#assign ans_num = 0>
+                            <#list answers as answer>
+                                <div>
+                                    <label>
+                                        <input type="radio" name="answer" aria-label="placeholder text" id=id="caption"+${ans_num} value=${answer}>
+                                        ${answer}
+                                    </label>
+                                </div>
+                                <#assign ans_num += 1>
+                            </#list>
                         </div>
                     </div>
                 </div>
             </ul>
-
         </div>
+        <label id="answer_response"></label><br>
         <form action="" method="post">
-            <button type="button" name="send" value="send">Отправить</button>
-            <@m.scroll course_id, page_num/>
+            <button type="button" name="send" value="send" onclick="tryAnswer(${course_id}, ${page_num}, getAns(), 'answer_response')">Отправить</button>
         </form>
+        <@m.scroll course_id, page_num/>
     </div>
 </div>
 </body>
@@ -75,6 +83,12 @@
     }
 
     //test
-    addOption("testAnswer1");
+    //addOption("testAnswer1");
+    function getAns() {
+        var result = $("input[name='answer']:checked").val();
+        console.log(result)
+
+        return result;
+    }
 </script>
 </html>

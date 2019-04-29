@@ -21,24 +21,33 @@
 <body>
 <!-- body code goes here -->
 <div class="main-layer">
-    <div class="paige_of_course_name" id="name_of_course">{{name_of_course}}</div>
+    <div class="paige_of_course_name" id="name_of_course">${course_name}</div>
     <@m.pagelist course_id, pages/>
     <div class="theory-panel">
-        <div class="page_title" id="name_of_page">{{name_of_page}}</div>
-        <textarea name="text_of_paige" cols="100" rows="7" id="textArea"> {{Question}} </textarea>
+        <div class="page_title" id="name_of_page">${title}</div>
+        <textarea name="text_of_paige" cols="100" rows="7" id="textArea">${question}</textarea>
         <!--Список ответов-->
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <div id="option_list">
-                    <div><label><input type="checkbox" aria-label="placeholder text" id="caption0"> {{Answer0}}</label>
-                    </div>
+                    <#assign ans_num = 0>
+                    <#list answers as answer>
+                        <div>
+                            <label>
+                                <input name="answer" type="checkbox" aria-label="placeholder text" id="caption"+${ans_num} value=${answer}>
+                                ${answer}
+                            </label>
+                        </div>
+                        <#assign ans_num += 1>
+                    </#list>
                 </div>
             </div>
         </div>
+        <label id="answer_response"></label><br>
         <form action="" method="post">
-            <button type="button" name="send" value="send">Отправить</button>
-            <@m.scroll course_id, page_num/>
+            <button type="button" name="send" value="send" onclick="tryAnswer(${course_id}, ${page_num}, getAns(), 'answer_response')">Отправить</button>
         </form>
+        <@m.scroll course_id, page_num/>
     </div>
 </div>
 </body>
@@ -65,6 +74,16 @@
     }
 
     //test
-    addOption("testAnswer1");
+    //addOption("testAnswer1");
+
+    function getAns() {
+        var answer = "";
+
+        $.each($("input[name='answer']:checked"), function(){
+            answer += $(this).val() + "|}|{ona|";
+        });
+
+        return answer;
+    }
 </script>
 </html>

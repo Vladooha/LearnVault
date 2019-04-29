@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -18,8 +19,11 @@ import java.util.*;
 public class CourseService {
     private static final Logger logger = LogManager.getLogger(CourseService.class);
 
-    private static final String TEXT_PAGE = "text";
-    private static final String TEST_PAGE = "test";
+    public static final String TEXT_PAGE = "text";
+    public static final String TEST_PAGE = "test";
+    public static final String TEST_TEXT_PAGE = "text";
+    public static final String TEST_RADIO_PAGE = "radio";
+    public static final String TEST_CHECKBOX_PAGE = "checkbox";
 
     private static final String DELIMITER = "\\|\\}\\|\\{ona\\|";
 
@@ -229,26 +233,26 @@ public class CourseService {
         return "";
     }
 
-    @Nullable
-    public CoursePage verifyPage(long course_id,
-                              long page_id) {
-        Optional<Course> courseQuery = courseRepo.findById(course_id);
-
-        if (courseQuery.isPresent()) {
-            Course course = courseQuery.get();
-            Optional<CourseTestPage> pageQuery = courseTestPageRepo.findById(page_id);
-
-            if (pageQuery.isPresent()) {
-                CourseTestPage coursePage = pageQuery.get();
-
-                if (course.getPages().contains(coursePage)) {
-                    return coursePage;
-                }
-            }
-        }
-
-        return null;
-    }
+//    @Nullable
+//    public CoursePage verifyPage(long course_id,
+//                              long page_id) {
+//        Optional<Course> courseQuery = courseRepo.findById(course_id);
+//
+//        if (courseQuery.isPresent()) {
+//            Course course = courseQuery.get();
+//            Optional<CourseTestPage> pageQuery = courseTestPageRepo.findById(page_id);
+//
+//            if (pageQuery.isPresent()) {
+//                CourseTestPage coursePage = pageQuery.get();
+//
+//                if (course.getPages().contains(coursePage)) {
+//                    return coursePage;
+//                }
+//            }
+//        }
+//
+//        return null;
+//    }
 
 //    public Long checkAnswer(CoursePage coursePage, String ans) {
 //        Long nextPageId = null;
@@ -276,52 +280,93 @@ public class CourseService {
 //    }
 
     public boolean checkAnswer(String username, long course_id, int pageNum, String ans) {
+        logger.debug("Answer checking...");
+
+        boolean answer = false;
+
         Course course = courseRepo.getOne(course_id);
         if (course != null) {
             CoursePage coursePage = getCoursePageByNum(course, pageNum);
             if (coursePage != null) {
-                boolean answer = false;
-
-                if (coursePage.getPageType().equals(TEXT_PAGE)) {
-                    answer = true;
-                }
-
-                if (coursePage.getPageType().equals(TEST_PAGE)) {
-                    CourseTestPage courseTestPage = courseTestPageRepo.getOne(coursePage.getId());
-                    String[] allAnswers = courseTestPage.getAns().split(DELIMITER);
-
-                    for (int i = 0; i < allAnswers.length; ++i) {
-                        String currAns = allAnswers[i];
-                        logger.debug("Comparing '" + ans + "' and '" + currAns + "'");
-                        if (ans.compareToIgnoreCase(currAns) == 0 &&
-                                courseTestPage.getRightAns().contains(Integer.toString(i + 1))) {
-                            answer = true;
-
-                            break;
-                        }
-                    }
-                }
-
                 ProfileInfo profileInfo = profileInfoRepo.findByUsername(username);
                 if (profileInfo != null) {
-                    logger.debug("Profile info - " + profileInfo.getUsername());
-
                     CourseProgress courseProgress = courseProgressRepo.findByUserAndCourse(profileInfo, course);
+
+                    if (coursePage.getPageType().equals(TEXT_PAGE)) {
+                        answer = true;
+                    }
+
+                    if (coursePage.getPageType().equals(TEST_PAGE)) {
+                        CourseTestPage courseTestPage = courseTestPageRepo.getOne(coursePage.getId());
+                        String[] allAnswers = courseTestPage.getAns().split(DELIMITER);
+                        String[] allRequestAnswers = ans.split(DELIMITER);
+
+                        String rightAnsNumsInRequest = "";
+                        String rightAnsNums = courseTestPage.getRightAns();
+                        for (int i = 0; i < allAnswers.length; ++i) {
+                            for (int j = 0; j < allRequestAnswers.length; ++j) {
+                                if (rightAnsNums.contains(Integer.toString(i + 1))) {
+                                    String currAns = allAnswers[i];
+
+                                    if (allRequestAnswers[j].compareToIgnoreCase(currAns) == 0) {
+                                        rightAnsNumsInRequest += (i + 1);
+
+                                        if (rightAnsNumsInRequest.length() == rightAnsNums.length() &&
+                                                rightAnsNums.length() == allRequestAnswers.length ||
+                                                courseTestPage.getType().equals(TEST_TEXT_PAGE)) {
+                                            answer = true;
+
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        logger.debug("right - " + rightAnsNums);
+                        logger.debug("right in request - " + rightAnsNumsInRequest);
+                    }
+
+                    if (courseProgress != null) {
+                        logger.debug("Course progress already exists! Current page - " + courseProgress.getCurrPage());
+
+                        if (courseProgress.getCurrPage() == pageNum && answer) {
+                            courseProgress.setCurrPage(courseProgress.getCurrPage() + 1);
+                        }
+                    } else {
+                        logger.debug("First time passing course");
+
+                        courseProgress = new CourseProgress();
+                        courseProgress.setUser(profileInfo);
+                        courseProgress.setCourse(course);
+
+                        if (answer) {
+                            logger.debug("Answer is correct");
+
+                            courseProgress.setCurrPage(1);
+                            if (coursePage.getPageType().equals(TEST_PAGE)) {
+                                CourseTestPage courseTestPage = courseTestPageRepo.getOne(coursePage.getId());
+                                courseProgress.setCurrScore(courseTestPage.getScore());
+                            } else {
+                                courseProgress.setCurrScore(0);
+                            }
+                        } else {
+                            courseProgress.setCurrPage(0);
+                            courseProgress.setCurrScore(0);
+                        }
+                    }
+
+                    logger.debug("Profile info - " + profileInfo.getUsername());
                     logger.debug("Course progress - " + courseProgress.getCurrPage());
                     logger.debug("Page num - " + pageNum);
                     logger.debug("Answer - " + answer);
-                    if (courseProgress != null && courseProgress.getCurrPage() == pageNum && answer) {
-                        courseProgress.setCurrPage(courseProgress.getCurrPage() + 1);
-                    }
-                    logger.debug("Course progress after - " + courseProgress.getCurrPage());
+
                     courseProgressRepo.save(courseProgress);
                 }
-
-                return answer;
             }
         }
 
-        return false;
+        return answer;
     }
 
     @Nullable
@@ -379,17 +424,22 @@ public class CourseService {
 
         if (course != null) {
             if (pageNum == 0) {
+                checkAnswer(username, course_id, pageNum, "");
+
                 return coursePageRepo.getOne(course.getFirstPageId());
             }
 
             ProfileInfo profileInfo = profileInfoRepo.findByUsername(username);
 
-            if (profileInfo != null){
+            if (profileInfo != null) {
                 CourseProgress courseProgress = courseProgressRepo.findByUserAndCourse(profileInfo, course);
-                logger.debug("Course progress - " + courseProgress.getCurrPage());
-                logger.debug("Page num - " + pageNum);
-                if (courseProgress != null && pageNum <= courseProgress.getCurrPage()) {
-                     return getCoursePageByNum(course, pageNum);
+
+                if (courseProgress != null) {
+                    logger.debug("Course progress - " + courseProgress.getCurrPage());
+                    logger.debug("Page num - " + pageNum);
+                    if (courseProgress != null && pageNum <= courseProgress.getCurrPage()) {
+                        return getCoursePageByNum(course, pageNum);
+                    }
                 }
             }
         }

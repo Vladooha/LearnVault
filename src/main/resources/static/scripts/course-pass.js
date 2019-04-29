@@ -20,3 +20,17 @@ function sendAnswer(course_id, page_num, ans) {
 
     return result;
 }
+
+function tryAnswer(course_id, page_num, ans, response_element) {
+    var response = sendAnswer(course_id, page_num, ans);
+
+    var messageBox = document.getElementById(response_element);
+
+    if (response == "BAD") {
+        messageBox.textContent = "Вы ответили неправильно! Попытайтесь ещё раз.";
+        messageBox.style.color = "red";
+    } else if (response == "OK") {
+        messageBox.textContent = "Правильно!";
+        messageBox.style.color = "green";
+    }
+}

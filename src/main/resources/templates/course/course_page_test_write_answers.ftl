@@ -32,30 +32,14 @@
         <div>
             <form action="" method="post">
                 <input type="text" class="form-control" placeholder="введите ответ" id="answer_area">
-                <label id="answer_response">Favorite Animal</label><br>
-                <button type="button" name="send" value="send" onclick="sendTextAnswer()">Отправить</button>
+                <label id="answer_response"></label><br>
+                <button type="button" name="send" value="send" onclick="tryAnswer(${course_id}, ${page_num}, getAns(), 'answer_response')">Отправить</button>
+            </form>
         </div>
-        </form>
         <@m.scroll course_id, page_num/>
     </div>
 </div>
 <script>
-    function sendTextAnswer() {
-        var response = sendAnswer(${course_id}, ${page_num}, getAns());
-
-        var messageBox = document.getElementById("answer_response");
-        if (messageBox)
-            alert("FOUND")
-
-        if (response == "BAD") {
-            messageBox.textContent = "Вы ответили неправильно! Попытайтесь ещё раз.";
-            messageBox.style.color = "red";
-        } else if (response == "OK") {
-            messageBox.textContent = "Правильно!";
-            messageBox.style.color = "green";
-        }
-    }
-
     function getAns() {
         return document.getElementById("answer_area").value;
     }

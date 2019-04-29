@@ -1,13 +1,15 @@
 <#macro scroll course_id, page_num>
-<form action="" method="post">
-    <button type="button" name="back" value="back" class="next_back_btn"><img style="transform: rotate(180deg);"
-                                                                              src="../../static/images/course_next.png"
-                                                                              alt="Вперед"
-                                                                              <#if 0 < page_num>onclick="sendAnswer(${course_id}, ${page_num}, ''); goToPage(${page_num - 1})"</#if>/>
-    </button>
-    <button type="button" name="forward" value="forward" class="next_back_btn" style="float:right;"><img
-                src="../../static/images/course_next.png" alt="Вперед" onclick="sendAnswer(${course_id}, ${page_num}, ''); goToPage(${course_id}, ${page_num + 1});"/></button>
-</form>
+    <form action="" method="post">
+        <button type="button" name="back" value="back" class="next_back_btn"><img style="transform: rotate(180deg);"
+                                                                                  src="../../static/images/course_next.png"
+                                                                                  alt="Вперед"
+                                                                                  <#if 0 < page_num>onclick="sendAnswer(${course_id}, ${page_num}, ''); goToPage(${course_id}, ${page_num - 1})"</#if>/>
+        </button>
+        <button type="button" name="forward" value="forward" class="next_back_btn" style="float:right;"><img
+                    src="../../static/images/course_next.png" alt="Вперед"
+                    onclick="sendAnswer(${course_id}, ${page_num}, ''); goToPage(${course_id}, ${page_num + 1});"/>
+        </button>
+    </form>
 </#macro>
 
 <#macro pagelist course_id, pages>

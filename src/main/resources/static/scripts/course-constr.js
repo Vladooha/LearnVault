@@ -26,11 +26,11 @@ function clickCurrentPage(current_page){
 	if (/test.+/.test(current_page)){
 		//alert("click to teSt");
 		//setLocalLists1(list_answer,list_right_answer, list_points);
-    	window.location.href='test_designer.html';
+    	window.location.href='test_designer';
 	}
 	else{
 		//alert("click to teXt");
-		window.location.href='text_designer.html';
+		window.location.href='text_designer';
 	}
 }
 
