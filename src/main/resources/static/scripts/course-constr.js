@@ -1,4 +1,4 @@
-//функция добавляет все уже созданные страницы при переходах
+﻿//функция добавляет все уже созданные страницы при переходах
 function getListTitles(pageID, list_pageID, list_titles){
     var index = indexOf(list_pageID,pageID);
     var list_pages = document.getElementById('list-pages');
@@ -136,6 +136,7 @@ function getTags() {
 }
 //---------------------------------------------------------------------------
 
+
 function sendCourse() {
     $.ajax({
         url: "../ajax/course_create",
@@ -144,6 +145,7 @@ function sendCourse() {
             tags: getTags(), //getTags()
             name: getLocalKey("course_name"),
             description: getLocalKey("description"),
+	    time: getLocalKey("time"); 			//добавил время!
             isPrivate: getLocalKey("type_course")
             }),
         success: function (data) {

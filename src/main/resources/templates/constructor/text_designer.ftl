@@ -232,7 +232,7 @@
 		.then((value) => {
 		  switch (value) {
 			case "OK":
-
+			  window.location.href='../profile';
 			  break;
 		  }
 		});
