@@ -111,11 +111,11 @@
 				</ul>
 			</div>
 			<input class="orangeButton" type="button" value="Создать курс" style="margin: 210px 0 0 90px; width: 200px; height: 40px;" 
-				   onclick="window.location.href='course_create.html';return false;">
+				   onclick="window.location.href='/constructor/course_create';return false;">
 			<div id="LayerSections" style="position:absolute;text-align:left;left:1px;top:260px;width:1200px;height:379px;z-index:15;">
 				<div class="textExo2" style="position:absolute;left:70px;top:14px;width:1085px;height:35px; text-align:center">
 					<span style="font-size:29px;">Обзор тем и курсов</span>
-				</div>с
+				</div>
 				<div id="wb_Image2" style="position:absolute;left:790px;top:85px;width:290px;height:126px;">
 				<a href="#"><img src="../static/images/computer.jpg" id="Image1" alt=""></a>
 				</div>

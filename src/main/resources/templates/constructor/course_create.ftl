@@ -201,12 +201,18 @@
 		//отправляем описание курса
 		localStorage.setItem('description', JSON.stringify($('#description').val()));
 		
-		//отправляем время, ограничивающее курс (если не огр - 00:00)
+		//отправляем время, ограничивающее курс (если не огр - 0)
 		if ($('#myonoffswitch').is(':checked')){
-			localStorage.setItem('time', JSON.stringify($('#timebox').val()));
+			var buf_time = $('#timebox').val().split(':',2);
+			for(var i = 0; i < 2; i++){
+				if (buf_time[i].substring(0, 1) == '0')
+					buf_time[i] = buf_time[i].substring(1, 2);
+			}
+			var time = buf_time[0]*36*Math.pow(10,5) + buf_time[1]*6*Math.pow(10,4);
+			localStorage.setItem('time', JSON.stringify(time));
 		}
 		else{
-			localStorage.setItem('time', JSON.stringify("00:00"));
+			localStorage.setItem('time', JSON.stringify("0"));
 		}
 		
 		//отправляем тип курса
