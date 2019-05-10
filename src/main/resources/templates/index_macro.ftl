@@ -1,22 +1,5 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Training portal</title>
-<link href="../static/images/icon.png" rel="shortcut icon" type="image/x-icon">
-<link href="../static/css/demo1.css" rel="stylesheet">
-<link href="../static/css/index.css" rel="stylesheet">
-<script src="../static/scripts/jquery-1.12.4.min.js"></script>
-<script src="../static/scripts/wb.carousel.min.js"></script>
-<script src="../static/scripts/searchindex.js"></script>
-<script src="../static/scripts/wb.sitesearch.min.js"></script>
-<script src="../static/scripts/login.js"></script>
-</head>
-<body>
-<div id="LayerBody" >
-	<div id="LayerBody_Container">
-		<div id="LayerMain" style="width:1200px; min-height: 800px;">
-			<div  style="padding:20px 0 0 20px;width:1200px;height:85px;">
+<#macro header_site>
+	<div  style="padding:20px 0 0 20px;width:1200px;height:85px;">
 				<div style="width:350px;float:left;">
 					<h1 id="Heading" style="float:left;"><a href="#" style="color:#FF9700;font-size:50px;" onclick="window.location.href='index';return false;">Training portal</a></h1>
 				</div>
@@ -107,12 +90,5 @@
 						<a role="menuitem" href="#" target="_self">Контакты</a>
 					</li>
 				</ul>
-			</div>
-			<div>
-				<input class="orangeButton" style="width: 200px; height: 40px; margin:50px auto;" type="button" value="Создать курс" onclick="window.location.href='/constructor/course_create';return false;">
-			</div>
-		</div>
-	</div>
-</div>
-</body>
-</html>
+			</div>	
+</#macro>
