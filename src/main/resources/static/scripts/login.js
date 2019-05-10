@@ -2,8 +2,10 @@ var features = 'toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes,s
 function searchPage(features)
 {
    var element = document.getElementById('SiteSearch1');
-   window.open('sitesearch1-results.html?q='+encodeURIComponent(element.value), '', features);
-   return false;
+   var request = element.value;
+   window.location.href="/search?request=" + request;
+   //window.open('sitesearch1-results.html?q='+encodeURIComponent(element.value), '', features);
+
 }
 $(document).ready(function()
 {

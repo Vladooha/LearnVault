@@ -53,7 +53,12 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- JPA Data (We are going to use Repositories, Entities, Hibernate, etc...) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+
+        <!-- JPA Data (We are going to use Repositories, Entities, Hibernate, etc...) --q>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>

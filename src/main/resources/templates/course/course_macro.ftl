@@ -7,7 +7,7 @@
         </button>
         <button type="button" name="forward" value="forward" class="next_back_btn" style="float:right;"><img
                     src="../../static/images/course_next.png" alt="Вперед"
-                    onclick="sendAnswer(${course_id}, ${page_num}, ''); goToPage(${course_id}, ${page_num + 1});"/>
+                    onclick="console.log('next'); sendAnswer(${course_id}, ${page_num}, ''); goToPage(${course_id}, ${page_num + 1});"/>
         </button>
     </form>
 </#macro>
@@ -27,4 +27,8 @@
             </div>
         </div>
     </div>
+</#macro>
+
+<#macro timer time>
+    <label id="time" hidden="hidden">${time}</label>
 </#macro>

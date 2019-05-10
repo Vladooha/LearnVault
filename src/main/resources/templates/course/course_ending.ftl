@@ -26,33 +26,14 @@
     <div class="paige_of_course_name" id="name_of_course">${course_name}</div>
     <@m.pagelist course_id, pages/>
     <div class="theory-panel" id="theory_column">
-        <div class="page_title" id="name_of_page">${title}</div>
-        <div><textarea name="text_of_paige" cols="100" rows="15" id="textArea" readonly
-                       style="resize:none;overflow-y: auto; border-style:none;">${text}</textarea></div>
-        <#if photo??>
-            <div>СЮДА НАДО ДОБАВИТЬ ФОТО</div>
-        </#if>
-        <#if addtional??>
-            <div>
-                <header_text_addons> Дополнителтные материалы:</header_text_addons>
-            </div>
-            <div class="link-list">
-                <ul class="col-xl-6" id="list-links" style="padding: 0;">
-                    <a href="{{docs}}">{{links_of_inserts}} </a>
-                </ul>
-            </div>
-        </#if>
-        <#if video??>
-            <div class="video">
-                <iframe class="video" src="http://tv.adobe.com/embed/1221/24197/"></iframe>
-            </div>
-        </#if>
-        <@m.scroll course_id, page_num/>
+        <div class="page_title" id="name_of_page">${username}, поздравляем с завершением курса!</div>
+        <div>Вы набрали ${score} баллов из ${score_max} возможных!</div>
+        <button type="button" name="forward" value="forward" class="next_back_btn" style="float:right;"
+                alt="Вперед"
+                onclick="window.location.href=../profile"/>
     </div>
 </div>
-<#if time??>
-    <@m.timer time/>
-</#if>
+
 </body>
 
-</html>
+</htmlж

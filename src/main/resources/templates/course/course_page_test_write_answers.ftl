@@ -44,5 +44,8 @@
         return document.getElementById("answer_area").value;
     }
 </script>
+<#if time??>
+    <@m.timer time/>
+</#if>
 </body>
 </html>
