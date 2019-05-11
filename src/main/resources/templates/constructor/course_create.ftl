@@ -107,8 +107,15 @@
 					<div>
 						<div style="margin:20px 0 20px 40px;">
 							<label>
-								<input type="radio" id="isPrivate" name="type-course">
-								<h5 class="h5" style="color:rgba(0,21,41,1.00); margin-left: 5px"; >Назначенный курс</h5>
+								<input type="radio" id="isPrivate" name="type-course" <#if !isTeacher>disabled="true"</#if>>
+								<h5 class="h5"
+								<#if isTeacher>
+									style="color:rgba(0,21,41,1.00); margin-left: 5px;"
+								<#else>
+									style="color:rgba(0,21,41,0.50); margin-left: 5px;"
+								</#if>>
+									Курс только для учебной группы (доступно учителям)
+								</h5>
 							</label>
 						</div>
 					</div>

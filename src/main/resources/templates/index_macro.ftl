@@ -9,7 +9,7 @@
                 <input type="button" onclick="searchPage();return false;" name="Search" value="поиск" class="ButtonSearch" style="width:96px;height:25px;">
             </form>
         </div>
-        <div style="width:250px;float:right;padding:17px 0 0 49px;">
+        <div style="width:250px;float:right;padding:17px 0 0 49px;" onclick="window.location.href='/profile'">
             <span class="textExo2" style="width:100px;float:left;">Профиль</span>
             <img src="../static/images/noavatar.png" id="Image1" alt="" style="width:33px;height:30px;">
         </div>

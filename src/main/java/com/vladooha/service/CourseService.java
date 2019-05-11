@@ -73,6 +73,10 @@ public class CourseService {
         return coursePageRepo.findAllByCourse(courseRepo.getOne(id));
     }
 
+    public boolean isTeacher(String username) {
+        return teacherRepo.findByUsername(username) != null;
+    }
+
     @Nullable
     public Long createCourse(int category_num,
                              String author,
@@ -474,8 +478,6 @@ public class CourseService {
         if (course != null) {
             if (pageNum == 0) {
                 checkAnswer(username, course_id, pageNum, "");
-
-                return coursePageRepo.getOne(course.getFirstPageId());
             }
 
             ProfileInfo profileInfo = profileInfoRepo.findByUsername(username);
@@ -487,15 +489,20 @@ public class CourseService {
                     logger.debug("Course progress - " + courseProgress.getCurrPage());
                     logger.debug("Page num - " + pageNum);
                     logger.debug("Pages in course - " + course.getPageCount());
+                    logger.debug("Privacy - " + course.isPrivate());
 
                     long currTime = System.currentTimeMillis();
                     long beginTime = courseProgress.getBeginTime();
                     long allowedTime = course.getTime();
                     if (allowedTime <= 0L || currTime - beginTime < allowedTime) {
                         if (course.isPrivate()) {
+                            logger.debug("Accesing to private course");
+
                             Set<ProfileInfo> students = teacherRepo.findByUsername(course.getAuthor()).getStudents();
                             if (!students.contains(profileInfo)) {
                                 return null;
+                            } else {
+                                logger.debug(profileInfo.getUsername() + " is student!");
                             }
                         }
 

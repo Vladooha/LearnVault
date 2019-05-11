@@ -47,12 +47,12 @@
                 <iframe class="video" src="http://tv.adobe.com/embed/1221/24197/"></iframe>
             </div>
         </#if>
+        <#if time??>
+            <@m.timer time/>
+        </#if>
         <@m.scroll course_id, page_num/>
     </div>
 </div>
-<#if time??>
-    <@m.timer time/>
-</#if>
 </body>
 
 </html>

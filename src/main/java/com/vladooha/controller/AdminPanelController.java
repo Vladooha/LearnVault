@@ -30,6 +30,15 @@ public class AdminPanelController {
     @Autowired
     private CourseCategoryRepo courseCategoryRepo;
 
+    @GetMapping("/admin_panel")
+    public String adminPanel(Principal principal) {
+        if (isAdmin(principal)) {
+            return "admin_panel";
+        }
+
+        return "";
+    }
+
     @GetMapping("/ajax/add_teacher")
     @ResponseBody
     public String addTeacher(
@@ -44,6 +53,15 @@ public class AdminPanelController {
                     teacher.setUsername(teacherName);
 
                     teacherRepo.save(teacher);
+
+                    LoginInfo loginInfo = loginInfoRepo.findByUsername(teacherName);
+                    if (loginInfo != null) {
+                        Set<Role> roles = loginInfo.getRoles();
+                        roles.add(Role.TEACHER);
+                        loginInfo.setRoles(roles);
+
+                        loginInfoRepo.save(loginInfo);
+                    }
 
                     return "OK";
                 } else {

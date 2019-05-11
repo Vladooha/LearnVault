@@ -47,12 +47,12 @@
         <form action="" method="post">
             <button type="button" name="send" value="send" onclick="tryAnswer(${course_id}, ${page_num}, getAns(), 'answer_response')">Отправить</button>
         </form>
+        <#if time??>
+            <@m.timer time/>
+        </#if>
         <@m.scroll course_id, page_num/>
     </div>
 </div>
-<#if time??>
-    <@m.timer time/>
-</#if>
 </body>
 <script>
     var count_options = 0;

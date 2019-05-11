@@ -36,6 +36,9 @@
                 <button type="button" name="send" value="send" onclick="tryAnswer(${course_id}, ${page_num}, getAns(), 'answer_response')">Отправить</button>
             </form>
         </div>
+        <#if time??>
+            <@m.timer time/>
+        </#if>
         <@m.scroll course_id, page_num/>
     </div>
 </div>
@@ -44,8 +47,5 @@
         return document.getElementById("answer_area").value;
     }
 </script>
-<#if time??>
-    <@m.timer time/>
-</#if>
 </body>
 </html>

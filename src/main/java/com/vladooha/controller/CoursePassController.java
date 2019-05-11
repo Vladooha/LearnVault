@@ -40,7 +40,6 @@ public class CoursePassController {
 
         CoursePage coursePage = courseService.getCoursePageByNumIfAllowed(principal.getName(), course_id, page_num);
 
-
         if (coursePage != null) {
             Course course = courseService.getCourse(course_id);
 
@@ -69,7 +68,7 @@ public class CoursePassController {
                 CourseProgress courseProgress = courseService.getCourseProgress(principal.getName(), course);
 
                 if (courseProgress != null) {
-                    model.put("time", System.currentTimeMillis() - courseProgress.getBeginTime());
+                    model.put("time", course.getTime() - (System.currentTimeMillis() - courseProgress.getBeginTime()));
                 }
             }
 

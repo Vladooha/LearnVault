@@ -20,8 +20,11 @@ public class CourseConstructController {
 
     /// Simple requests
     @GetMapping("/constructor/course_create")
-    public String getCourseConstructor(Map<String, Object> model) {
+    public String getCourseConstructor(
+            Map<String, Object> model,
+            Principal principal) {
         model.put("categories", courseService.getCategories());
+        model.put("isTeacher", courseService.isTeacher(principal.getName()));
 
         return "/constructor/course_create";
     }
