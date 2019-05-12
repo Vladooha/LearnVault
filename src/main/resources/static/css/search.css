@@ -6,7 +6,7 @@
 .result_container {
 	margin: 20px 40px 20px 40px;
 	border: 0,5px double rgb(0, 45, 86); /* Параметры границы */
-	background: rgba(215,228,255,0.73); /* Цвет фона */
+	background: #d2e8fc; /* Цвет фона */
 	padding: 10px; /* Поля вокруг текста */
 	min-height: 160px;
 	max-width: 1160px;
@@ -82,6 +82,6 @@ h5.h5 {
   width:1160px; 
   height:400px;
   padding:10px;
-  background-color:rgba(215,228,255,0.73);
+  background-color:#d2e8fc;
   border: 0,5px double rgb(0, 45, 86); /* Параметры границы */
 }
