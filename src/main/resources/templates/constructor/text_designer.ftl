@@ -217,26 +217,15 @@
 	}
 	function saveCourse(){
 		savePage();
-		sendCourseStruct();
-		swal({
-			title: "Хорошая работа!",
-				text: "Курс сохраняется...",
-				icon: "success",
-			  // buttons: {
-				// catch: {
-				//   text: "OK",
-				//   value: "OK",
-				// },
-			  // },
-		})
-		.then((value) => {
-		  switch (value) {
-			case "OK":
-
-			  break;
-		  }
-		});
-
+        sendCourseStruct();
+            swal({
+                title: "Хорошая работа!",
+                text: "Курс сохраняется...",
+                icon: "success"
+            }).then((value) => {
+                    window.location.href='/index';
+                }
+            );
 	}
 
 </script>

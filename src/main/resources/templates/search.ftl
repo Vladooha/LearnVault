@@ -24,8 +24,8 @@
                 <hr>
 				<#if courses??>
 					<#list courses as course>
-						<div class="result_container">
-							<a href="#dialog${course.id}" name="modal">
+					    <a href="#dialog${course.id}" name="modal">
+						    <div class="result_container">
 								<img src="../static/images/business.jpg" style="width:160px;height:160px;float:left;">
 								<div style="float:left;min-height:160px;max-width:900px;">
 									<div><h5 class="H5" style="margin: 10px 50px; font-size:18px;">${course.name}</h5></div>
@@ -40,8 +40,8 @@
 										</#list>
 									</div>
 								</div>
-							</a>
-						</div>
+                            </div>
+                        </a>
 
 						<div id="boxes">
 						  <div id="dialog${course.id}" class="window">

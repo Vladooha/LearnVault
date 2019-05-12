@@ -12,50 +12,50 @@
 </head>
 <style>
 	.onoffswitch {
-		position: relative; width: 173px;
-		-webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-	}
-	.onoffswitch-checkbox {
-		display: none;
-	}
-	.onoffswitch-label {
-		display: block; overflow: hidden; cursor: pointer;
-		border: 2px solid #999999; border-radius: 20px;
-	}
-	.onoffswitch-inner {
-		display: block; width: 200%; margin-left: -100%;
-		transition: margin 0.3s ease-in 0s;
-	}
-	.onoffswitch-inner:before, .onoffswitch-inner:after {
-		display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
-		font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
-		box-sizing: border-box;
-	}
-	.onoffswitch-inner:before {
-		content: "ОГРАНИЧЕНО";
-		padding-left: 10px;
-		background-color: #34A7C1; color: #FFFFFF;
-	}
-	.onoffswitch-inner:after {
-		content: "НЕОГРАНИЧЕНО";
-		padding-right: 10px;
-		background-color: #EEEEEE; color: #999999;
-		text-align: right;
-	}
-	.onoffswitch-switch {
-		display: block; width: 21px; margin: 4.5px;
-		background: #FFFFFF;
-		position: absolute; top: 0; bottom: 0;
-		right: 139px;
-		border: 2px solid #999999; border-radius: 20px;
-		transition: all 0.3s ease-in 0s;
-	}
-	.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-		margin-left: 0;
-	}
-	.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-		right: 0px;
-	}
+    		position: relative; width: 173px;
+    		-webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+    	}
+    	.onoffswitch-checkbox {
+    		display: none;
+    	}
+    	.onoffswitch-label {
+    		display: block; overflow: hidden; cursor: pointer;
+    		border: 2px solid #999999; border-radius: 20px;
+    	}
+    	.onoffswitch-inner {
+    		display: block; width: 200%; margin-left: -100%;
+    		transition: margin 0.3s ease-in 0s;
+    	}
+    	.onoffswitch-inner:before, .onoffswitch-inner:after {
+    		display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+    		font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    		box-sizing: border-box;
+    	}
+    	.onoffswitch-inner:before {
+    		content: "ОГРАНИЧЕНО";
+    		padding-left: 10px;
+    		background-color: rgb(12,90,166); color: #FFFFFF;
+    	}
+    	.onoffswitch-inner:after {
+    		content: "НЕОГРАНИЧЕНО";
+    		padding-right: 10px;
+    		background-color: #EEEEEE; color: #999999;
+    		text-align: right;
+    	}
+    	.onoffswitch-switch {
+    		display: block; width: 21px; margin: 4.5px;
+    		background: #FFFFFF;
+    		position: absolute; top: 0; bottom: 0;
+    		right: 139px;
+    		border: 2px solid #999999; border-radius: 20px;
+    		transition: all 0.3s ease-in 0s;
+    	}
+    	.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    		margin-left: 0;
+    	}
+    	.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    		right: 0px;
+    	}
 </style>
 <body>
 <div class="main-layer">
@@ -145,7 +145,7 @@
 					</div>
 				</div>
 				<div >
-					<input class="orangeButton" type="button" value="Сохранить" style="display: block; margin: 100px auto; width: 200px; height: 40px;"
+					<input class="orangeButton" type="button" value="Далее" style="display: block; margin: 100px auto; width: 200px; height: 40px;"
 						   onclick="setCourse();sendCourse();">
 				</div>
 			</div>
