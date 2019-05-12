@@ -7,75 +7,12 @@
     <link href="../static/images/icon.png" rel="shortcut icon" type="image/x-icon">
     <link href="../static/css/demo1.css" rel="stylesheet">
     <link href="../static/css/index.css" rel="stylesheet">
+	<link href="../static/css/search.css" rel="stylesheet">
     <script src="../static/scripts/jquery-1.12.4.min.js"></script>
     <script src="../static/scripts/wb.carousel.min.js"></script>
     <script src="../static/scripts/searchindex.js"></script>
     <script src="../static/scripts/wb.sitesearch.min.js"></script>
     <script src="../static/scripts/login.js"></script>
-    <style>
-        hr {
-            border: 0;
-            height: 1px;
-            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
-        }
-
-        .result_container {
-            style = "margin: 20px 40px 20px 40px;"
-            border: 4px double black; /* Параметры границы */
-            background: #BDD2DE; /* Цвет фона */
-            padding: 10px; /* Поля вокруг текста */
-            min-height: 160px;
-            max-width: 1160px;
-            margin: 20px 0;
-        }
-
-        .result_description {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            max-width: 1000px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            height: 56px;
-            color: rgb(0, 45, 86);
-            font-family: "Exo 2";
-        }
-
-        .tag {
-            display: inline-block;
-            margin-top: 5px;
-            margin-right: 4px;
-            padding: 0 4px;
-            color: #7A7A7A;
-            border: 2px solid #e4e4e4;
-            border-radius: 6px;
-            white-space: nowrap;
-            background: #FCF8F8;
-            font-family: "Exo 2";
-            height: 15px;
-            padding: 2px 10px;
-        }
-
-        h3.h3 {
-            color: rgb(0, 45, 86);
-            font-family: "Exo 2";
-            margin-bottom: 20px;
-        }
-
-        h5.H5 {
-            font-family: "Exo 2";
-            margin-top: 20px;
-            font-size: 18px;
-            color: rgba(0, 70, 134, 1.00);
-        }
-
-        h5.h5 {
-            color: rgba(13, 107, 192, 1.00);
-            font-family: "Exo 2";
-            margin-top: 20px;
-            font-size: 14px;
-        }
-    </style>
 </head>
 <body>
 <div id="LayerBody">
@@ -85,30 +22,114 @@
             <div style="margin: 20px 40px 20px 40px;">
                 <div style="margin:20px 0;"><h3 class="h3">Результаты поиска:</h3></div>
                 <hr>
-                <#list courses as course>
-                    <div class="result_container">
-                        <a href="#">
-                            <img src="../static/images/business.jpg" style="width:160px;height:160px;float:left;">
-                            <div style="float:left;min-height:160px;max-width:900px;">
-                                <div><h5 class="H5" style="margin: 10px 50px; font-size:18px;">${course.name}</h5></div>
-                                <div>
-                                    <h3 class="result_description"
-                                        style="margin: 15px 50px; font-size:16px;">
-                                        ${course.description}
-                                    </h3>
-                                </div>
-                                <div style="margin: 10px 50px;">
-                                    <#list course.tags as tag>
-                                        <span class="tag">${tag.name}</span>
-                                    </#list>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </#list>
+				<#if courses??>
+					<#list courses as course>
+						<div class="result_container">
+							<a href="#dialog${course.id}" name="modal">
+								<img src="../static/images/business.jpg" style="width:160px;height:160px;float:left;">
+								<div style="float:left;min-height:160px;max-width:900px;">
+									<div><h5 class="H5" style="margin: 10px 50px; font-size:18px;">${course.name}</h5></div>
+									<div>
+										<h3 class="result_description" style="-webkit-line-clamp: 3;">
+											${course.description}
+										</h3>
+									</div>
+									<div style="margin: 10px 50px;">
+										<#list course.tags as tag>
+											<span class="tag">${tag.name}</span>
+										</#list>
+									</div>
+								</div>
+							</a>
+						</div>
+
+						<div id="boxes">
+						  <div id="dialog${course.id}" class="window">
+							  	<div  style="padding:20px 30px;width:250px;height:250px;float:left;">
+							  		<img src="../static/images/business.jpg" style="width:250px;height:250px;">
+							  	</div>
+								<div style="float:left;min-height:160px;max-width:910px;margin-top:20px;">
+									<div style="width:750px;">
+										<h5 class="H5" style="margin: 20px 50px; font-size:28px;">${course.name}</h5>
+										<a href="#"class="close" style="float:right;margin-left: 20px;"/><img src="../static/images/delete.png" width="24" height="24" alt=""/></a>
+									</div>
+									<div style="width:750px;margin-top: 30px;">
+										<h3 class="result_description">
+											${course.description}
+										</h3>
+									</div>
+									<div style="width:750px;margin: 40px 40px;">
+										<#list course.tags as tag>
+											<span class="tag">${tag.name}</span>
+										</#list>
+									</div>
+							  		<div style="width:750px;">
+										<input id="btn_save_page" class="orangeButton" type="button" value="Пройти курс" style="display: block; width: 200px; height: 40px; margin: 100px auto;" onClick="window.location.href='/course/${course.id}';return false;">
+									</div>
+								</div>
+							</div>
+
+						<!-- Макска, которая затемняет весь экран -->
+						  <div id="mask"></div>
+
+						</div>
+
+					</#list>
+				<#else>
+					<div style="margin:20px 0; color: red;"><h3 class="h3">Ничего не найдено!</h3></div>
+				</#if>
             </div>
         </div>
     </div>
 </div>
 </body>
+<script>
+	$(document).ready(function() {
+
+	  //select all the a tag with name equal to modal
+	  $('a[name=modal]').click(function(e) {
+		//Cancel the link behavior
+		e.preventDefault();
+		//Get the A tag
+		var id = $(this).attr('href');
+
+		//Get the screen height and width
+		var maskHeight = $(document).height();
+		var maskWidth = $(window).width();
+
+		//Set heigth and width to mask to fill up the whole screen
+		$('#mask').css({'width':maskWidth,'height':maskHeight});
+
+		//transition effect
+		$('#mask').fadeIn(400);
+		$('#mask').fadeTo("fast",0.8);
+
+		//Get the window height and width
+		var winH = $(window).height();
+		var winW = $(window).width();
+
+		//Set the popup window to center
+		$(id).css('top',  winH/2-$(id).height()/2);
+		$(id).css('left', winW/2-$(id).width()/2);
+
+		//transition effect
+		$(id).fadeIn(400);
+
+	  });
+
+	  //if close button is clicked
+	  $('.window .close').click(function (e) {
+		//Cancel the link behavior
+		e.preventDefault();
+		$('#mask, .window').hide();
+	  });
+
+	  //if mask is clicked
+	  $('#mask').click(function () {
+		$(this).hide();
+		$('.window').hide();
+	  });
+
+	});
+</script>
 </html>
