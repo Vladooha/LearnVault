@@ -51,6 +51,8 @@ public class CourseProgress {
 
     private int currScore;
 
+    private long beginTime;
+
 
 
     public Long getCourseProgId() {
@@ -91,5 +93,13 @@ public class CourseProgress {
 
     public void setCurrScore(int currScore) {
         this.currScore = currScore;
+    }
+
+    public long getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(long beginTime) {
+        this.beginTime = beginTime;
     }
 }

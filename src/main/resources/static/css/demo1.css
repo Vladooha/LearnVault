@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css?family=Baloo+Chettan|Exo+2|Montserrat&subset=cyrillic');
 @-webkit-keyframes animate-neon-text-shadow
 {
@@ -193,9 +192,9 @@ h6, .h6
    animation-fill-mode: none;
 }
 .textExo2{
-	font-family: "Exo 2";
-	font-size:20px;
-	color:#002D56;
+   font-family: "Exo 2";
+   font-size:20px;
+   color:#002D56;
 }
 .orangeButton
 {
@@ -211,7 +210,7 @@ h6, .h6
    cursor: pointer;
 }
 .orangeButton:disabled{
-	background-color: #DBDBDB;
-	border: 1px solid #DBDBDB;
-	cursor:
+   background-color: #DBDBDB;
+   border: 1px solid #DBDBDB;
+   /*cursor:*/
 }

@@ -1,4 +1,4 @@
-﻿//функция добавляет все уже созданные страницы при переходах
+//функция добавляет все уже созданные страницы при переходах
 function getListTitles(pageID, list_pageID, list_titles){
     var index = indexOf(list_pageID,pageID);
     var list_pages = document.getElementById('list-pages');
@@ -6,9 +6,9 @@ function getListTitles(pageID, list_pageID, list_titles){
     new_page.innerHTML = list_titles[index];
     new_page.classList.add("pages");
     new_page.id = pageID;
-	//alert("pageID:"+pageID+" | title:"+list_titles[index]);
+    //alert("pageID:"+pageID+" | title:"+list_titles[index]);
     new_page.onclick = function(){
-		savePage();
+        savePage();
         clickCurrentPage(pageID);
     }
     list_pages.appendChild(new_page);
@@ -22,16 +22,16 @@ function getListTitles(pageID, list_pageID, list_titles){
 function clickCurrentPage(current_page){
     localStorage.setItem('flag_open', JSON.stringify(true));
     localStorage.setItem('current_page', JSON.stringify(current_page));
-	
-	if (/test.+/.test(current_page)){
-		//alert("click to teSt");
-		//setLocalLists1(list_answer,list_right_answer, list_points);
-    	window.location.href='test_designer';
-	}
-	else{
-		//alert("click to teXt");
-		window.location.href='text_designer';
-	}
+
+    if (/test.+/.test(current_page)){
+        //alert("click to teSt");
+        //setLocalLists1(list_answer,list_right_answer, list_points);
+        window.location.href='test_designer';
+    }
+    else{
+        //alert("click to teXt");
+        window.location.href='text_designer';
+    }
 }
 
 //LOCAL STORAGE -----------------------------------------------------
@@ -49,7 +49,7 @@ function getLocalKey(key){
 }
 function getLocalBool(key){
     var res = JSON.parse(localStorage.getItem(key));
-	console.log(JSON.parse(localStorage.getItem(key)));
+    console.log(JSON.parse(localStorage.getItem(key)));
     if (res == null || res == false)
         res = false;
     else
@@ -65,8 +65,8 @@ function setLocalLists(list_pageId, list_types, list_title, list_text){
 function setLocalListsTest(list_answer, list_right_answer, list_points, list_types_test){
     localStorage.setItem('list_answer', JSON.stringify(list_answer));
     localStorage.setItem('list_right_answer', JSON.stringify(list_right_answer));
-	localStorage.setItem('list_points', JSON.stringify(list_points));
-	localStorage.setItem('list_types_test', JSON.stringify(list_types_test));
+    localStorage.setItem('list_points', JSON.stringify(list_points));
+    localStorage.setItem('list_types_test', JSON.stringify(list_types_test));
 }
 function getCurrentPage(){
     return getLocalKey('current_page');
@@ -79,16 +79,16 @@ function start_init(){
     document.getElementById('course_name').innerHTML = getLocalKey('course_name');
     //получаем тип курса
     if(getLocalKey('type_course'))
-		document.getElementById('type_course').innerHTML = "[Назначенный курс]";
+        document.getElementById('type_course').innerHTML = "[Назначенный курс]";
     else
-		document.getElementById('type_course').innerHTML = "[Общедоступный курс]";
+        document.getElementById('type_course').innerHTML = "[Общедоступный курс]";
     var res = getLocalBool('flag_open');
     return res;
 }
 //удаляет у всех страниц класс текущей
 function popCurrentClass(list_pageId){
-	for (var i = 0; i < list_pageId.length; i++)
-		document.getElementById(list_pageId[i]).classList.remove("currentPage");
+    for (var i = 0; i < list_pageId.length; i++)
+        document.getElementById(list_pageId[i]).classList.remove("currentPage");
 }
 
 //-----------------------------------------------------------------------------
@@ -105,9 +105,9 @@ function indexOfTest(list, object){
     for (var i = 0, j = -1; i < list.length; i++){
         if(/test.+/.test(object))
             j++;
-		if(list[i] === object)
-			return j;
-	}
+        if(list[i] === object)
+            return j;
+    }
     return -1;
 }
 //----------------------------------------------------------------------------
@@ -145,33 +145,33 @@ function sendCourse() {
             tags: getTags(), //getTags()
             name: getLocalKey("course_name"),
             description: getLocalKey("description"),
-	    time: getLocalKey("time"); 			//добавил время!
+            time: getLocalKey("time"), 			//добавил время!
             isPrivate: getLocalKey("type_course")
-            }),
-        success: function (data) {
-            if (data === "") { }
-                //alert("Ошибка сервера");	// Если она пустая ("") - сообщить об ошибке (Ошибка сервера или какая-то такая херь)
-            else
-            {
-                // Если в ней число - нужно его запомнить, затем редирект на страницу самого конструктора
-                // (запомнить хз как, но как-то можно. Если не получится в hidden переменную страницы запихну)
+}),
+    success: function (data) {
+        if (data === "") { }
+        //alert("Ошибка сервера");	// Если она пустая ("") - сообщить об ошибке (Ошибка сервера или какая-то такая херь)
+        else
+        {
+            // Если в ней число - нужно его запомнить, затем редирект на страницу самого конструктора
+            // (запомнить хз как, но как-то можно. Если не получится в hidden переменную страницы запихну)
 
-                if (data === "") { }
-                    //alert("Error sendCourse()");
-                else{
-                    var course_id = parseInt(data,10);
-                    localStorage.setItem("course_id",JSON.stringify(course_id));
-                    window.location.href = "/constructor/text_designer";
-                }
+            if (data === "") { }
+            //alert("Error sendCourse()");
+            else{
+                var course_id = parseInt(data,10);
+                localStorage.setItem("course_id",JSON.stringify(course_id));
+                window.location.href = "/constructor/text_designer";
             }
         }
-    });
+    }
+});
 }
 
 function sendCourseStruct() {
     var typeList = getLocalList("list_types");
     var courseId = getLocalKey("course_id");
-	var pageIdList = getLocalList('list_pageId');
+    var pageIdList = getLocalList('list_pageId');
 
     $.ajax({
         url: "../ajax/course_struct",
@@ -188,7 +188,7 @@ function sendCourseStruct() {
             // Если в нём числа - парсим числа (page_id) и для каждого вызываем sendTextPage() или sendTestPage()
             // в зависимости от типа страницы (тип страницы можно определить по массиву types)
             if (data === "") { }
-                //alert("Error sendCourseStruct()");	// Если он пустой ("") - сообщить об ошибке
+            //alert("Error sendCourseStruct()");	// Если он пустой ("") - сообщить об ошибке
             else
             {
                 var ids = data.split(",");
@@ -208,11 +208,11 @@ function sendCourseStruct() {
 }
 
 function sendTextPage(course, page, local_page) {
-	var list_pageId = getLocalList('list_pageId'); //list LOCAL pageId
-	var list_title = getLocalList("list_title"); 
+    var list_pageId = getLocalList('list_pageId'); //list LOCAL pageId
+    var list_title = getLocalList("list_title");
     var list_text = getLocalList("list_text");
-	
-	//alert("List: " + list_pageId);
+
+    //alert("List: " + list_pageId);
     var index = indexOf(list_pageId, local_page); //index text page
     //alert("Find by: " + local_page);
     //alert("Index: " + index);
@@ -226,27 +226,27 @@ function sendTextPage(course, page, local_page) {
             text:   list_text[index] + "",    // Текст страницы
             file_data:  ""// Необязательно пока что делать
         }),
-    success: function (data) {
-        // Сюда могу сообщить об ошибке, но пока что её игнорим, здесь можно нихуя не добавлять
-    }
-});
+        success: function (data) {
+            // Сюда могу сообщить об ошибке, но пока что её игнорим, здесь можно нихуя не добавлять
+        }
+    });
 }
 
 function sendTestPage(course, page, local_page) {
     var list_pageId = getLocalList("list_pageId"); //list LOCAL pageId
-	var list_title = getLocalList("list_title");
+    var list_title = getLocalList("list_title");
     var list_text = getLocalList("list_text");
-	var list_answer = getLocalList("list_answer");
+    var list_answer = getLocalList("list_answer");
     var list_right_answer = getLocalList("list_right_answer");
-	
-	//добавил баллы
-	var list_points = getLocalList('list_points');
-	//и тип теста - 'text', 'radio', 'chechbox'
-	var list_types_test = getLocalList('list_types_test');
-    
-	//alert("List: " + list_pageId);
-    
-	var index = indexOf(list_pageId, local_page); //index text's part of test page
+
+    //добавил баллы
+    var list_points = getLocalList('list_points');
+    //и тип теста - 'text', 'radio', 'chechbox'
+    var list_types_test = getLocalList('list_types_test');
+
+    //alert("List: " + list_pageId);
+
+    var index = indexOf(list_pageId, local_page); //index text's part of test page
     //alert("Non test index: " + index);
 
     var indexTest = indexOfTest(list_pageId, local_page); //index test page
@@ -266,13 +266,12 @@ function sendTestPage(course, page, local_page) {
             // ИЛИ можешь склеить верные номера ответов в строку - например ans = "Ответ1|}|{ona|Ответ2|}|{ona|Ответ3"
             // Если верными будут ответы 1 и 3, то отправляешь "13" или "31", главное, чтобы номер соответствовал порядку в ans
             // Второй варик предпочтительнее, напиши потом, чо выбрал
-			
-			score: list_points[indexTest] + "", //баллы за тест
-			type: list_types_test[indexTest] + "" //и тип теста - 'text', 'radio', 'chechbox'
+
+            score: list_points[indexTest] + "", //баллы за тест
+            type: list_types_test[indexTest] + "" //и тип теста - 'text', 'radio', 'chechbox'
         }),
         success: function (data) {
             // Сюда могу сообщить об ошибке, но пока что её игнорим, здесь можно нихуя не добавлять
         }
     });
 }
-

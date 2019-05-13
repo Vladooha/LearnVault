@@ -41,8 +41,6 @@ public class CoursePassController {
         CoursePage coursePage = courseService.getCoursePageByNumIfAllowed(principal.getName(), course_id, page_num);
 
         if (coursePage != null) {
-
-
             Course course = courseService.getCourse(course_id);
 
             List<CoursePage> pageList = new ArrayList<>(courseService.getCoursePages(course_id));
@@ -66,41 +64,59 @@ public class CoursePassController {
             model.put("page_num", coursePage.getNum());
             model.put("course_id", course.getId());
             model.put("course_name", course.getName());
+            if (course.getTime() > 0L) {
+                CourseProgress courseProgress = courseService.getCourseProgress(principal.getName(), course);
 
-            if (coursePage.getPageType().equals(CourseService.TEXT_PAGE)) {
-                CourseTextPage courseTextPage = (CourseTextPage) courseService.getCastablePage(coursePage.getId());
-
-                model.put("title", courseTextPage.getTitle());
-                model.put("text", courseTextPage.getText());
-
-                return "/course/course_page_theory";
+                if (courseProgress != null) {
+                    model.put("time", course.getTime() - (System.currentTimeMillis() - courseProgress.getBeginTime()));
+                }
             }
 
-            if (coursePage.getPageType().equals(CourseService.TEST_PAGE)) {
-                CourseTestPage courseTestPage = (CourseTestPage) courseService.getCastablePage(coursePage.getId());
+            if (coursePage.getId() != -1L) {
+                if (coursePage.getPageType().equals(CourseService.TEXT_PAGE)) {
+                    CourseTextPage courseTextPage = (CourseTextPage) courseService.getCastablePage(coursePage.getId());
 
-                model.put("title", courseTestPage.getTitle());
-                model.put("question", courseTestPage.getQuestion());
+                    model.put("title", courseTextPage.getTitle());
+                    model.put("text", courseTextPage.getText());
 
-                if (courseTestPage.getType().equals(CourseService.TEST_TEXT_PAGE)) {
-                    return "/course/course_page_test_write_answers";
+                    return "/course/course_page_theory";
                 }
 
-                String allAns = courseTestPage.getAns();
-                allAns = allAns.replace(" ", "&nbsp;");
-                model.put("answers", allAns.split(DELIMITER));
+                if (coursePage.getPageType().equals(CourseService.TEST_PAGE)) {
+                    CourseTestPage courseTestPage = (CourseTestPage) courseService.getCastablePage(coursePage.getId());
 
-                if (courseTestPage.getType().equals(CourseService.TEST_CHECKBOX_PAGE)) {
-                    return "/course/course_page_checkbox";
+                    model.put("title", courseTestPage.getTitle());
+                    model.put("question", courseTestPage.getQuestion());
+
+                    if (courseTestPage.getType().equals(CourseService.TEST_TEXT_PAGE)) {
+                        return "/course/course_page_test_write_answers";
+                    }
+
+                    String allAns = courseTestPage.getAns();
+                    allAns = allAns.replace(" ", "&nbsp;");
+                    model.put("answers", allAns.split(DELIMITER));
+
+                    if (courseTestPage.getType().equals(CourseService.TEST_CHECKBOX_PAGE)) {
+                        return "/course/course_page_checkbox";
+                    }
+
+                    if (courseTestPage.getType().equals(CourseService.TEST_RADIO_PAGE)) {
+                        return "/course/course_page_radio";
+                    }
                 }
+            } else {
+                Integer totalScore = courseService.getCourseScore(principal.getName(), course_id);
 
-                if (courseTestPage.getType().equals(CourseService.TEST_RADIO_PAGE)) {
-                    return "/course/course_page_radio";
+                if (totalScore != null) {
+                    model.put("username", principal.getName());
+                    model.put("score", totalScore.intValue());
+                    model.put("score_max", course.getScore());
+
+                    return "/course/course_ending";
                 }
-
-                return "";
             }
         }
+
 
         // TODO: Return error
         return "";
@@ -119,7 +135,7 @@ public class CoursePassController {
         logger.debug("Page id - " + page_num);
         logger.debug("Answer - " + ans);
 
-        String ansFixed = ans.replace((char)160, ' ');
+        String ansFixed = ans.replace((char) 160, ' ');
 
         if (courseService.checkAnswer(principal.getName(), course_id, page_num, ansFixed)) {
             logger.debug("Answer is OK");

@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Baloo+Chettan|Exo+2');
 body{
-	background-color: rgba(251,251,251,0.86);
+ 	background-color: transparent;
+   background-image: url(../images/backgroung.jpg);
+   background-position: left top;
+   background-size: 100% 100%;
 	margin: 0px;
 }
 .main-layer{
@@ -81,12 +84,11 @@ li.pages:hover{
 	float:right;
 }
 .page_title{
-	width: 1200px;
+	display: block;
 	padding-top: 15px;
-	padding-left: 300px;
-	height: 65px;
-	text-align: left;
-	color:black;
+	height: 75px;
+	text-align: center;
+	color: #002D56;
 	font-family: "Exo 2";
    	font-weight: bold;
    	font-size: 35px;
@@ -123,4 +125,75 @@ score{
     box-sizing: border-box;  /* не поддерживается в CSS2 */
     margin-left: 0;
     margin-right: 0;
+}
+$primary = #225CFF
+$gray = #C8CCD4
+
+.radio{
+  position: relative
+  cursor: pointer
+  line-height: 20px
+  font-size: 14px
+  margin: 15px
+  .label
+    position: relative
+    display: block
+    float: left
+    margin-right: 10px
+    width: 20px
+    height: 20px
+    border: 2px solid $gray
+    border-radius: 100%
+    -webkit-tap-highlight-color: transparent
+    &:after
+      content: ''
+      position: absolute
+      top 3px
+      left 3px
+      width 10px
+      height 10px
+      border-radius 100%
+      background $primary
+      transform scale(0)
+      transition all .2s ease
+      opacity .08
+      pointer-events: none
+  &:hover
+    .label:after
+      transform scale(3.6)
+}
+    
+  
+input[type="radio"]:checked + .label{
+  border-color $primary
+  &:after
+    transform scale(1)
+    transition all .2s cubic-bezier(.35,.9,.4,.9)
+    opacity 1
+}
+.cntr{
+  position absolute
+  top calc(50% - 10px)
+  left 0
+  width 100%
+  text-align center
+}
+
+.hidden{
+  display none
+}
+  
+
+.credit{
+  position: fixed
+  right: 20px
+  bottom: 20px
+  transition: all .2s ease
+  -webkit-user-select: none
+  user-select: none
+  opacity: .6
+  img
+    width: 72px
+  &:hover
+    transform: scale(.95)
 }

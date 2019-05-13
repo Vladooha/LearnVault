@@ -13,6 +13,8 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String author;
+
     @ManyToOne
     @JoinColumn
     private CourseCategory category;
@@ -32,9 +34,13 @@ public class Course {
 
     private int pageCount;
 
+    private int score;
+
     private Long firstPageId;
 
     private boolean isPrivate;
+
+    private long time;
 
     @OneToMany(mappedBy = "course")
     private Set<CourseProgress> courseProgresses = new HashSet<>();
@@ -47,6 +53,14 @@ public class Course {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public CourseCategory getCategory() {
@@ -97,6 +111,14 @@ public class Course {
         this.pageCount = pageCount;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public Long getFirstPageId() {
         return firstPageId;
     }
@@ -111,6 +133,14 @@ public class Course {
 
     public void setPrivate(boolean aPrivate) {
         isPrivate = aPrivate;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 
     public Set<CourseProgress> getCourseProgresses() {

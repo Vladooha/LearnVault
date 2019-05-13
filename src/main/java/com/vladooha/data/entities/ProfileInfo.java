@@ -1,6 +1,7 @@
 package com.vladooha.data.entities;
 
 import com.vladooha.data.entities.courses.CourseProgress;
+import com.vladooha.data.entities.courses.Teacher;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -29,6 +30,12 @@ public class ProfileInfo {
 
     @OneToMany(mappedBy = "user")
     private Set<CourseProgress> courseProgresses;
+
+    @ManyToMany(mappedBy = "students")
+    private Set<Teacher> teachers;
+
+
+
 
     public Long getId() {
         return id;

@@ -1,8 +1,4 @@
 package com.vladooha.controller;
-
-import com.vladooha.data.entities.courses.Course;
-import com.vladooha.data.entities.courses.CoursePage;
-import com.vladooha.data.entities.courses.CourseTextPage;
 import com.vladooha.service.CourseService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,8 +20,11 @@ public class CourseConstructController {
 
     /// Simple requests
     @GetMapping("/constructor/course_create")
-    public String getCourseConstructor(Map<String, Object> model) {
+    public String getCourseConstructor(
+            Map<String, Object> model,
+            Principal principal) {
         model.put("categories", courseService.getCategories());
+        model.put("isTeacher", courseService.isTeacher(principal.getName()));
 
         return "/constructor/course_create";
     }
@@ -39,19 +38,27 @@ public class CourseConstructController {
             @RequestParam String description,
             @RequestParam String[] tags,
             @RequestParam boolean isPrivate,
+            @RequestParam long time,
             Principal principal
     ) {
         logger.debug("ajax: course_create");
         logger.debug("Category number - " + categoryNum);
         logger.debug("Name - " + name);
         logger.debug("Description - " + description);
+        logger.debug("Time - " + time);
         logger.debug("isPrivate - " + isPrivate);
 
         // TODO: Tags realization
 //        List<String> tags = new ArrayList<>();
 //        tags.add("test_tag1");
 //        tags.add("test_tag2");
-        Long course_id = courseService.createCourse(categoryNum, name, description, tags, isPrivate);
+        Long course_id = courseService.createCourse(categoryNum,
+                principal.getName(),
+                name,
+                description,
+                tags,
+                isPrivate,
+                time);
 
         if (course_id != -1L) {
             return String.valueOf(course_id);

@@ -9,13 +9,15 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import javax.persistence.*;
 import java.util.*;
 
 @Service
+@Transactional
 public class CourseService {
     private static final Logger logger = LogManager.getLogger(CourseService.class);
 
@@ -29,26 +31,30 @@ public class CourseService {
 
     public static final long END_OF_LIST = -1L;
 
-    @Autowired
-    CourseRepo courseRepo;
-    @Autowired
-    CourseCategoryRepo courseCategoryRepo;
-    @Autowired
-    CourseTagRepo courseTagRepo;
-    @Autowired
-    CoursePageRepo coursePageRepo;
-    @Autowired
-    CourseTextPageRepo courseTextPageRepo;
-    @Autowired
-    CourseTestPageRepo courseTestPageRepo;
-    @Autowired
-    CourseProgressRepo courseProgressRepo;
+    private Object mutex = new Object();
 
     @Autowired
-    ProfileInfoRepo profileInfoRepo;
+    private CourseRepo courseRepo;
+    @Autowired
+    private CourseCategoryRepo courseCategoryRepo;
+    @Autowired
+    private CourseTagRepo courseTagRepo;
+    @Autowired
+    private CoursePageRepo coursePageRepo;
+    @Autowired
+    private CourseTextPageRepo courseTextPageRepo;
+    @Autowired
+    private CourseTestPageRepo courseTestPageRepo;
+    @Autowired
+    private CourseProgressRepo courseProgressRepo;
+    @Autowired
+    private TeacherRepo teacherRepo;
 
     @Autowired
-    EntityManager entityManager;
+    private ProfileInfoRepo profileInfoRepo;
+
+    @PersistenceUnit
+    private EntityManagerFactory entityManagerFactory;
 
     @Value("${courses.path}")
     private String coursePath;
@@ -67,19 +73,27 @@ public class CourseService {
         return coursePageRepo.findAllByCourse(courseRepo.getOne(id));
     }
 
+    public boolean isTeacher(String username) {
+        return teacherRepo.findByUsername(username) != null;
+    }
+
     @Nullable
     public Long createCourse(int category_num,
-                               String name,
-                               String description,
-                               String[] tags,
-                               boolean isPrivate) {
+                             String author,
+                             String name,
+                             String description,
+                             String[] tags,
+                             boolean isPrivate,
+                             long time) {
         CourseCategory courseCategory = courseCategoryRepo.findByNum(category_num);
         if (courseCategory != null) {
 
             Course course = new Course();
+            course.setAuthor(author);
             course.setCategory(courseCategory);
             course.setName(name);
             course.setDescription(description);
+            course.setTime(time);
 
             Set<CourseTag> tagSet = new HashSet<>();
             for (String tagName : tags) {
@@ -95,7 +109,12 @@ public class CourseService {
             }
             course.setTags(tagSet);
 
-            course.setPrivate(isPrivate);
+            if (teacherRepo.findByUsername(author) != null) {
+                course.setPrivate(isPrivate);
+            } else {
+                course.setPrivate(false);
+            }
+
             courseRepo.save(course);
 
             return course.getId();
@@ -205,6 +224,7 @@ public class CourseService {
         return "";
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public String fillTestPage(long course_id,
                                long page_id,
                                String title,
@@ -215,18 +235,41 @@ public class CourseService {
                                String type) {
         Optional<CourseTestPage> courseTestPageQuery = courseTestPageRepo.findById(page_id);
         if (courseTestPageQuery.isPresent()) {
-            CourseTestPage courseTestPage = courseTestPageQuery.get();
-            if (courseTestPage.getCourse().getId() == course_id) {
-                courseTestPage.setTitle(title);
-                courseTestPage.setQuestion(question);
-                courseTestPage.setScore(score);
-                courseTestPage.setAns(ans);
-                courseTestPage.setRightAns(rightAns);
-                courseTestPage.setType(type);
+            synchronized (CourseService.class) {
+                CourseTestPage courseTestPage = courseTestPageQuery.get();
+                EntityManager entityManager = entityManagerFactory.createEntityManager();
+                entityManager.getTransaction().begin();
+                Course course = entityManager.getReference(Course.class, new Long(courseTestPage.getCourse().getId()));
+                entityManager.refresh(course, LockModeType.PESSIMISTIC_WRITE);
+                logger.debug("Old course score: " + course.getScore());
 
-                courseTestPageRepo.save(courseTestPage);
+                if (course.getId() == course_id) {
+                    courseTestPage.setTitle(title);
+                    courseTestPage.setQuestion(question);
+                    courseTestPage.setScore(score);
+                    courseTestPage.setAns(ans);
+                    courseTestPage.setRightAns(rightAns);
+                    courseTestPage.setType(type);
 
-                return "OK";
+                    course.setScore(course.getScore() + score);
+
+                    courseTestPageRepo.save(courseTestPage);
+                    entityManager.merge(course);
+
+                    Course course1 = entityManager.find(Course.class, new Long(course.getId()));
+
+                    logger.debug("New course score: " + course1.getScore());
+
+                    entityManager.getTransaction().commit();
+
+                    Course course2 = entityManager.find(Course.class, new Long(course.getId()));
+
+                    logger.debug("New course score after commit: " + course2.getScore());
+
+                    return "OK";
+                }
+
+                entityManager.getTransaction().commit();
             }
         }
 
@@ -283,6 +326,7 @@ public class CourseService {
         logger.debug("Answer checking...");
 
         boolean answer = false;
+        int scores = 0;
 
         Course course = courseRepo.getOne(course_id);
         if (course != null) {
@@ -315,6 +359,7 @@ public class CourseService {
                                                 rightAnsNums.length() == allRequestAnswers.length ||
                                                 courseTestPage.getType().equals(TEST_TEXT_PAGE)) {
                                             answer = true;
+                                            scores = courseTestPage.getScore();
 
                                             break;
                                         }
@@ -332,6 +377,7 @@ public class CourseService {
 
                         if (courseProgress.getCurrPage() == pageNum && answer) {
                             courseProgress.setCurrPage(courseProgress.getCurrPage() + 1);
+                            courseProgress.setCurrScore(courseProgress.getCurrScore() + scores);
                         }
                     } else {
                         logger.debug("First time passing course");
@@ -339,6 +385,7 @@ public class CourseService {
                         courseProgress = new CourseProgress();
                         courseProgress.setUser(profileInfo);
                         courseProgress.setCourse(course);
+                        courseProgress.setBeginTime(System.currentTimeMillis());
 
                         if (answer) {
                             logger.debug("Answer is correct");
@@ -402,8 +449,14 @@ public class CourseService {
     }
 
     @Nullable
-    public CourseProgress getCourseProgress(ProfileInfo user, Course course) {
-        return courseProgressRepo.findByUserAndCourse(user, course);
+    public CourseProgress getCourseProgress(String username, Course course) {
+        ProfileInfo profileInfo = profileInfoRepo.findByUsername(username);
+
+        if (profileInfo != null) {
+            return courseProgressRepo.findByUserAndCourse(profileInfo, course);
+        }
+
+        return null;
     }
 
     @Nullable
@@ -425,8 +478,6 @@ public class CourseService {
         if (course != null) {
             if (pageNum == 0) {
                 checkAnswer(username, course_id, pageNum, "");
-
-                return coursePageRepo.getOne(course.getFirstPageId());
             }
 
             ProfileInfo profileInfo = profileInfoRepo.findByUsername(username);
@@ -437,10 +488,55 @@ public class CourseService {
                 if (courseProgress != null) {
                     logger.debug("Course progress - " + courseProgress.getCurrPage());
                     logger.debug("Page num - " + pageNum);
-                    if (courseProgress != null && pageNum <= courseProgress.getCurrPage()) {
-                        return getCoursePageByNum(course, pageNum);
+                    logger.debug("Pages in course - " + course.getPageCount());
+                    logger.debug("Privacy - " + course.isPrivate());
+
+                    long currTime = System.currentTimeMillis();
+                    long beginTime = courseProgress.getBeginTime();
+                    long allowedTime = course.getTime();
+                    if (allowedTime <= 0L || currTime - beginTime < allowedTime) {
+                        if (course.isPrivate()) {
+                            logger.debug("Accesing to private course");
+
+                            Set<ProfileInfo> students = teacherRepo.findByUsername(course.getAuthor()).getStudents();
+                            if (!students.contains(profileInfo)) {
+                                return null;
+                            } else {
+                                logger.debug(profileInfo.getUsername() + " is student!");
+                            }
+                        }
+
+                        if (course.getPageCount() == pageNum) {
+                            CoursePage endCoursePage = new CoursePage();
+                            endCoursePage.setId(-1L);
+
+                            logger.debug("End of course page returned!");
+
+                            return endCoursePage;
+                        }
+
+                        if (pageNum <= course.getPageCount()) {
+                            return getCoursePageByNum(course, pageNum);
+                        }
+                    } else {
+                        logger.debug("Time is over!");
                     }
                 }
+            }
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public Integer getCourseScore(String username, Long course_id) {
+        Course course = courseRepo.getOne(course_id);
+        ProfileInfo profileInfo = profileInfoRepo.findByUsername(username);
+
+        if (course != null && profileInfo != null) {
+            CourseProgress courseProgress = courseProgressRepo.findByUserAndCourse(profileInfo, course);
+            if (courseProgress != null) {
+                return courseProgress.getCurrScore();
             }
         }
 

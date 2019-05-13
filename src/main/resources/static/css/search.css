@@ -1,0 +1,87 @@
+ hr {
+	border: 0;
+	height: 1px;
+	background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+.result_container {
+	margin: 20px 40px 20px 40px;
+	border: 0,5px double rgb(0, 45, 86); /* Параметры границы */
+	background: #d2e8fc; /* Цвет фона */
+	padding: 10px; /* Поля вокруг текста */
+	min-height: 160px;
+	max-width: 1160px;
+	margin: 20px 0;
+}
+.result_container:hover{
+	border: 2.5px double rgb(0, 45, 86);
+}
+.result_description {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	max-width: 1000px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 56px;
+	color: rgb(0, 45, 86);
+	font-family: "Exo 2";
+	margin: 10px 50px;
+}
+.tag {
+	display: inline-block;
+	margin-top: 5px;
+	margin-right: 4px;
+	padding: 0 4px;
+	color: #6B6997;
+	border: 2px solid #e4e4e4;
+	border-radius: 6px;
+	white-space: nowrap;
+	background: #FCF8F8;
+	font-family: "Exo 2";
+	height: 15px;
+	padding: 2px 10px;
+}
+h3.h3 {
+	color: rgb(0, 45, 86);
+	font-family: "Exo 2";
+	margin-bottom: 20px;
+}
+h5.H5 {
+	font-family: "Exo 2";
+	margin-top: 20px;
+	font-size: 18px;
+	color: rgba(0, 70, 134, 1.00);
+}
+h5.h5 {
+	color: rgba(13, 107, 192, 1.00);
+	font-family: "Exo 2";
+	margin-top: 20px;
+	font-size: 14px;
+}
+
+#mask {
+  position:absolute;
+  left:0;
+  top:0;
+  z-index:9000;
+  background-color:#CBCBCB;
+  display:none;
+}
+  
+#boxes .window {
+  position:absolute;
+  left:0;
+  top:0;
+  width:440px;
+  height:200px;
+  display:none;
+  z-index:9999;
+  padding:20px;
+}
+
+#boxes .window{
+  width:1160px; 
+  height:400px;
+  padding:10px;
+  background-color:#d2e8fc;
+  border: 0,5px double rgb(0, 45, 86); /* Параметры границы */
+}

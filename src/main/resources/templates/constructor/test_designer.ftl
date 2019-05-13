@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>constructor</title>
-	<link href="../icon.png" rel="shortcut icon" type="image/x-icon">
+	<link href="../../images/icon.png" rel="shortcut icon" type="image/x-icon">
 	<link href="../../static/css/course_designer.css" rel="stylesheet">
 	<link href="../../static/css/demo1.css" rel="stylesheet">
 	<link href="../../static/css/index.css" rel="stylesheet">
@@ -355,21 +355,11 @@
 		swal({
 			title: "Хорошая работа!",
 			text: "Курс сохраняется...",
-			icon: "success",
-			// buttons: {
-			// catch: {
-			//   text: "OK",
-			//   value: "OK",
-			// },
-			// },
-		})
-				.then((value) => {
-			switch (value) {
-			case "OK":
-				window.location.href='../profile';
-				break;
+			icon: "success"
+		}).then((value) => {
+                window.location.href='/index';
 			}
-		});
+		);
 	}
 	//-----------------------------------------------------------------------------------------
 	/*var btn_add = document.getElementById('add');
