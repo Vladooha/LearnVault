@@ -134,7 +134,7 @@
 	  });
 
 	});
-
+  
     var parent = $("#id_parent_timer"); //id div'а, куда мы добавляем таймер
 
     if ($("#time").length !== 0) {

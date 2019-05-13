@@ -30,8 +30,6 @@
         </div>
     </div>
 </#macro>
-
-
 <#macro timer time>
     <div id="id_parent_timer" style="text-align:center;"></div>
     <label id="time" hidden="hidden">${time}</label>
@@ -54,6 +52,7 @@
 
             var p = document.createElement("p");
             var span = document.createElement("span");
+            
             span.classList.add("timer");
             span.innerHTML = "Оставшееся время : ";
             p.appendChild(span);
@@ -117,6 +116,7 @@
             } else s--;
             if (s < 10) s = "0" + s;
             document.getElementById("my_timer").innerHTML = h + ":" + m + ":" + s;
+
             if (h == 0 && m < 10){
                 if (m < 5){
                     if (m < 1)
@@ -131,4 +131,3 @@
         }
     </script>
 </#macro>
-
