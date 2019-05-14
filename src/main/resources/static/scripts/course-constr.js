@@ -245,8 +245,8 @@ function sendTestPage(course, page, local_page) {
     //и тип теста - 'text', 'radio', 'chechbox'
     var list_types_test = getLocalList('list_types_test');
 	
-	//NEW добавил флаг возможности повторного прохождения
-	var list_flag_again = getLocalList('list_types_test');
+    //NEW добавил флаг возможности повторного прохождения
+    var list_flag_again = getLocalList('list_types_test');
 
     //alert("List: " + list_pageId);
 
@@ -273,8 +273,8 @@ function sendTestPage(course, page, local_page) {
 
             score: list_points[indexTest] + "", //баллы за тест
             type: list_types_test[indexTest] + "", //и тип теста - 'text', 'radio', 'chechbox'
-			//NEW ----------------------------------------------------------------------------------------------------------------------------------
-			again: list_flag_again[indexTest] + ""
+	    //NEW ----------------------------------------------------------------------------------------------------------------------------------
+	    again: list_flag_again[indexTest] + ""
         }),
         success: function (data) {
             // Сюда могу сообщить об ошибке, но пока что её игнорим, здесь можно нихуя не добавлять
