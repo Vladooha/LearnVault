@@ -8,16 +8,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
+import java.util.Map;
 
 @Controller
 public class AdminPanelController {
     @Autowired
     private AdminService adminService;
 
+    @GetMapping("/admin_panel/students")
+    public String adminPanelWithStudents(
+            @RequestParam String teacherName,
+            Map<String, Object> model,
+            Principal principal) {
+        if (adminService.isAdmin(principal)) {
+            model.put("students", adminService.getStudentsByTeacher(principal, teacherName));
+
+            return "admin_panel";
+        }
+
+        return "";
+    }
+
     @GetMapping("/admin_panel")
     public String adminPanel(Principal principal) {
         String adminName = principal.getName();
-        if (adminService.isAdmin(adminName)) {
+        if (adminService.isAdmin(principal)) {
             return "admin_panel";
         }
 
@@ -29,8 +44,7 @@ public class AdminPanelController {
     public String addTeacher(
             @RequestParam String teacherName,
             Principal principal) {
-        String adminName = principal.getName();
-        String response = adminService.addTeacher(adminName, teacherName);
+        String response = adminService.addTeacher(principal, teacherName);
 
         return response;
     }
@@ -41,8 +55,7 @@ public class AdminPanelController {
             @RequestParam String teacherName,
             @RequestParam String studentName,
             Principal principal) {
-        String adminName = principal.getName();
-        String response = adminService.addStudent(adminName, teacherName, studentName);
+        String response = adminService.addStudent(principal, teacherName, studentName);
 
         return response;
     }
@@ -53,8 +66,7 @@ public class AdminPanelController {
             @RequestParam String teacherName,
             @RequestParam String studentName,
             Principal principal) {
-        String adminName = principal.getName();
-        String response = adminService.removeStudent(adminName, teacherName, studentName);
+        String response = adminService.removeStudent(principal, teacherName, studentName);
 
         return response;
     }
@@ -64,8 +76,7 @@ public class AdminPanelController {
     public String addAdmin(
             @RequestParam(name = "adminName") String newAdminName,
             Principal principal) {
-        String adminName = principal.getName();
-        String response = adminService.addAdmin(adminName, newAdminName);
+        String response = adminService.addAdmin(principal, newAdminName);
 
         return response;
     }
@@ -75,8 +86,7 @@ public class AdminPanelController {
     public String addCourseCategory(
             @RequestParam String categoryName,
             Principal principal) {
-        String adminName = principal.getName();
-        String response = adminService.addAdmin(adminName, categoryName);
+        String response = adminService.addCourseCategory(principal, categoryName);
 
         return response;
     }

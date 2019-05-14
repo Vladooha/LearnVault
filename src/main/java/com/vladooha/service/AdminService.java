@@ -5,6 +5,7 @@ import com.vladooha.data.entities.ProfileInfo;
 import com.vladooha.data.entities.Role;
 import com.vladooha.data.entities.courses.CourseCategory;
 import com.vladooha.data.entities.courses.Teacher;
+import com.vladooha.data.form.StudentForm;
 import com.vladooha.data.repositories.LoginInfoRepo;
 import com.vladooha.data.repositories.ProfileInfoRepo;
 import com.vladooha.data.repositories.courses.CourseCategoryRepo;
@@ -12,8 +13,8 @@ import com.vladooha.data.repositories.courses.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -27,9 +28,11 @@ public class AdminService {
     private TeacherRepo teacherRepo;
     @Autowired
     private CourseCategoryRepo courseCategoryRepo;
+    @Autowired
+    private TeacherService teacherService;
 
-    public String addTeacher(String adminName, String teacherName) {
-        if (isAdmin(adminName)) {
+    public String addTeacher(Principal principal, String teacherName) {
+        if (isAdmin(principal)) {
             ProfileInfo teacherProfileInfo = profileInfoRepo.findByUsername(teacherName);
 
             if (teacherProfileInfo != null) {
@@ -60,8 +63,8 @@ public class AdminService {
         }
     }
 
-    public String addStudent(String adminName, String teacherName, String studentName) {
-        if (isAdmin(adminName)) {
+    public String addStudent(Principal principal, String teacherName, String studentName) {
+        if (isAdmin(principal)) {
             Teacher teacher = teacherRepo.findByUsername(teacherName);
 
             if (teacher != null) {
@@ -84,32 +87,16 @@ public class AdminService {
         }
     }
 
-    public String removeStudent(String adminName, String teacherName, String studentName) {
-        if (isAdmin(adminName)) {
-            Teacher teacher = teacherRepo.findByUsername(teacherName);
-
-            if (teacher != null) {
-                ProfileInfo studentProfileInfo = profileInfoRepo.findByUsername(studentName);
-
-                if (studentProfileInfo != null) {
-                    Set<ProfileInfo> students = teacher.getStudents();
-                    students.remove(studentProfileInfo);
-                    teacher.setStudents(students);
-                }
-
-                teacherRepo.save(teacher);
-
-                return "OK";
-            } else {
-                return "USER_NOT_FOUND";
-            }
+    public String removeStudent(Principal principal, String teacherName, String studentName) {
+        if (isAdmin(principal)) {
+            return teacherService.removeStudentOperation(teacherName, studentName);
         } else {
             return "NO_PERMISSIONS";
         }
     }
 
-    public String addAdmin(String adminName, String newAdminName) {
-        if (isAdmin(adminName)) {
+    public String addAdmin(Principal principal, String newAdminName) {
+        if (isAdmin(principal)) {
             LoginInfo loginInfo = loginInfoRepo.findByUsername(newAdminName);
 
             if (loginInfo != null) {
@@ -128,8 +115,8 @@ public class AdminService {
         }
     }
 
-    public String addCourseCategory(String adminName, String categoryName) {
-        if (isAdmin(adminName)) {
+    public String addCourseCategory(Principal principal, String categoryName) {
+        if (isAdmin(principal)) {
             List<CourseCategory> courseCategoryList = courseCategoryRepo.findAll();
             CourseCategory courseCategory = courseCategoryRepo.findByName(categoryName);
 
@@ -149,8 +136,16 @@ public class AdminService {
         }
     }
 
-    public boolean isAdmin(String username) {
-        LoginInfo loginInfo = loginInfoRepo.findByUsername(username);
+    public List<StudentForm> getStudentsByTeacher(Principal principal, String teacherName) {
+        if (isAdmin(principal)) {
+            return teacherService.getStudentsOperation(teacherName);
+        }
+
+        return null;
+    }
+
+    public boolean isAdmin(Principal principal) {
+        LoginInfo loginInfo = loginInfoRepo.findByUsername(principal.getName());
 
         if (loginInfo != null) {
             if (loginInfo.getRoles().contains(Role.ADMIN)) {
