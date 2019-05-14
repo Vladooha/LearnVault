@@ -6,6 +6,7 @@
 	<link href="../../static/css/course_designer.css" rel="stylesheet">
 	<link href="../../static/css/demo1.css" rel="stylesheet">
 	<link href="../../static/css/index.css" rel="stylesheet">
+	<link href="../../static/css/switch.css" rel="stylesheet" type="text/css">
 	<script src="../../static/scripts/course-constr.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -50,10 +51,12 @@
 
 	<div class="constructor-panel">
 		<form style="width: 860px;height: 850px; float:left; margin: 30px 0 0 40px">
-			<div style="margin-bottom: 15px;"><h3 class="h3">Заголовок теста:</h3></div>
-			<div><input type="text" size="70" autofocus autocomplete="on" style="height: 25px;" value="Тест" id="header-page" oninput="change()"></div>
+			<div>
+				<div style="margin-bottom: 15px;"><h3 class="h3">Заголовок теста:</h3></div>
+				<div><input type="text" size="70" autofocus autocomplete="on" style="height: 25px;" value="Тест" id="header-page" oninput="change()"></div>
+			</div>
 			<div style="margin: 30px 0 15px 0;">
-				<div style="width: 400px; float:left;">
+				<div>
 					<div><h3 class="h3">Выберите тип тестовой страницы:</h3></div>
 					<div style="margin: 15px 0 15px 0;">
 						<select autofocus style="width: 400px; height: 30px;" onchange="OnSelectionChange (this)" oninput="change()" id="select_some_type">
@@ -63,15 +66,26 @@
 						</select>
 					</div>
 				</div>
-				<div style="width: 380px; float:left; margin-left: 80px;">
-					<div><h3 class="h3">Количество баллов за тест:</h3></div>
-					<div style="margin: 15px 0 15px 0; margin-left:200px;">
-						<input type="number" height="30" id="points" required style="height: 24px; width:70px;" value="1" min="1" max="100">
+			</div>
+			<div style="padding: 30px 0 15px 0; width:860px;height:75px;">
+				<div style="width: 360px; float:left;">
+					<div><h3 class="h3">Количество баллов за тест</h3></div>
+					<div style="padding: 15px 0 15px 0;">
+						<input type="number" height="30" id="points" required style="height: 24px; width:70px;" value="1" min="1" max="100"><p></p>
+					</div>
+				</div>
+				<div style="width: 500px; float:right;">
+					<div><h3 class="h3">Возможность ответить повторно</h3></div>
+					<div class="onoffswitch" style="margin-top:20px;width:105px;">
+						<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" onChange="switchTime()">
+						<label class="onoffswitch-label" for="myonoffswitch">
+							<span class="onoffswitch-inner"></span>
+							<span class="onoffswitch-switch"></span>
+						</label>
 					</div>
 				</div>
 			</div>
-
-			<div id="container">
+			<div id="container" style="margin: 30px 0 15px 0;">
 				<div style="margin: 30px 0 15px 0;"><h3 class="h3">Введите вопрос:</h3></div>
 				<textarea name="comment" cols="100" rows="5" style="resize:none;" id="textAnswer"></textarea>
 				<div id="question" oninput="change()">
@@ -96,7 +110,6 @@
 	var max_options = 10;
 
 
-
 	var flag_open = start_init();
 	// получаем текущий pageId
 	var current_page = getLocalKey('current_page');
@@ -112,6 +125,8 @@
 	var list_types_test = getLocalList('list_types_test');
 	var list_right_answer = getLocalList('list_right_answer');
 	var list_points = getLocalList('list_points');
+	var list_flag_again = getLocalList('list_flag_again');
+
 	if (list_pageId !== []){
 		//добавляем в обозреватель листов страницы, уже созданные ранее
 		for (var i = 0; i < list_pageId.length; i++){
@@ -138,6 +153,12 @@
 			document.getElementById("header-page").value = list_title[index];
 			document.getElementById('textAnswer').value = list_text[index];
 			document.getElementById("points").value = list_points[index_test];
+
+			//проверяем, есть ли возможность повторного прохожденияж
+			var flag = list_flag_again[index_test];
+			if (flag)
+					$('#myonoffswitch').prop('checked', true);
+
 
 			var container = document.getElementById('container');
 			var question_div = document.createElement('div');
@@ -233,6 +254,8 @@
 			list_types_test.push("text");
 			list_right_answer.push("");
 			list_points.push(1);
+			list_flag_again.push(false);
+
 			current_page = new_page.id;
 			if (count_test_pages > 1){
 				new_page.innerHTML +=" " + (count_test_pages-1);
@@ -257,6 +280,7 @@
 			question_div.id = 'question';
 			deleteDiv('question');
 			count_options = 0;
+
 			setTest(question_div, container, false);
 		}
 	}
@@ -346,8 +370,16 @@
 		console.log("points", points); //debug
 		list_points[index_test] = points;
 
+		//отправляем возможность повторного прохождения курсов
+		if ($('#myonoffswitch').is(':checked')){
+			list_flag_again[index_test] = true;
+		}
+		else{
+			list_flag_again[index_test] = false;
+		}
+
 		setLocalLists(list_pageId,list_types, list_title, list_text); // сохранение изменений
-		setLocalListsTest(list_answer,list_right_answer, list_points, list_types_test);
+		setLocalListsTest(list_answer,list_right_answer, list_points, list_types_test, list_flag_again);
 	}
 	function saveCourse() {
 		savePage();
@@ -361,18 +393,11 @@
 			}
 		);
 	}
-	//-----------------------------------------------------------------------------------------
-	/*var btn_add = document.getElementById('add');
-	btn_add.type = 'button';
-	btn_add.onclick = function(){
-		if(count_options < max_options){
-			var input_div = document.getElementById('options');
-			addInputBlock(input_div, undefined, false);
-		}
-	}*/
+
 	function setTest(container, parent, check, style_success = undefined, style_error = undefined){
 		var question_div = document.createElement('div');
 		question_div.style.margin ='30px 0 15px 0';
+
 		//добавление заголовка  "Выберите варианты ответа:"
 		var text_options = document.createElement('h3');
 		text_options.innerHTML = "Введите варианты ответа:";
