@@ -24,7 +24,7 @@
 				<div>
 					<div><h3 class="h3">Категорию страницы курса:</h3></div>
 					<div>
-						<select autofocus style="margin: 20px 0 20px 40px;width: 300px; height: 30px;" id = "category" required>
+						<select autofocus style="margin: 20px 0 20px 40px;width: 300px; height: 30px;" id = "category" required class="style_input">
 							<#list categories as category>
 							<option value=${category.getNum()}>${category.getName()}</option>
 							</#list>[
@@ -33,7 +33,7 @@
 				</div>
 				<div>
 					<div><h3 class="h3">Название курса:</h3></div>
-					<div><input type="text" size="70" id="course_name" autofocus autocomplete="on" style="height: 23px; margin: 20px 0 20px 40px;" required></div>
+					<div><input type="text" size="70" id="course_name" autofocus autocomplete="on" style="height: 23px; margin: 20px 0 20px 40px;" required class="style_input"></div>
 				</div>
 				<div style="margin-top:40px;">
 					<div><h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Введите теги для курса:</h4></div>
@@ -46,7 +46,7 @@
 				</div>
 				<div style="margin-top:60px;">
 					<div><h5 class="H5">Описание курса:</h5></div>
-					<div><textarea id="description" required cols="100" rows="5" style="resize:none; margin: 20px 0 20px 40px;" id="textAnswer"></textarea></div>
+					<div><textarea id="description" required cols="100" rows="5" style="resize:none; margin: 20px 0 20px 40px;" id="textAnswer" class="style_input"></textarea></div>
 				</div>
 				<div style="margin-top:10px;">
 					<div><h5 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Выберите тип курса:</h5></div>
