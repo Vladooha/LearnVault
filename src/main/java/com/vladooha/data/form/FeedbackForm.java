@@ -9,22 +9,22 @@ public class FeedbackForm {
     @NotNull
     @Min(value = 1, message = "Score must be not less than 1")
     @Max(value = 5, message = "Score must be not more than 5")
-    private Integer complexity;
+    private Integer complexity = 1;
 
     @NotNull
     @Min(value = 1, message = "Score must be not less than 1")
     @Max(value = 5, message = "Score must be not more than 5")
-    private Integer expectation;
+    private Integer expectation = 1;
 
     @NotNull
     @Min(value = 1, message = "Score must be not less than 1")
     @Max(value = 5, message = "Score must be not more than 5")
-    private Integer comprehensibility;
+    private Integer comprehensibility = 1;
 
 //    @NotNull
 //    @Min(value = 0, message = "Min percentage is 0")
 //    @Max(value = 100, message = "Maxpercentage is 100")
-    private Integer rightAnsPercent;
+    private Integer rightAnsPercent = 0;
 
 
 

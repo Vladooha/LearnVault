@@ -174,9 +174,9 @@
 			}
 		});
 		var availableTags = ["php Script", "Супер Script JS", "asp Script", "Java" ]; //
-		$("#tag").autocomplete({ //на какой input:text назначить результаты списка
-			source: availableTags
-		});
+		// $("#tag").autocomplete({ //на какой input:text назначить результаты списка
+		// 	source: availableTags
+		// });
 		$('#tags').on('click', 'span', function() {
 			if(confirm("Remove "+ $(this).text() +"?")) $(this).remove();
 			count_tags--;

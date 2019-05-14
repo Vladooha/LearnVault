@@ -134,8 +134,11 @@ public class CoursePassController {
     @GetMapping("/course/{course_id}/rate")
     public String rateCourseGet(@PathVariable("course_id") long course_id,
                              Map<String, Object> model) {
+        FeedbackForm feedbackForm = new FeedbackForm();
+
         model.put("course_id", course_id);
-        model.put("feedbackForm", new FeedbackForm());
+        model.put("feedbackForm", feedbackForm);
+        model.put("complexity", feedbackForm.getComplexity());
 
         return "/course/course_rating";
     }
@@ -144,18 +147,20 @@ public class CoursePassController {
 
     @PostMapping("/course/{course_id}/rate")
     public String rateCoursePost(@PathVariable("course_id") long course_id,
-                             @Valid FeedbackForm feedbackForm,
+                             @Valid @ModelAttribute("feedbackForm")FeedbackForm feedbackForm,
                              BindingResult bindingResult,
                              Map<String, Object> model,
                              Principal principal) {
         logger.debug("/course/{course_id}/rate");
         logger.debug("Complexity: " + feedbackForm.getComplexity());
         logger.debug("Any errors: " + bindingResult.hasErrors());
+        logger.debug("Right answers percent - " + feedbackForm.getRightAnsPercent());
 
         if (bindingResult.hasErrors()) {
+            model.put("course_id", course_id);
             model.put("feedbackForm", feedbackForm);
 
-            return "redirect:/course/" + course_id + "/rate";
+            return "/course/course_rating";
         }
 
         ratingService.addRating(feedbackForm, course_id, principal.getName());
@@ -189,5 +194,16 @@ public class CoursePassController {
 
             return "BAD";
         }
+    }
+
+    private FeedbackForm copyFeedbackForm(FeedbackForm oldFeedbackForm) {
+        FeedbackForm feedbackForm = new FeedbackForm();
+        feedbackForm.setComplexity(oldFeedbackForm.getComplexity());
+        feedbackForm.setExpectation(oldFeedbackForm.getExpectation());
+        feedbackForm.setComprehensibility(oldFeedbackForm.getComprehensibility());
+
+        logger.debug("Right answers percent in copy - " + feedbackForm.getRightAnsPercent());
+
+        return feedbackForm;
     }
 }

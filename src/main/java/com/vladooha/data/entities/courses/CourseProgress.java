@@ -56,6 +56,8 @@ public class CourseProgress {
 
     private boolean isRated = false;
 
+    private boolean isCompleted = false;
+
 
 
     public Long getCourseProgId() {
@@ -112,5 +114,13 @@ public class CourseProgress {
 
     public void setRated(boolean rated) {
         isRated = rated;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 }

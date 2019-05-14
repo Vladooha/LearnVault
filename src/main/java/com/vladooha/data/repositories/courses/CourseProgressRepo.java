@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CourseProgressRepo extends JpaRepository<CourseProgress, Long> {
     CourseProgress findByUserAndCourse(ProfileInfo user, Course course);
+    CourseProgress findByUserIdAndCourseId(Long userId, Long courseId);
 }
