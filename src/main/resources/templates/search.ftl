@@ -134,48 +134,5 @@
 	  });
 
 	});
-  
-    var parent = $("#id_parent_timer"); //id div'а, куда мы добавляем таймер
-
-    if ($("#time").length !== 0) {
-        var text_time = $("#time").text();
-        var buf_time = "";
-        for (var i = 0; i < text_time.length; i++){
-            if (text_time.charAt(i) >= '0' && text_time.charAt(i) <= '9'){
-                buf_time += text_time.charAt(i);
-            }
-        }
-        var time = parseInt(buf_time,10);
-        var time = msToTime(time);
-
-        console.log(time);
-
-        var p = document.createElement("p");
-        var span = document.createElement("span");
-        span.classList.add("timer");
-        span.innerHTML = "Оставшееся время : ";
-        p.appendChild(span);
-
-        span.id = "my_timer";
-        span.innerHTML = time;
-
-        p.appendChild(span);
-        parent.append(p);
-    }
-
-    function msToTime(s) {
-                var ms = s % 1000;
-                s = (s - ms) / 1000;
-                var secs = s % 60;
-                s = (s - secs) / 60;
-                var mins = s % 60;
-                var hrs = (s - mins) / 60;
-
-                if (hrs / 10 == 0) hrs = "0" + hrs;
-                if (mins / 10 == 0) mins = "0" + mins;
-                if (secs / 10 == 0) secs = "0" + secs;
-
-                return hrs + ':' + mins + ':' + secs;
-            }
 </script>
 </html>
