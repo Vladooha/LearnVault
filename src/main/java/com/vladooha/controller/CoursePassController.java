@@ -36,7 +36,6 @@ public class CoursePassController {
     private ProfileInfoRepo profileInfoRepo;
 
     /// GET
-
     @GetMapping("/course/{course_id}")
     public String getCourse(@PathVariable("course_id") long course_id,
                             @RequestParam(value = "page_num", defaultValue = "0") int page_num,
@@ -73,9 +72,9 @@ public class CoursePassController {
             model.put("page_num", coursePage.getNum());
             model.put("course_id", course.getId());
             model.put("course_name", course.getName());
-            if (course.getTime() > 0L) {
-                CourseProgress courseProgress = courseService.getCourseProgress(principal.getName(), course);
 
+            CourseProgress courseProgress = courseService.getCourseProgress(principal.getName(), course);
+            if (course.getTime() > 0L) {
                 if (courseProgress != null) {
                     model.put("time", course.getTime() - (System.currentTimeMillis() - courseProgress.getBeginTime()));
                 }
@@ -96,6 +95,9 @@ public class CoursePassController {
 
                     model.put("title", courseTestPage.getTitle());
                     model.put("question", courseTestPage.getQuestion());
+                    if (courseProgress.getMissedAnswers().contains(courseTestPage)) {
+                        model.put("failed", true);
+                    }
 
                     if (courseTestPage.getType().equals(CourseService.TEST_TEXT_PAGE)) {
                         return "/course/course_page_test_write_answers";
@@ -144,7 +146,6 @@ public class CoursePassController {
     }
 
     /// POST
-
     @PostMapping("/course/{course_id}/rate")
     public String rateCoursePost(@PathVariable("course_id") long course_id,
                              @Valid @ModelAttribute("feedbackForm")FeedbackForm feedbackForm,
@@ -169,7 +170,6 @@ public class CoursePassController {
     }
 
     /// AJAX
-
     @GetMapping("/ajax/course_check_result/")
     @ResponseBody
     public String checkResult(
@@ -194,16 +194,5 @@ public class CoursePassController {
 
             return "BAD";
         }
-    }
-
-    private FeedbackForm copyFeedbackForm(FeedbackForm oldFeedbackForm) {
-        FeedbackForm feedbackForm = new FeedbackForm();
-        feedbackForm.setComplexity(oldFeedbackForm.getComplexity());
-        feedbackForm.setExpectation(oldFeedbackForm.getExpectation());
-        feedbackForm.setComprehensibility(oldFeedbackForm.getComprehensibility());
-
-        logger.debug("Right answers percent in copy - " + feedbackForm.getRightAnsPercent());
-
-        return feedbackForm;
     }
 }

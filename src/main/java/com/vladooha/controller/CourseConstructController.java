@@ -48,10 +48,6 @@ public class CourseConstructController {
         logger.debug("Time - " + time);
         logger.debug("isPrivate - " + isPrivate);
 
-        // TODO: Tags realization
-//        List<String> tags = new ArrayList<>();
-//        tags.add("test_tag1");
-//        tags.add("test_tag2");
         Long course_id = courseService.createCourse(categoryNum,
                 principal.getName(),
                 name,
@@ -77,10 +73,6 @@ public class CourseConstructController {
         logger.debug("Id - " + course_id);
         logger.debug("Types - " + type_list);
 
-//        Gson converter = new Gson();
-//
-//        Type jsonType = new TypeToken<List<String>>(){}.getType();
-//        List<String> typeList =  converter.fromJson(type_list, jsonType);
         String[] types = type_list.split("\\,");
         List<String> typeList = new ArrayList<>();
 
@@ -93,8 +85,6 @@ public class CourseConstructController {
 
         try {
             Long[] pageIds = courseService.setCourseStruct(course_id, typeList);
-//            Type ansJsonType = new TypeToken<Long[]>(){}.getType();
-//            String answer = converter.toJson(pageIds, ansJsonType);
 
             StringBuilder idString = new StringBuilder();
             for (Long pageId : pageIds) {
@@ -138,7 +128,8 @@ public class CourseConstructController {
             @RequestParam int score,
             @RequestParam String ans,
             @RequestParam String rightAns,
-            @RequestParam String type
+            @RequestParam String type,
+            @RequestParam(name="again") boolean isRepeatable
     ) {
         logger.debug("ajax: course_page_test");
         logger.debug("Course id - " + course_id);
@@ -147,8 +138,9 @@ public class CourseConstructController {
         logger.debug("Question - " + question);
         logger.debug("Answers - " + ans);
         logger.debug("Right answers - " + rightAns);
+        logger.debug("isRepeatable - " + isRepeatable);
 
-        return courseService.fillTestPage(course_id, page_id, title, question, score, ans, rightAns, type);
+        return courseService.fillTestPage(course_id, page_id, title, question, score, ans, rightAns, type, isRepeatable);
     }
 
     // TODO: Return a new page
