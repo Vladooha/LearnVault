@@ -6,57 +6,11 @@
 	<link href="../../static/css/course_designer.css" rel="stylesheet">
 	<link href="../../static/css/demo1.css" rel="stylesheet">
 	<link href="../../static/css/index.css" rel="stylesheet">
+	<link href="../../static/css/switch.css" rel="stylesheet" type="text/css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="../../static/scripts/course-constr.js"></script>
 	<script src="../../static/scripts/constructor.js"></script>
 </head>
-<style>
-	.onoffswitch {
-    		position: relative; width: 173px;
-    		-webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-    	}
-    	.onoffswitch-checkbox {
-    		display: none;
-    	}
-    	.onoffswitch-label {
-    		display: block; overflow: hidden; cursor: pointer;
-    		border: 2px solid #999999; border-radius: 20px;
-    	}
-    	.onoffswitch-inner {
-    		display: block; width: 200%; margin-left: -100%;
-    		transition: margin 0.3s ease-in 0s;
-    	}
-    	.onoffswitch-inner:before, .onoffswitch-inner:after {
-    		display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
-    		font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
-    		box-sizing: border-box;
-    	}
-    	.onoffswitch-inner:before {
-    		content: "ОГРАНИЧЕНО";
-    		padding-left: 10px;
-    		background-color: rgb(12,90,166); color: #FFFFFF;
-    	}
-    	.onoffswitch-inner:after {
-    		content: "НЕОГРАНИЧЕНО";
-    		padding-right: 10px;
-    		background-color: #EEEEEE; color: #999999;
-    		text-align: right;
-    	}
-    	.onoffswitch-switch {
-    		display: block; width: 21px; margin: 4.5px;
-    		background: #FFFFFF;
-    		position: absolute; top: 0; bottom: 0;
-    		right: 139px;
-    		border: 2px solid #999999; border-radius: 20px;
-    		transition: all 0.3s ease-in 0s;
-    	}
-    	.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-    		margin-left: 0;
-    	}
-    	.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-    		right: 0px;
-    	}
-</style>
 <body>
 <div class="main-layer">
 	<div class="my-header">Конструктор курсов</div>
@@ -70,7 +24,7 @@
 				<div>
 					<div><h3 class="h3">Категорию страницы курса:</h3></div>
 					<div>
-						<select autofocus style="margin: 20px 0 20px 40px;width: 300px; height: 30px;" id = "category" required>
+						<select autofocus style="margin: 20px 0 20px 40px;width: 300px; height: 30px;" id = "category" required class="style_input">
 							<#list categories as category>
 							<option value=${category.getNum()}>${category.getName()}</option>
 							</#list>[
@@ -79,7 +33,7 @@
 				</div>
 				<div>
 					<div><h3 class="h3">Название курса:</h3></div>
-					<div><input type="text" size="70" id="course_name" autofocus autocomplete="on" style="height: 23px; margin: 20px 0 20px 40px;" required></div>
+					<div><input type="text" size="70" id="course_name" autofocus autocomplete="on" style="height: 23px; margin: 20px 0 20px 40px;" required class="style_input"></div>
 				</div>
 				<div style="margin-top:40px;">
 					<div><h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Введите теги для курса:</h4></div>
@@ -92,7 +46,7 @@
 				</div>
 				<div style="margin-top:60px;">
 					<div><h5 class="H5">Описание курса:</h5></div>
-					<div><textarea id="description" required cols="100" rows="5" style="resize:none; margin: 20px 0 20px 40px;" id="textAnswer"></textarea></div>
+					<div><textarea id="description" required cols="100" rows="5" style="resize:none; margin: 20px 0 20px 40px;" id="textAnswer" class="style_input"></textarea></div>
 				</div>
 				<div style="margin-top:10px;">
 					<div><h5 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Выберите тип курса:</h5></div>
@@ -174,9 +128,9 @@
 			}
 		});
 		var availableTags = ["php Script", "Супер Script JS", "asp Script", "Java" ]; //
-		$("#tag").autocomplete({ //на какой input:text назначить результаты списка
-			source: availableTags
-		});
+		// $("#tag").autocomplete({ //на какой input:text назначить результаты списка
+		// 	source: availableTags
+		// });
 		$('#tags').on('click', 'span', function() {
 			if(confirm("Remove "+ $(this).text() +"?")) $(this).remove();
 			count_tags--;

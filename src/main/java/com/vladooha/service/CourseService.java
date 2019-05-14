@@ -49,9 +49,10 @@ public class CourseService {
     private CourseProgressRepo courseProgressRepo;
     @Autowired
     private TeacherRepo teacherRepo;
-
     @Autowired
     private ProfileInfoRepo profileInfoRepo;
+    @Autowired
+    private FeedbackRepo feedbackRepo;
 
     @PersistenceUnit
     private EntityManagerFactory entityManagerFactory;
@@ -116,6 +117,11 @@ public class CourseService {
             }
 
             courseRepo.save(course);
+
+            Feedback feedback = new Feedback();
+            feedback.setCourse(course);
+
+            feedbackRepo.save(feedback);
 
             return course.getId();
         } else {
@@ -509,6 +515,7 @@ public class CourseService {
                         if (course.getPageCount() == pageNum) {
                             CoursePage endCoursePage = new CoursePage();
                             endCoursePage.setId(-1L);
+                            courseProgress.setCompleted(true);
 
                             logger.debug("End of course page returned!");
 

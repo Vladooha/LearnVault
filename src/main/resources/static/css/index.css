@@ -11,13 +11,25 @@ body
    margin: 0px;
    padding: 0px;
 }
+.timer{
+	margin-top: 15px;
+	text-align: center;
+	font-family: "Exo 2";
+   	font-weight: bold;
+   	font-size: 25px;
+   	font-style: normal;
+    text-align: center;
+    color: #00529C;
+    font-weight: bold;
+}
 #LayerBody
 {
    background-color: transparent;
-   background-image: url(../images/backgroung.jpg);
+   background-image: url(../images/background.jpg);
    background-repeat: repeat-y;
    background-position: left top;
    background-size: 100% 100%;
+   min-height: 1280px;
 }
 
 
@@ -100,7 +112,7 @@ body
    background-image: none;
    margin: 0 auto;
    width:1200px;
-   min-height: 800px;
+   min-height: 1280px;
 }
 
 #SiteSearch1

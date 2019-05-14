@@ -1,11 +1,50 @@
 @import url('https://fonts.googleapis.com/css?family=Baloo+Chettan|Exo+2');
 
-input[type="text"]{
-	padding-left: 5px;
+.style_input{
+	padding: 5px;
+	font-family: "Exo 2";
+	font-size: 15px;
+  	color:#010C16;
+  	outline:0;
+  	border-radius:5px;
+  	border:1px solid #4C5257;
+  	inset;
 }
-input[type="number"]{
-	padding-left: 5px;
+
+.style_input:hover{
+  transition: box-shadow 1s linear;
+  box-shadow:0px 0px 12px #044077;
 }
+.style_input:focus{
+  transition: box-shadow 1s linear;
+  box-shadow:0px 0px 12px #044077;
+}
+.blueButton
+{
+   margin: 20px 0;
+   font-family: "Exo 2";
+   font-size: 16px;
+   text-decoration: none;
+   color: #FFFFFF;
+   background-color: #044077;
+   border: 1px solid #044077;
+   border-radius: 4px;
+   cursor: pointer;
+}
+.redButton
+{
+   margin: 20px 0;
+   font-family: "Exo 2";
+   font-size: 16px;
+   text-decoration: none;
+   color: #FFFFFF;
+   background-color: #77040B;
+   border: 1px solid #77040B;
+   border-radius: 4px;
+   cursor: pointer;
+}
+
+
 .developing{ 
 	display: inline-block; /* Строчно-блочный элемент */
     position: relative; /* Относительное позиционирование */
@@ -22,7 +61,7 @@ input[type="number"]{
     border: 1px solid #333; /* Параметры рамки */
 }
 body{
-	background-image: url("../images/constructor_background.jpg");
+	background-image: url("../images/background.jpg");
 	margin: 0px;
 }
 .main-layer{
@@ -126,12 +165,33 @@ li.currentPage{
 	color:white;
 }
 .errorEditbox{
-   border-color: red;
-   opacity: 1;
+	opacity: 1;
+	padding: 5px;
+	font-family: "Exo 2";
+	font-size: 15px;
+  	color:#042A4D;
+  	outline:0;
+  	border-radius:5px;
+  	border:1px solid red;
+  	inset;
 }
 .successEditbox{
-   border-color: #1EBF0B;
-   opacity: 1;
+	opacity: 1;
+	padding: 5px;
+	font-family: "Exo 2";
+	font-size: 15px;
+	color:#042A4D;
+	outline:0;
+	border-radius:5px;
+	border:1px solid  #0B8309;
+	inset;
+}
+
+/*Checkboxes styles*/
+
+input[type="checkbox"].mycheck{
+  width: 15px;
+  height: 15px;
 }
 
 #tags{

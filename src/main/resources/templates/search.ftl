@@ -63,6 +63,12 @@
 											<span class="tag">${tag.name}</span>
 										</#list>
 									</div>
+									    <#if 0 < course.time>
+                                            <@m.time_to_search course.time/>
+                                        <#else>
+                                            <label id="no_time" class="timer">Курс не ограничен по времени</label>
+                                        </#if>
+
 							  		<div style="width:750px;">
 										<input id="btn_save_page" class="orangeButton" type="button" value="Пройти курс" style="display: block; width: 200px; height: 40px; margin: 100px auto;" onClick="window.location.href='/course/${course.id}';return false;">
 									</div>
@@ -71,7 +77,6 @@
 						<!-- Макска, которая затемняет весь экран -->
 						  <div id="mask"></div>
 						</div>
-
 					</#list>
 				<#else>
 					<div style="margin:20px 0; color: red;"><h3 class="h3">Ничего не найдено!</h3></div>

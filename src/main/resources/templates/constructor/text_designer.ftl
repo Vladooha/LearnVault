@@ -13,46 +13,50 @@
 </head>
 
 <body>
-<div class="main-layer">
-	  <div class="my-header">Конструктор курсов</div>
-			<div class="project-explorer-container">
-				<div class="project-explorer" style="margin: 30px 10px 0 10px">
-					<div><h3 class="h3" id="course_name">Название курса</h3></div>
-					<div><h5 class="h5" id="type_course">Название курса</h5></div>
-					<div class="pages-list">
-						<ul id="list-pages" style="padding: 0;">
-						</ul>
-					</div>
-					<div id="wb_CssMenu1">
-						<ul role="menubar">
-						  <li class="firstmain"  style="width: 136px;">
-								<a role="menuitem" class="withsubmenu" href="#" target="_self">Создать</a>
-								<ul role="menu">
-											<li class="firstitem">
-												<a role="menuitem" href="#" target="_self" onclick='addTextPage()'>Страницу теории</a>
-											</li>
-											<li>
-												<a role="menuitem" href="#" target="_self" onclick="addTestPage()">Страницу тестов</a>
-											</li>
-										</ul>
-							</li>
-							<li  style="width: 136px;">
-								<a role="menuitem" class="withsubmenu" href="#" target="_self" onclick="sorry()">Удалить</a>
-							</li>
-						</ul>
-					</div>
-				</div>
+		<div id="LayerBody" >
+			<div id="LayerBody_Container">
+				<div id="LayerMain">
+					<!-- body code goes here -->
+					<div class="main-layer">
+						<div class="my-header">Конструктор курсов</div>
+						<div class="project-explorer-container">
+							<div class="project-explorer" style="margin: 30px 10px 0 10px">
+								<div><h3 class="h3" id="course_name">Название курса</h3></div>
+								<div><h5 class="h5" id="type_course">Тип курса</h5></div>
+								<div class="pages-list">
+								<ul id="list-pages" style="padding: 0;">
+								</ul>
+							</div>
+							<div id="wb_CssMenu1">
+								<ul role="menubar">
+								  <li class="firstmain"  style="width: 136px;">
+										<a role="menuitem" class="withsubmenu" href="#" target="_self">Создать</a>
+										<ul role="menu">
+													<li class="firstitem">
+														<a role="menuitem" href="#" target="_self" onclick="addTextPage()">Страницу теории</a>
+													</li>
+													<li>
+														<a role="menuitem" href="#" target="_self" onclick="addTestPage()">Страницу тестов</a>
+													</li>
+												</ul>
+									</li>
+									<li  style="width: 136px;">
+										<a role="menuitem" class="withsubmenu" href="#" target="_self" onclick="sorry()">Удалить</a>
+									</li>
+								</ul>
+							</div>
+						</div>
 				<div>
 						<input class="orangeButton" type="button" value="Сохранить курс" style="display: block; margin: 220px auto 0 auto;width: 220px; height: 40px;" onClick="saveCourse()">
 					</div>
 			</div>
-		
+
 	  <div class="constructor-panel">
 				<form style="width: 860px;height: 850px; float:left; margin: 30px 0 0 40px">
 					<div style="margin-bottom: 15px;"><h3 class="h3">Заголовок страницы:</h3></div>
-					<div><input type="text" size="70" autofocus autocomplete="on" style="height: 25px;" value="Новая страница" id ="header-page" oninput="change()"></div>	
+					<div><input type="text" size="70" autofocus autocomplete="on" style="height: 25px;" value="Новая страница" id ="header-page" oninput="change()" class="style_input"></div>
 					<div style="margin: 30px 0 15px 0;"><h3 class="h3">Текст страницы курса:</h3></div>
-					<textarea name="comment" cols="100" rows="25" id="textArea" oninput="change()"></textarea>
+					<textarea name="comment" cols="100" rows="25" id="textArea" oninput="change()" class="style_input"></textarea>
 					<div>
 						<div class="investment">
 							<div><h4>Прикрепить фото</h4></div>
@@ -71,7 +75,7 @@
 						<div class="investment">
 							<div><h4>Вставить ссылку на youtube</h4></div>
 							<div  class="developing" data-title="В разработке...">
-								<input type="text"style="margin:20px;" disabled>
+								<input type="text" style="margin:20px;" disabled>
 							</div>
 						</div>
 					</div>
@@ -79,7 +83,10 @@
 						<input id="btn_save_page" class="orangeButton" type="button" value="Сохранить страницу" style="display: block; margin: 200px auto 0 auto; width: 300px; height: 40px;" onClick="savePage()">
 					</div>
 				</form>
-				
+
+			</div>
+	</div>
+				</div>
 			</div>
 	</div>
 </body>
@@ -96,13 +103,13 @@
 	var list_title = getLocalList('list_title');
 	var list_text = getLocalList('list_text');
 
-	if (list_pageId !== []){	
+	if (list_pageId !== []){
 		//добавляем в обозреватель листов страницы, уже созданные ранее
 		for (var i = 0; i < list_pageId.length; i++){
 			getListTitles(list_pageId[i], list_pageId, list_title);
 		}
 	}
-	
+
 	addTextPage();
 
 	function addTextPage(){
@@ -116,7 +123,7 @@
 
 		//удаляем у всех подсветку текущей страницы
 		popCurrentClass(list_pageId);
-		
+
 		//если мы открываем ранее созданную страницу
 		if (flag_open){
 			var index = indexOf(list_pageId, current_page);
@@ -154,7 +161,7 @@
 				new_page.innerHTML +=" " + (count_text_pages-1);
 				document.getElementById("header-page").value = "Новая страница "+(count_text_pages-1);
 			}
-			
+
 			list_pages.appendChild(new_page);
 
 			document.getElementById('textArea').value = "";
@@ -191,10 +198,10 @@
 		//внесение изменений
 		list_title[index] = title;
 		console.log("title(save):"+title); //debug
-		
+
 		var title_expl = document.getElementById(current_page);
 		title_expl.innerHTML = title;
-		
+
 
 		list_text[index] = text;
 		console.log("text(save):"+text); //debug
@@ -227,6 +234,7 @@
                 }
             );
 	}
+
 
 </script>
 </html>

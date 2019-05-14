@@ -16,7 +16,7 @@
 <body>
 <div id="LayerBody" >
 	<div id="LayerBody_Container">
-		<div id="LayerMain" style="width:1200px; min-height: 800px;">
+		<div id="LayerMain">
 			<@m.header_site/>
 			<div>
 				<input class="orangeButton" style="width: 200px; height: 40px; margin:50px auto;" type="button" value="Создать курс" onclick="window.location.href='/constructor/course_create';return false;">
@@ -25,4 +25,11 @@
 	</div>
 </div>
 </body>
+<script>
+    $("#SiteSearch1").keyup(function(event){
+        if(event.keyCode == 13){
+            searchPage()
+        }
+    });
+</script>
 </html>

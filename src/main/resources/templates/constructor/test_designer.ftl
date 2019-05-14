@@ -6,6 +6,7 @@
 	<link href="../../static/css/course_designer.css" rel="stylesheet">
 	<link href="../../static/css/demo1.css" rel="stylesheet">
 	<link href="../../static/css/index.css" rel="stylesheet">
+	<link href="../../static/css/switch.css" rel="stylesheet" type="text/css">
 	<script src="../../static/scripts/course-constr.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -13,88 +14,108 @@
 
 </head>
 <body>
-<div class="main-layer">
-	<div class="my-header">Конструктор курсов</div>
-	<div class="project-explorer-container">
-		<div class="project-explorer" style="margin: 30px 10px 0 10px">
-			<div><h3 class="h3" id="course_name">Название курса</h3></div>
-			<div><h5 class="h5" id="type_course">Название курса</h5></div>
-			<div class="pages-list">
-				<ul id="list-pages" style="padding: 0;">
-				</ul>
+		<div id="LayerBody" >
+			<div id="LayerBody_Container">
+				<div id="LayerMain">
+					<!-- body code goes here -->
+					<div class="main-layer">
+						<div class="my-header">Конструктор курсов</div>
+						<div class="project-explorer-container">
+							<div class="project-explorer" style="margin: 30px 10px 0 10px">
+								<div><h3 class="h3" id="course_name">Название курса</h3></div>
+								<div><h5 class="h5" id="type_course">Тип курса</h5></div>
+								<div class="pages-list">
+									<ul id="list-pages" style="padding: 0;">
+									</ul>
+								</div>
+								<div id="wb_CssMenu1">
+									<ul role="menubar">
+										<li class="firstmain"  style="width: 136px;">
+											<a role="menuitem" class="withsubmenu" href="#" target="_self">Создать</a>
+											<ul role="menu">
+												<li class="firstitem">
+													<a role="menuitem" href="#" target="_self" onclick="addTextPage()">Страницу теории</a>
+												</li>
+												<li>
+													<a role="menuitem" href="#" target="_self" onclick="addTestPage()">Страницу тестов</a>
+												</li>
+											</ul>
+										</li>
+										<li  style="width: 136px;">
+											<a role="menuitem" class="withsubmenu" href="#" target="_self" onClick="sorry()">Удалить</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div>
+								<input class="orangeButton" type="button" value="Сохранить курс" style="display: block; margin: 220px auto 0 auto;width: 220px; height: 40px;"
+									   onClick="saveCourse()">
+							</div>
+						</div>
+
+						<div class="constructor-panel">
+							<form style="width: 860px;min-height: 1000px; float:left; margin: 30px 0 0 40px">
+								<div>
+									<div style="margin-bottom: 15px;"><h3 class="h3">Заголовок теста:</h3></div>
+									<div><input type="text" size="70" autofocus autocomplete="on" style="height: 25px;" value="Тест" id="header-page" oninput="change()" class="style_input"></div>
+								</div>
+								<div style="margin: 30px 0 15px 0;">
+									<div>
+										<div><h3 class="h3">Выберите тип тестовой страницы:</h3></div>
+										<div style="margin: 15px 0 15px 0;">
+											<select autofocus style="width: 400px; height: 30px;" onchange="OnSelectionChange (this)" oninput="change()" id="select_some_type" class="style_input">
+												<option value="1">Тест с текстовым ответом</option>
+												<option>Тест с одним вариантом выбора</option>
+												<option>Тест с несколькими вариантами выбора</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div style="padding: 30px 0 15px 0; width:860px;height:75px;">
+									<div style="width: 360px; float:left;">
+										<div><h3 class="h3">Количество баллов за тест</h3></div>
+										<div style="padding: 15px 0 15px 0;">
+											<input type="number" height="30" id="points" required style="height: 24px; width:70px;" value="1" min="1" max="100" class="style_input"><p></p>
+										</div>
+									</div>
+									<div style="width: 500px; float:right;">
+										<div><h3 class="h3">Возможность ответить повторно</h3></div>
+										<div class="onoffswitch" style="margin-top:20px;width:105px;">
+											<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" onChange="switchTime()">
+											<label class="onoffswitch-label" for="myonoffswitch">
+												<span class="onoffswitch-inner"></span>
+												<span class="onoffswitch-switch"></span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div id="container" style="margin: 30px 0 15px 0;">
+									<div style="margin: 30px 0 15px 0;"><h3 class="h3">Вопрос:</h3></div>
+									<div style="margin-bottom: 20px;">
+										<textarea name="comment" cols="100" rows="5" style="resize:none;" id="textAnswer" class="style_input"></textarea>
+									</div>
+									<div id="question" oninput="change()">
+										<h3 class="h3">Ответ:</h3>
+										<div id="options">
+											<div id="option1"><input id="input1" type="text" size="80" style="margin-top: 20px;" class="style_input"></div>
+										</div>
+									</div>
+
+								</div>
+								<div>
+									<input id="btn_save_page" class="orangeButton" type="button" value="Сохранить страницу" style="display: block; margin: 40px auto 0 auto; width: 300px; height: 40px;" onClick="savePage()">
+								</div>
+							</form>
+
+						</div>
+					</div>
+				</div>
 			</div>
-			<div id="wb_CssMenu1">
-				<ul role="menubar">
-					<li class="firstmain"  style="width: 136px;">
-						<a role="menuitem" class="withsubmenu" href="#" target="_self">Создать</a>
-						<ul role="menu">
-							<li class="firstitem">
-								<a role="menuitem" href="#" target="_self" onclick="addTextPage()">Страницу теории</a>
-							</li>
-							<li>
-								<a role="menuitem" href="#" target="_self" onclick="addTestPage()">Страницу тестов</a>
-							</li>
-						</ul>
-					</li>
-					<li  style="width: 136px;">
-						<a role="menuitem" class="withsubmenu" href="#" target="_self" onClick="sorry()">Удалить</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<div>
-			<input class="orangeButton" type="button" value="Сохранить курс" style="display: block; margin: 220px auto 0 auto;width: 220px; height: 40px;"
-				   onClick="saveCourse()">
-		</div>
 	</div>
-
-	<div class="constructor-panel">
-		<form style="width: 860px;height: 850px; float:left; margin: 30px 0 0 40px">
-			<div style="margin-bottom: 15px;"><h3 class="h3">Заголовок теста:</h3></div>
-			<div><input type="text" size="70" autofocus autocomplete="on" style="height: 25px;" value="Тест" id="header-page" oninput="change()"></div>
-			<div style="margin: 30px 0 15px 0;">
-				<div style="width: 400px; float:left;">
-					<div><h3 class="h3">Выберите тип тестовой страницы:</h3></div>
-					<div style="margin: 15px 0 15px 0;">
-						<select autofocus style="width: 400px; height: 30px;" onchange="OnSelectionChange (this)" oninput="change()" id="select_some_type">
-							<option value="1">Тест с текстовым ответом</option>
-							<option>Тест с одним вариантом выбора</option>
-							<option>Тест с несколькими вариантами выбора</option>
-						</select>
-					</div>
-				</div>
-				<div style="width: 380px; float:left; margin-left: 80px;">
-					<div><h3 class="h3">Количество баллов за тест:</h3></div>
-					<div style="margin: 15px 0 15px 0; margin-left:200px;">
-						<input type="number" height="30" id="points" required style="height: 24px; width:70px;" value="1" min="1" max="100">
-					</div>
-				</div>
-			</div>
-
-			<div id="container">
-				<div style="margin: 30px 0 15px 0;"><h3 class="h3">Введите вопрос:</h3></div>
-				<textarea name="comment" cols="100" rows="5" style="resize:none;" id="textAnswer"></textarea>
-				<div id="question" oninput="change()">
-					<h3 class="h3">Введите варианты ответа:</h3>
-					<div id="options">
-						<div id="option1"><input id="input1" type="text" size="80" style="margin-top: 20px;"></div>
-					</div>
-					<button type="button" id="add">Добавить</button>
-				</div>
-
-			</div>
-			<div>
-				<input id="btn_save_page" class="orangeButton" type="button" value="Сохранить страницу" style="display: block; margin: 100px auto 0 auto; width: 300px; height: 40px;" onClick="savePage()">
-			</div>
-		</form>
-
-	</div>
-</div>
 </body>
 <script>
 	var count_options = 1;
 	var max_options = 10;
-
 
 
 	var flag_open = start_init();
@@ -112,6 +133,8 @@
 	var list_types_test = getLocalList('list_types_test');
 	var list_right_answer = getLocalList('list_right_answer');
 	var list_points = getLocalList('list_points');
+	var list_flag_again = getLocalList('list_flag_again');
+
 	if (list_pageId !== []){
 		//добавляем в обозреватель листов страницы, уже созданные ранее
 		for (var i = 0; i < list_pageId.length; i++){
@@ -134,10 +157,16 @@
 			var index_test = indexOfTest(list_pageId, current_page);
 			var type_of_test = list_types_test[index_test];
 			//alert(type_of_test);
-			document.getElementById(current_page).classList.add("currentPage");
+			document.getElementById(current_page).className = "currentPage";
 			document.getElementById("header-page").value = list_title[index];
 			document.getElementById('textAnswer').value = list_text[index];
 			document.getElementById("points").value = list_points[index_test];
+
+			//проверяем, есть ли возможность повторного прохожденияж
+			var flag = list_flag_again[index_test];
+			if (flag)
+					$('#myonoffswitch').prop('checked', true);
+
 
 			var container = document.getElementById('container');
 			var question_div = document.createElement('div');
@@ -216,8 +245,8 @@
 			//создаем новую страницу
 			var new_page = document.createElement('li');
 			new_page.innerHTML = "Тест";
-			new_page.classList.add("pages");
-			new_page.classList.add("currentPage");
+			new_page.className = "pages";
+			new_page.className = "currentPage";
 			new_page.id = "test"+count_test_pages;
 			new_page.onclick = function(){
 				savePage();
@@ -233,6 +262,8 @@
 			list_types_test.push("text");
 			list_right_answer.push("");
 			list_points.push(1);
+			list_flag_again.push(false);
+
 			current_page = new_page.id;
 			if (count_test_pages > 1){
 				new_page.innerHTML +=" " + (count_test_pages-1);
@@ -257,6 +288,7 @@
 			question_div.id = 'question';
 			deleteDiv('question');
 			count_options = 0;
+
 			setTest(question_div, container, false);
 		}
 	}
@@ -346,8 +378,16 @@
 		console.log("points", points); //debug
 		list_points[index_test] = points;
 
+		//отправляем возможность повторного прохождения курсов
+		if ($('#myonoffswitch').is(':checked')){
+			list_flag_again[index_test] = true;
+		}
+		else{
+			list_flag_again[index_test] = false;
+		}
+
 		setLocalLists(list_pageId,list_types, list_title, list_text); // сохранение изменений
-		setLocalListsTest(list_answer,list_right_answer, list_points, list_types_test);
+		setLocalListsTest(list_answer,list_right_answer, list_points, list_types_test, list_flag_again);
 	}
 	function saveCourse() {
 		savePage();
@@ -361,23 +401,19 @@
 			}
 		);
 	}
-	//-----------------------------------------------------------------------------------------
-	/*var btn_add = document.getElementById('add');
-	btn_add.type = 'button';
-	btn_add.onclick = function(){
-		if(count_options < max_options){
-			var input_div = document.getElementById('options');
-			addInputBlock(input_div, undefined, false);
-		}
-	}*/
+
 	function setTest(container, parent, check, style_success = undefined, style_error = undefined){
 		var question_div = document.createElement('div');
-		question_div.style.margin ='30px 0 15px 0';
+
 		//добавление заголовка  "Выберите варианты ответа:"
 		var text_options = document.createElement('h3');
-		text_options.innerHTML = "Введите варианты ответа:";
-		text_options.classList.add("h3");
+		if ((style_success === undefined && style_error === undefined) && !check)
+			text_options.innerHTML = "Ответ:";
+		else
+			text_options.innerHTML = "Введите варианты ответа:";
+		text_options.className = "h3";
 		question_div.appendChild(text_options);
+
 		var input_div = document.createElement('div');
 		input_div.id = 'options';
 		if ((style_success !== undefined && style_error !== undefined) || check)
@@ -387,7 +423,10 @@
 		var add_div = document.createElement('div');
 		var add_input = document.createElement('button');
 		add_input.type = "button";
-		add_input.innerHTML = "Добавить";
+		add_input.innerHTML = "Еще";
+		add_input.className = "blueButton";
+		add_input.style.width = "80px";
+		add_input.style.height = "25px";
 		add_input.onclick = function() {
 			addInputBlock(input_div, style_error, check ? true : false);
 		};
@@ -399,39 +438,61 @@
 		parent.appendChild(container);
 	}
 	//функция добавляет строку чекбокс, инпут текст и кнопку удалить вариант
-	function addInputBlock(parent, style_class = undefined, check=false){
+	function addInputBlock(parent, style_class = undefined, check=true){
 		//создаем контейнер для всего этого
 		var input_div = document.createElement('div');
 		count_options++;
 		input_div.id = 'option' + count_options;
-		//создаем чекбокс
-		if (check){
-			style_class = "successEditbox";
-			var checkbox = document.createElement('input');
-			checkbox.type = 'checkbox';
-			checkbox.checked = true;
-			checkbox.id = "check" + count_options;
-			input_div.appendChild(checkbox);
-		}
+
 		//создаем инпут текст
 		var input = document.createElement('input');
 		if (style_class == "successEditbox" && !check)
 			input.id = "succes-input";
 		else
 			input.id = "input" + count_options;
+
+		//создаем чекбокс
+		if (check){
+			var checkbox = document.createElement('input');
+			checkbox.type = 'checkbox';
+			checkbox.checked = true;
+			checkbox.id = "check" + count_options;
+			checkbox.style.marginRight = "20px";
+			checkbox.className = "mycheck";
+			checkbox.onchange = function(){
+				if ($('#'+checkbox.id).prop("checked"))
+					$('#'+input.id).attr('class','successEditbox');
+				else
+					$('#'+input.id).attr('class','errorEditbox');
+			};
+			input_div.appendChild(checkbox);
+		}
+
 		input.type = "text";
 		input.size = "80";
-		input.style.marginTop = "20px";
-		if (style_class !== undefined && !check)
-			input.classList.add(style_class);
+		input.style.margin = "15px 0 0 0";
+		if (style_class !== undefined)
+			input.className = style_class;
+		else{
+			if (check)
+				input.className = "successEditbox";
+			else
+				input.className = "style_input";
+		}
 		input_div.appendChild(input);
+
 		//создаем кнопку удалить
 		var flag_count_delete = 2;
-		if (style_class === undefined)
+
+		if (style_class === undefined && !check)
 			flag_count_delete = 1;
 		if (count_options > flag_count_delete){
 			var delete_input = document.createElement('button');
 			delete_input.innerHTML = "Удалить";
+			delete_input.className = "redButton";
+			delete_input.style.margin = "0 0 0 20px";
+			delete_input.style.width = "120px";
+			delete_input.style.height = "30px";
 			delete_input.onclick = function(){
 				$('#'+input_div.id).remove();
 				count_options--;

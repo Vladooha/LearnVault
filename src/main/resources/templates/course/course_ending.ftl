@@ -21,19 +21,24 @@
     <link href="../../static/css/Page_of_courses.css" rel="stylesheet">
 </head>
 <body>
-<!-- body code goes here -->
-<div class="main-layer">
-    <div class="paige_of_course_name" id="name_of_course">${course_name}</div>
-    <@m.pagelist course_id, pages/>
-    <div class="theory-panel" id="theory_column">
-        <div class="page_title" id="name_of_page">${username}, поздравляем с завершением курса!</div>
-        <div>Вы набрали ${score} баллов из ${score_max} возможных!</div>
-        <button type="button" name="forward" value="forward" class="next_back_btn" style="float:right;"
-                alt="Вперед"
-                onclick="window.location.href=../profile"/>
-    </div>
-</div>
-
+	<div id="LayerBody" >
+		<div id="LayerBody_Container">
+			<div id="LayerMain">
+				<!-- body code goes here -->
+				<div class="main-layer">
+					<div class="paige_of_course_name" id="name_of_course">${course_name}</div>
+						<div class="page_title" id="name_of_page" style="margin-top:180px;">${username}, поздравляем с завершением курса!</div>
+						<div class="page_title" style="font-size:24px;color: rgba(25,24,112,1.00)">Вы набрали ${score} баллов из ${score_max} возможных!</div>
+						<div class="page_title" style="font-size:24px;color: rgba(25,24,112,1.00)">Мы были бы очень рады, если бы вы оценили данный курс =)</div>
+						<div>
+							<button type="button" class="orangeButton" style="width: 200px; height: 40px; margin:10px auto;" name="forward" value="forward" class="next_back_btn" alt="Закончить" onclick="window.location.href='../profile'"/>Закончить тест</button>
+							<#assign path="'/course/" + course_id + "/rate'">
+							<button type="button" class="orangeButton" style="width: 200px; height: 40px; margin:10px auto;" name="forward" alt="Оценка" onclick="window.location.href=${path}"/>Оценить курс</button>
+						</div>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 
-</htmlж

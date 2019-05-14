@@ -1,6 +1,7 @@
 package com.vladooha.data.entities;
 
 import com.vladooha.data.entities.courses.CourseProgress;
+import com.vladooha.data.entities.courses.Feedback;
 import com.vladooha.data.entities.courses.Teacher;
 
 import javax.persistence.*;
@@ -33,6 +34,9 @@ public class ProfileInfo {
 
     @ManyToMany(mappedBy = "students")
     private Set<Teacher> teachers;
+
+    @ManyToMany(mappedBy = "rates")
+    private Set<Feedback> feedbacks;
 
 
 
@@ -107,5 +111,21 @@ public class ProfileInfo {
 
     public void setCourseProgresses(Set<CourseProgress> courseProgresses) {
         this.courseProgresses = courseProgresses;
+    }
+
+    public Set<Teacher> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(Set<Teacher> teachers) {
+        this.teachers = teachers;
+    }
+
+    public Set<Feedback> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(Set<Feedback> feedbacks) {
+        this.feedbacks = feedbacks;
     }
 }
