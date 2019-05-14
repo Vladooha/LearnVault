@@ -67,6 +67,7 @@ function setLocalListsTest(list_answer, list_right_answer, list_points, list_typ
     localStorage.setItem('list_right_answer', JSON.stringify(list_right_answer));
     localStorage.setItem('list_points', JSON.stringify(list_points));
     localStorage.setItem('list_types_test', JSON.stringify(list_types_test));
+	localStorage.setItem('list_flag_again', JSON.stringify(list_flag_again));
 }
 function getCurrentPage(){
     return getLocalKey('current_page');
@@ -243,6 +244,9 @@ function sendTestPage(course, page, local_page) {
     var list_points = getLocalList('list_points');
     //и тип теста - 'text', 'radio', 'chechbox'
     var list_types_test = getLocalList('list_types_test');
+	
+	//NEW добавил флаг возможности повторного прохождения
+	var list_flag_again = getLocalList('list_types_test');
 
     //alert("List: " + list_pageId);
 
@@ -268,7 +272,9 @@ function sendTestPage(course, page, local_page) {
             // Второй варик предпочтительнее, напиши потом, чо выбрал
 
             score: list_points[indexTest] + "", //баллы за тест
-            type: list_types_test[indexTest] + "" //и тип теста - 'text', 'radio', 'chechbox'
+            type: list_types_test[indexTest] + "", //и тип теста - 'text', 'radio', 'chechbox'
+			//NEW ----------------------------------------------------------------------------------------------------------------------------------
+			again: list_flag_again[indexTest] + ""
         }),
         success: function (data) {
             // Сюда могу сообщить об ошибке, но пока что её игнорим, здесь можно нихуя не добавлять
