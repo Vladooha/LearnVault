@@ -29,8 +29,11 @@
 					<div class="paige_of_course_name" id="name_of_course">${course_name}</div>
 						<div class="page_title" id="name_of_page" style="margin-top:180px;">${username}, поздравляем с завершением курса!</div>
 						<div class="page_title" style="font-size:24px;color: rgba(25,24,112,1.00)">Вы набрали ${score} баллов из ${score_max} возможных!</div>
+						<div class="page_title" style="font-size:24px;color: rgba(25,24,112,1.00)">Мы были бы очень рады, если бы вы оценили данный курс =)</div>
 						<div>
-							<button type="button" class="orangeButton" style="width: 200px; height: 40px; margin:10px auto;" name="forward" value="forward" class="next_back_btn" alt="Вперед" onclick="window.location.href='../profile'"/>Закончить тест</button>
+							<button type="button" class="orangeButton" style="width: 200px; height: 40px; margin:10px auto;" name="forward" value="forward" class="next_back_btn" alt="Закончить" onclick="window.location.href='../profile'"/>Закончить тест</button>
+							<#assign path="'/course/" + course_id + "/rate'">
+							<button type="button" class="orangeButton" style="width: 200px; height: 40px; margin:10px auto;" name="forward" alt="Оценка" onclick="window.location.href=${path}"/>Оценить курс</button>
 						</div>
 				</div>
 				</div>
@@ -38,4 +41,4 @@
 		</div>
 	</div>
 </body>
-</html>
+

@@ -1,14 +1,19 @@
 package com.vladooha.controller;
 
 import com.vladooha.data.entities.courses.*;
+import com.vladooha.data.form.FeedbackForm;
 import com.vladooha.data.repositories.ProfileInfoRepo;
 import com.vladooha.service.CourseService;
+import com.vladooha.service.RatingService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.beans.FeatureDescriptor;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +31,11 @@ public class CoursePassController {
     @Autowired
     private CourseService courseService;
     @Autowired
+    private RatingService ratingService;
+    @Autowired
     private ProfileInfoRepo profileInfoRepo;
+
+    /// GET
 
     @GetMapping("/course/{course_id}")
     public String getCourse(@PathVariable("course_id") long course_id,
@@ -121,6 +130,40 @@ public class CoursePassController {
         // TODO: Return error
         return "";
     }
+
+    @GetMapping("/course/{course_id}/rate")
+    public String rateCourseGet(@PathVariable("course_id") long course_id,
+                             Map<String, Object> model) {
+        model.put("course_id", course_id);
+        model.put("feedbackForm", new FeedbackForm());
+
+        return "/course/course_rating";
+    }
+
+    /// POST
+
+    @PostMapping("/course/{course_id}/rate")
+    public String rateCoursePost(@PathVariable("course_id") long course_id,
+                             @Valid FeedbackForm feedbackForm,
+                             BindingResult bindingResult,
+                             Map<String, Object> model,
+                             Principal principal) {
+        logger.debug("/course/{course_id}/rate");
+        logger.debug("Complexity: " + feedbackForm.getComplexity());
+        logger.debug("Any errors: " + bindingResult.hasErrors());
+
+        if (bindingResult.hasErrors()) {
+            model.put("feedbackForm", feedbackForm);
+
+            return "redirect:/course/" + course_id + "/rate";
+        }
+
+        ratingService.addRating(feedbackForm, course_id, principal.getName());
+
+        return "redirect:/course/course_rate_ending";
+    }
+
+    /// AJAX
 
     @GetMapping("/ajax/course_check_result/")
     @ResponseBody

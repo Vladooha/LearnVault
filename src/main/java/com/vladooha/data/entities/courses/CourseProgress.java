@@ -2,6 +2,7 @@ package com.vladooha.data.entities.courses;
 
 import com.vladooha.data.entities.LoginInfo;
 import com.vladooha.data.entities.ProfileInfo;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -53,6 +54,8 @@ public class CourseProgress {
 
     private long beginTime;
 
+    private boolean isRated = false;
+
 
 
     public Long getCourseProgId() {
@@ -101,5 +104,13 @@ public class CourseProgress {
 
     public void setBeginTime(long beginTime) {
         this.beginTime = beginTime;
+    }
+
+    public boolean isRated() {
+        return isRated;
+    }
+
+    public void setRated(boolean rated) {
+        isRated = rated;
     }
 }

@@ -16,8 +16,8 @@
 
 <#macro pagelist course_id, pages>
     <div class="project-explorer-container" id="project_column">
-        <div class="project-explorer" style="margin: 30px 10px 0 10px">
-            <div class="pages-list" style="margin: 30px 0">
+        <div class="project-explorer" style="margin: 30px 10px 0 10px;width: auto">
+            <div class="pages-list" style="margin: 20px 0;width: auto">
                 <ul class="col-xl-12" id="list-pages" style="padding: 0;">
                     <#assign page_num = 0>
                     <#list pages as page>
@@ -64,7 +64,7 @@
                     if (time < 100000)
                     span_time.style.color = "#EB0A00"; // красный
                     else
-                    span_time.style.color = "##EB4F00"; //оранжевый
+                    span_time.style.color = "#EB4F00"; //оранжевый
                 }
                 else
                     span_time.style.color = "#EBB100"; //желтый

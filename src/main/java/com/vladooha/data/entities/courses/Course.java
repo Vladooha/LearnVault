@@ -45,6 +45,9 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private Set<CourseProgress> courseProgresses = new HashSet<>();
 
+    @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL, mappedBy = "course")
+    private Feedback feedback;
+
 
 
     public Long getId() {
@@ -149,5 +152,13 @@ public class Course {
 
     public void setCourseProgresses(Set<CourseProgress> courseProgresses) {
         this.courseProgresses = courseProgresses;
+    }
+
+    public Feedback getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(Feedback feedback) {
+        this.feedback = feedback;
     }
 }
