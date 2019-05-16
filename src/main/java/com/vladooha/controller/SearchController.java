@@ -1,7 +1,9 @@
 package com.vladooha.controller;
 
 import com.vladooha.data.entities.courses.Course;
+import com.vladooha.data.entities.courses.CourseCategory;
 import com.vladooha.data.entities.courses.CourseTag;
+import com.vladooha.data.repositories.courses.CourseCategoryRepo;
 import com.vladooha.data.repositories.courses.CourseRepo;
 import com.vladooha.data.repositories.courses.CourseTagRepo;
 import org.apache.logging.log4j.LogManager;
@@ -22,6 +24,24 @@ public class SearchController {
     private CourseRepo courseRepo;
     @Autowired
     private CourseTagRepo courseTagRepo;
+    @Autowired
+    private CourseCategoryRepo courseCategoryRepo;
+
+    @GetMapping("/category")
+    public String searchCategory(
+            @RequestParam(defaultValue = "1") int num,
+            Map<String, Object> model) {
+
+        CourseCategory courseCategory = courseCategoryRepo.findByNum(num);
+        if (courseCategory != null) {
+            model.put("currentCategory", courseCategory);
+
+            List<Course> courseList = courseRepo.findByCategory(courseCategory);
+            model.put("courses", courseList);
+        }
+
+        return "search";
+    }
 
     @GetMapping("/search")
     public String searchCourse(

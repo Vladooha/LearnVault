@@ -83,7 +83,13 @@
 					<input type="search" size="70" id="course_name" autofocus autocomplete="on" style="height: 23px;" required>
 					<input type="button" onclick="searchPage();return false;" name="Search" value="поиск" class="ButtonSearch" style="width:96px;height:24px; margin:0 20px;">
 				</div>
-				<div style="margin:20px 0;"><h3 class="h3">Результаты поиска:</h3></div>
+				<div style="margin:20px 0;">
+					<#if currentCategory??>
+						<h3 class="h3">Курсы категории ${currentCategory.getName()}:</h3>
+					<#else>
+						<h3 class="h3">Результаты поиска:</h3>
+					</#if>
+				</div>
 				<hr>
 				
 				<!-- Повторяющийся блок -->

@@ -20,7 +20,13 @@
         <div id="LayerMain" style="width:1200px; min-height: 800px;">
             <@m.header_site/>
             <div style="margin: 20px 40px 20px 40px;">
-                <div style="margin:20px 0;"><h3 class="h3">Результаты поиска:</h3></div>
+				<div style="margin:20px 0;">
+					<#if currentCategory??>
+						<h3 class="h3">Курсы категории "${currentCategory.getName()}":</h3>
+					<#else>
+						<h3 class="h3">Результаты поиска:</h3>
+					</#if>
+				</div>
                 <hr>
 				<#if courses??>
 					<#list courses as course>

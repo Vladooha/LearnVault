@@ -57,7 +57,7 @@ public class CourseProgress {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "wrong_answered_test_pages",
-            joinColumns = @JoinColumn(name = "progress_id", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "progress_id", referencedColumnName = "course_prog_id"),
             inverseJoinColumns = @JoinColumn(name = "page_id", referencedColumnName = "id"))
     private Set<CourseTestPage> missedAnswers = new HashSet<>();
 
