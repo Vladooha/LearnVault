@@ -13,7 +13,7 @@
 		<div id="wb_Form1" style="height:700px;">
 			<form name="Form1" method="post" action="/login" enctype="application/x-www-form-urlencoded" id="Form1">
 				<div style="margin: 0 auto;width:524px;">
-						<h1 id="Heading"><a href="#" onclick="window.location.href='../templates/login.html';return false;">Training portal</a></h1>
+						<h1 id="Heading"><a href="#" onclick="window.location.href='login';return false;">Training portal</a></h1>
 					</div>
 				<div class="wb_Text2" style="margin: 60px 0 0 auto;">
 					<span>Приветствуем на портале обучения и развития</span>

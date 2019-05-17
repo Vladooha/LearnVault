@@ -19,6 +19,7 @@
     <link href="../../static/css/demo1.css" rel="stylesheet">
     <link href="../../static/css/index.css" rel="stylesheet">
     <link href="../../static/css/Page_of_courses.css" rel="stylesheet">
+    <link href="../../static/css/course_designer.css" rel="stylesheet">
 </head>
 <body>
 	<div id="LayerBody" >
@@ -34,7 +35,7 @@
 							<@m.timer time/>
 						</#if>
 						<div><textarea name="text_of_paige" rows="15" id="textArea" readonly
-									   style="resize:none;overflow-y: auto; border-style:none; margin: 20px 50px; width:800px;">${text}</textarea></div>
+									   style="resize:none;overflow-y: auto; border-style:none; margin: 20px 50px; width:800px;" class="style_input">${text}</textarea></div>
 						<#if photo??>
 							<div>СЮДА НАДО ДОБАВИТЬ ФОТО</div>
 						</#if>

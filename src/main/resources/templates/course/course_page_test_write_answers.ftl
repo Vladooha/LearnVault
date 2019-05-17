@@ -34,10 +34,10 @@
 							<@m.timer time/>
 						</#if>
 						<div><textarea name="text_of_paige" cols="100" rows="7" id="textArea" readonly
-									   style="resize:none;overflow-y: auto; border-style:none; margin: 20px 50px; width:800px;">${question}</textarea></div>
+									   style="resize:none;overflow-y: auto; border-style:none; margin: 20px 50px; width:800px;" class="style_input">${question}</textarea></div>
 						<div>
                             <form action="" method="post">
-                                <input type="text" class="form-control" placeholder="введите ответ" id="answer_area" style="margin: 20px 50px; width:800px;" default>
+                                <input type="text" placeholder="введите ответ" id="answer_area" style="margin: 20px 50px; width:800px;" default class="style_input">
                                 <div style="text-align:center;">
                                     <label id="answer_response" style="font-size:16px; font-family: "Exo 2";"></label>
                                 </div>
