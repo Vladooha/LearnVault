@@ -5,6 +5,7 @@ import com.vladooha.data.entities.ProfileInfo;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -53,6 +54,12 @@ public class CourseProgress {
     private int currScore;
 
     private long beginTime;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "wrong_answered_test_pages",
+            joinColumns = @JoinColumn(name = "progress_id", referencedColumnName = "course_prog_id"),
+            inverseJoinColumns = @JoinColumn(name = "page_id", referencedColumnName = "id"))
+    private Set<CourseTestPage> missedAnswers = new HashSet<>();
 
     private boolean isRated = false;
 
@@ -122,5 +129,13 @@ public class CourseProgress {
 
     public void setCompleted(boolean completed) {
         isCompleted = completed;
+    }
+
+    public Set<CourseTestPage> getMissedAnswers() {
+        return missedAnswers;
+    }
+
+    public void setMissedAnswers(Set<CourseTestPage> missedAnswers) {
+        this.missedAnswers = missedAnswers;
     }
 }

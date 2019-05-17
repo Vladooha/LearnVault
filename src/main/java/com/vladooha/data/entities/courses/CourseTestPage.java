@@ -2,6 +2,9 @@ package com.vladooha.data.entities.courses;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "course_test_page")
 @DiscriminatorValue("test")
@@ -17,6 +20,11 @@ public class CourseTestPage extends CoursePage {
     private String rightAns;
 
     private String type;
+
+    @ManyToMany(mappedBy = "missedAnswers")
+    Set<CourseProgress> failedUsers = new HashSet<>();
+
+    private boolean isRepeatable;
 
 
 
@@ -66,5 +74,21 @@ public class CourseTestPage extends CoursePage {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isRepeatable() {
+        return isRepeatable;
+    }
+
+    public void setRepeatable(boolean repeatable) {
+        isRepeatable = repeatable;
+    }
+
+    public Set<CourseProgress> getFailedUsers() {
+        return failedUsers;
+    }
+
+    public void setFailedUsers(Set<CourseProgress> failedUsers) {
+        this.failedUsers = failedUsers;
     }
 }

@@ -1,5 +1,6 @@
 package com.vladooha.config;
 
+import com.vladooha.interceptor.MainMenuInterceptor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
@@ -30,6 +28,8 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Autowired
     private ResourceLoader resourceLoader;
+    @Autowired
+    private MainMenuInterceptor mainMenuInterceptor;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -59,6 +59,15 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addViewController("/")
                 .setViewName("index");
 
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(mainMenuInterceptor)
+                .addPathPatterns("/*")
+                .excludePathPatterns("/login")
+                .excludePathPatterns("/reg")
+                .excludePathPatterns("/h2-console");
     }
 
     @Override

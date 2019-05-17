@@ -238,7 +238,8 @@ public class CourseService {
                                int score,
                                String ans,
                                String rightAns,
-                               String type) {
+                               String type,
+                               boolean isRepeatable) {
         Optional<CourseTestPage> courseTestPageQuery = courseTestPageRepo.findById(page_id);
         if (courseTestPageQuery.isPresent()) {
             synchronized (CourseService.class) {
@@ -247,6 +248,7 @@ public class CourseService {
                 entityManager.getTransaction().begin();
                 Course course = entityManager.getReference(Course.class, new Long(courseTestPage.getCourse().getId()));
                 entityManager.refresh(course, LockModeType.PESSIMISTIC_WRITE);
+
                 logger.debug("Old course score: " + course.getScore());
 
                 if (course.getId() == course_id) {
@@ -256,6 +258,7 @@ public class CourseService {
                     courseTestPage.setAns(ans);
                     courseTestPage.setRightAns(rightAns);
                     courseTestPage.setType(type);
+                    courseTestPage.setRepeatable(isRepeatable);
 
                     course.setScore(course.getScore() + score);
 
@@ -348,34 +351,41 @@ public class CourseService {
 
                     if (coursePage.getPageType().equals(TEST_PAGE)) {
                         CourseTestPage courseTestPage = courseTestPageRepo.getOne(coursePage.getId());
-                        String[] allAnswers = courseTestPage.getAns().split(DELIMITER);
-                        String[] allRequestAnswers = ans.split(DELIMITER);
 
-                        String rightAnsNumsInRequest = "";
-                        String rightAnsNums = courseTestPage.getRightAns();
-                        for (int i = 0; i < allAnswers.length; ++i) {
-                            for (int j = 0; j < allRequestAnswers.length; ++j) {
-                                if (rightAnsNums.contains(Integer.toString(i + 1))) {
-                                    String currAns = allAnswers[i];
+                        if (!courseProgress.getMissedAnswers().contains(courseTestPage)) {
+                            String[] allAnswers = courseTestPage.getAns().split(DELIMITER);
+                            String[] allRequestAnswers = ans.split(DELIMITER);
 
-                                    if (allRequestAnswers[j].compareToIgnoreCase(currAns) == 0) {
-                                        rightAnsNumsInRequest += (i + 1);
+                            String rightAnsNumsInRequest = "";
+                            String rightAnsNums = courseTestPage.getRightAns();
+                            for (int i = 0; i < allAnswers.length; ++i) {
+                                for (int j = 0; j < allRequestAnswers.length; ++j) {
+                                    if (rightAnsNums.contains(Integer.toString(i + 1))) {
+                                        String currAns = allAnswers[i];
 
-                                        if (rightAnsNumsInRequest.length() == rightAnsNums.length() &&
-                                                rightAnsNums.length() == allRequestAnswers.length ||
-                                                courseTestPage.getType().equals(TEST_TEXT_PAGE)) {
-                                            answer = true;
-                                            scores = courseTestPage.getScore();
+                                        if (allRequestAnswers[j].compareToIgnoreCase(currAns) == 0) {
+                                            rightAnsNumsInRequest += (i + 1);
 
-                                            break;
+                                            if (rightAnsNumsInRequest.length() == rightAnsNums.length() &&
+                                                    rightAnsNums.length() == allRequestAnswers.length ||
+                                                    courseTestPage.getType().equals(TEST_TEXT_PAGE)) {
+                                                answer = true;
+                                                scores = courseTestPage.getScore();
+
+                                                break;
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
 
-                        logger.debug("right - " + rightAnsNums);
-                        logger.debug("right in request - " + rightAnsNumsInRequest);
+                            if (!answer && !courseTestPage.isRepeatable()) {
+                                courseProgress.getMissedAnswers().add(courseTestPage);
+                            }
+
+                            logger.debug("right - " + rightAnsNums);
+                            logger.debug("right in request - " + rightAnsNumsInRequest);
+                        }
                     }
 
                     if (courseProgress != null) {
