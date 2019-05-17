@@ -33,7 +33,7 @@
 							<@m.timer time/>
 						</#if>
 						<div>
-							<textarea name="text_of_paige" cols="100" rows="7" id="textArea" readonly style="resize:none;overflow-y: auto; border-style:none; margin: 20px 50px; width:800px;">${question}</textarea>
+							<textarea name="text_of_paige" cols="100" rows="7" id="textArea" readonly style="resize:none;overflow-y: auto; border-style:none; margin: 20px 50px; width:800px;" class="style_input">${question}</textarea>
 						</div>
 						<!--Список ответов-->
 						<div>
@@ -42,7 +42,7 @@
 								<#list answers as answer>
 									<div style="margin: 10px 50px;">
 										<label>
-											<input name="answer" type="checkbox" aria-label="placeholder text" id="caption"+${ans_num} value=${answer}>
+											<input name="answer" type="checkbox" aria-label="placeholder text" id="caption"+${ans_num} value=${answer} class="style_input">
 											<span class="label">${answer}</span>
 										</label>
 									</div>
