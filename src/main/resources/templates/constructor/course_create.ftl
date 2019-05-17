@@ -9,7 +9,7 @@
 	<link href="../../static/css/switch.css" rel="stylesheet" type="text/css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="../../static/scripts/course-constr.js"></script>
-	<script src="../../static/scripts/constructor.js"></script>
+	<script src="../../static/scripts/file-upload.js"></script>
 </head>
 <body>
 <div class="main-layer">
@@ -99,10 +99,23 @@
 					</div>
 				</div>
 				<div >
+					<input type="hidden" name="_csrf" value="${_csrf.token}"/>
 					<input class="orangeButton" type="button" value="Далее" style="display: block; margin: 100px auto; width: 200px; height: 40px;"
 						   onclick="setCourse();sendCourse();">
 				</div>
 			</div>
+		</form>
+		<form id="picForm" enctype="multipart/form-data">
+			<div class="investment">
+				<div><h4>Прикрепить фото</h4></div>
+				<div><h5 class="h5">(.jpg, .jpeg, .png)</h5></div>
+				<div class="developing" data-title="В разработке...">
+
+					<input type="file" name="file" id="file" accept=".jpg, .jpeg, .png" style="margin:20px;">
+				</div>
+			</div>
+			<input type="hidden" name="_csrf" value="${_csrf.token}"/>
+			<input type="button" onclick="uploadFile('file')">
 		</form>
 
 	</div>
@@ -111,6 +124,7 @@
 </body>
 <script>
 	localStorage.clear();
+	var photo_path;
 	var count_tags = 0;
 	var max_tags = 11;
 	$(function(){ // DOM ready

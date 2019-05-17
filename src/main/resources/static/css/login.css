@@ -3,7 +3,7 @@ body
 {
    margin: 0;
    padding: 0;
-   background-image: url(../images/backgroung.jpg);
+   background-image: url(../images/background.jpg);
 	background-repeat: no-repeat;
    background-size: 100% 100%;
 	min-height: 100vh;
@@ -11,7 +11,7 @@ body
 #Layer1
 {
    background-color: transparent;
-   background-image: url(../images/backgroung.jpg);
+   background-image: url(../images/background.jpg);
    background-repeat: repeat-y;
    background-position: left top;
    background-size: 100% 100%;
@@ -64,6 +64,14 @@ body
 	font-family:'Exo 2';
     font-weight:500;
     font-size: 15px;
+}
+.successText{
+   color: #1EBF0B;
+   display: block;
+   text-align: center;
+   font-family:'Exo 2';
+   font-weight:500;
+   font-size: 15px;
 }
 .errorEditbox{
    border-color: red;
