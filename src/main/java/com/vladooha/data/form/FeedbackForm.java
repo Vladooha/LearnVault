@@ -7,18 +7,18 @@ import javax.validation.constraints.Size;
 
 public class FeedbackForm {
     @NotNull
-    @Min(value = 1, message = "Score must be not less than 1")
-    @Max(value = 5, message = "Score must be not more than 5")
+    @Min(value = 1, message = "Оценка должна быть не меньше 1")
+    @Max(value = 5, message = "Оценка должна быть не больше 5")
     private Integer complexity = 1;
 
     @NotNull
-    @Min(value = 1, message = "Score must be not less than 1")
-    @Max(value = 5, message = "Score must be not more than 5")
+    @Min(value = 1, message = "Оценка должна быть не меньше 1")
+    @Max(value = 5, message = "Оценка должна быть не больше 5")
     private Integer expectation = 1;
 
     @NotNull
-    @Min(value = 1, message = "Score must be not less than 1")
-    @Max(value = 5, message = "Score must be not more than 5")
+    @Min(value = 1, message = "Оценка должна быть не меньше 1")
+    @Max(value = 5, message = "Оценка должна быть не больше 5")
     private Integer comprehensibility = 1;
 
 //    @NotNull

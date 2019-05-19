@@ -1,12 +1,15 @@
 package com.vladooha.controller;
 
+import com.vladooha.data.form.MetatagCreateForm;
+import com.vladooha.data.form.MetatagForm;
+import com.vladooha.data.validators.annotations.MetatagExists;
 import com.vladooha.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Map;
 
@@ -14,6 +17,20 @@ import java.util.Map;
 public class AdminPanelController {
     @Autowired
     private AdminService adminService;
+
+    @GetMapping("/admin_panel")
+    public String adminPanel(
+            Map<String, Object> model,
+            Principal principal) {
+        String adminName = principal.getName();
+        if (adminService.isAdmin(principal)) {
+            initModel(model);
+
+            return "admin_panel";
+        }
+
+        return "";
+    }
 
     @GetMapping("/admin_panel/students")
     public String adminPanelWithStudents(
@@ -23,16 +40,6 @@ public class AdminPanelController {
         if (adminService.isAdmin(principal)) {
             model.put("students", adminService.getStudentsByTeacher(principal, teacherName));
 
-            return "admin_panel";
-        }
-
-        return "";
-    }
-
-    @GetMapping("/admin_panel")
-    public String adminPanel(Principal principal) {
-        String adminName = principal.getName();
-        if (adminService.isAdmin(principal)) {
             return "admin_panel";
         }
 
@@ -89,5 +96,48 @@ public class AdminPanelController {
         String response = adminService.addCourseCategory(principal, categoryName);
 
         return response;
+    }
+
+    @PostMapping("/ajax/add_metatag")
+    public String addTagToMetatag(
+            @Valid @ModelAttribute("metatagCreateForm") MetatagCreateForm metatagCreateForm,
+            BindingResult result,
+            Map<String, Object> model,
+            Principal principal) {
+        initModel(model);
+
+        if (result.hasErrors()) {
+            model.put("metatagCreateForm", metatagCreateForm);
+
+            return "admin_panel";
+        }
+
+        adminService.addMetatag(principal, metatagCreateForm);
+
+        return "admin_panel";
+    }
+
+    @PostMapping("/ajax/add_tag_to_metatag")
+    public String addTagToMetatag(
+            @Valid @ModelAttribute("metatagForm")MetatagForm metatagForm,
+            BindingResult result,
+            Map<String, Object> model,
+            Principal principal) {
+        initModel(model);
+
+        if (result.hasErrors()) {
+            model.put("metatagForm", metatagForm);
+
+            return "admin_panel";
+        }
+
+        adminService.addTagToMetatag(principal, metatagForm);
+
+        return "admin_panel";
+    }
+
+    private void initModel(Map<String, Object> model) {
+        model.putIfAbsent("metatagForm", new MetatagForm());
+        model.putIfAbsent("metatagCreateForm", new MetatagCreateForm());
     }
 }

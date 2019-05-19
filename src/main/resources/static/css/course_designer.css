@@ -45,11 +45,11 @@
 }
 
 
-.developing{ 
+.upload{
 	display: inline-block; /* Строчно-блочный элемент */
     position: relative; /* Относительное позиционирование */
 }
-.developing:hover::after { 
+.upload:hover::after {
  	content: attr(data-title); 
 	position: absolute; /* Абсолютное позиционирование */
     left: 20%; top: 30%; /* Положение подсказки */

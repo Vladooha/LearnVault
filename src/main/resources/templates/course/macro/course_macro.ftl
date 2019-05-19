@@ -3,11 +3,11 @@
         <div style="width:800px;margin:0 auto;">
             <#if 0 < page_num>
                 <button type="button" name="back" value="back" class="next_back_btn">
-                    <img style="transform: rotate(180deg);" src="../../static/images/course_next.png" alt="Вперед" onclick="sendAnswer(${course_id}, ${page_num}, ''); goToPage(${course_id}, ${page_num - 1})"/>
+                    <img style="transform: rotate(180deg);" src="../../../static/images/course_next.png" alt="Вперед" onclick="sendAnswer(${course_id}, ${page_num}, ''); goToPage(${course_id}, ${page_num - 1})"/>
                 </button>
             </#if>
             <button type="button" name="forward" value="forward" class="next_back_btn" style="float:right;"><img
-                        src="../../static/images/course_next.png" alt="Назад"
+                        src="../../../static/images/course_next.png" alt="Назад"
                         onclick="console.log('next'); sendAnswer(${course_id}, ${page_num}, ''); goToPage(${course_id}, ${page_num + 1});"/>
             </button>
         </div>
@@ -33,6 +33,7 @@
         </div>
     </div>
 </#macro>
+
 <#macro timer time>
     <div id="id_parent_timer" style="text-align:center;"></div>
     <label id="time" hidden="hidden">${time}</label>

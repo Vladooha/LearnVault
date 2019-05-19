@@ -53,6 +53,8 @@ public class CourseService {
     private ProfileInfoRepo profileInfoRepo;
     @Autowired
     private FeedbackRepo feedbackRepo;
+    @Autowired
+    private MetatagRepo metatagRepo;
 
     @PersistenceUnit
     private EntityManagerFactory entityManagerFactory;
@@ -82,7 +84,8 @@ public class CourseService {
                              String description,
                              String[] tags,
                              boolean isPrivate,
-                             long time) {
+                             long time,
+                             String pic) {
         CourseCategory courseCategory = courseCategoryRepo.findByNum(category_num);
         if (courseCategory != null) {
 
@@ -92,6 +95,7 @@ public class CourseService {
             course.setName(name);
             course.setDescription(description);
             course.setTime(time);
+            course.setPic(pic);
 
             Set<CourseTag> tagSet = new HashSet<>();
             for (String tagName : tags) {
@@ -106,6 +110,11 @@ public class CourseService {
                 tagSet.add(courseTag);
             }
             course.setTags(tagSet);
+
+            String specialization = getSpecialization(tagSet);
+            if (specialization != null) {
+                course.setSpecialization(specialization);
+            }
 
             if (teacherRepo.findByUsername(author) != null) {
                 course.setPrivate(isPrivate);
@@ -511,7 +520,32 @@ public class CourseService {
         return null;
     }
 
+    @Nullable
     private String getSpecialization(Set<CourseTag> courseTags) {
-        return null;
+        //Map<String, Integer> specScore = new HashMap<>();
+        String result = null;
+        int maxScore = 1;
+        for (Metatag metatag : metatagRepo.findAll()) {
+            int score = 0;
+            for (MetatagTag metatagTag : metatag.getMetatagTags()) {
+                if (courseTags.contains(metatagTag.getTag())) {
+                    score += metatagTag.getWeight();
+                }
+            }
+
+            if (score > maxScore) {
+                result = metatag.getName();
+                maxScore = score;
+            } else if (score == maxScore) {
+                if (result == null) {
+                    result = metatag.getName();
+                } else {
+                    result += ", " + metatag.getName();
+                }
+                maxScore = score;
+            }
+        }
+
+        return result;
     }
 }

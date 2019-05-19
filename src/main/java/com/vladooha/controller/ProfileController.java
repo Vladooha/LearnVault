@@ -1,49 +1,49 @@
 package com.vladooha.controller;
 
-import com.vladooha.data.entities.LoginInfo;
 import com.vladooha.data.entities.ProfileInfo;
-import com.vladooha.data.repositories.LoginInfoRepo;
 import com.vladooha.data.repositories.ProfileInfoRepo;
+import com.vladooha.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.Map;
 
 @Controller
 public class ProfileController {
+    private static final Logger logger = LogManager.getLogger(ProfileController.class);
+
     @Autowired
-    private ProfileInfoRepo profileInfoRepo;
-    @Autowired
-    private LoginInfoRepo loginInfoRepo;
+    private UserService userService;
 
     @GetMapping("/profile")
-    public String get(Map<String, Object> model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
-        String username = user.getUsername();
+    public String get(
+            @RequestParam(defaultValue = "-1") Long id,
+            Map<String, Object> model,
+            Principal principal) {
+        ProfileInfo profileInfo;
+        if (id == -1L) {
+            profileInfo = userService.getProfileByUsername(principal.getName());
+        } else {
+            profileInfo = userService.getProfileById(id);
+        }
 
-        ProfileInfo profileInfo = profileInfoRepo.findByUsername(username);
+        logger.debug("User with id=" + id + " found: " + profileInfo == null);
+
         if (profileInfo != null) {
-            model.put("name", profileInfo.getName());
-            model.put("surname", profileInfo.getSurname());
-            model.put("tnumber", profileInfo.getTnumber());
-        } else {
-            model.put("name", "-");
-            model.put("surname", "-");
-            model.put("tnumber", "-");
-        }
+            logger.debug("Username: " + profileInfo.getUsername());
 
-        LoginInfo loginInfo = loginInfoRepo.findByUsername(username);
-        if (loginInfo != null) {
-            model.put("email", loginInfo.getEmail());
-        } else {
-            model.put("email", "-");
-        }
+            model.put("profile", profileInfo);
 
-        return "profile";
+            return "profile";
+        } else {
+            // TODO Error page
+            return "";
+        }
     }
 }

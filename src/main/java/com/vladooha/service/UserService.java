@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -165,5 +166,35 @@ public class UserService {
         } else {
             return true;
         }
+    }
+
+    @Nullable
+    public LoginInfo getUserById(long id) {
+        Optional<LoginInfo> optional = loginInfoRepo.findById(id);
+        if (optional.isPresent()) {
+            return optional.get();
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public ProfileInfo getProfileById(long id) {
+        Optional<ProfileInfo> optional = profileInfoRepo.findById(id);
+        if (optional.isPresent()) {
+            return optional.get();
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public LoginInfo getUserByUsername(String username) {
+        return loginInfoRepo.findByUsername(username);
+    }
+
+    @Nullable
+    public ProfileInfo getProfileByUsername(String username) {
+        return profileInfoRepo.findByUsername(username);
     }
 }

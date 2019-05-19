@@ -3,11 +3,11 @@
 <head>
 <title>constructor</title>
 <link href="../icon.png" rel="shortcut icon" type="image/x-icon">
-<link href="../../../static/css/course_designer.css" rel="stylesheet">
-<link href="../../../static/css/demo1.css" rel="stylesheet">
-<link href="../../../static/css/index.css" rel="stylesheet">
+<link href="../../static/css/course_designer.css" rel="stylesheet">
+<link href="../../static/css/demo1.css" rel="stylesheet">
+<link href="../../static/css/index.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="../../../static/scripts/course-constr.js"></script>
+<script src="../../static/scripts/course-constr.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
@@ -61,7 +61,7 @@
 						<div class="investment">
 							<div><h4>Прикрепить фото</h4></div>
 							<div><h5 class="h5">(.jpg, .jpeg, .png)</h5></div>
-							<div class="developing" data-title="В разработке...">
+							<div class="upload" data-title="В разработке...">
 								<input type="file" accept=".jpg, .jpeg, .png" style="margin:20px;" disabled>
 							</div>
 						</div>
@@ -69,12 +69,12 @@
 							<div><h4>Прикрепить вложение</h4></div>
 							<div><h5 class="h5">(.doc,.docx,.txt,.pptx, .ppt, .pptm)</h5></div>
 							<div>
-								<input class="developing" type="file" accept=".doc,.docx,.txt,.pptx, .ppt, .pptm" style="margin:20px;" disabled data-title="В разработке...">
+								<input class="upload" type="file" accept=".doc,.docx,.txt,.pptx, .ppt, .pptm" style="margin:20px;" disabled data-title="В разработке...">
 							</div>
 						</div>
 						<div class="investment">
 							<div><h4>Вставить ссылку на youtube</h4></div>
-							<div  class="developing" data-title="В разработке...">
+							<div class="upload" data-title="В разработке...">
 								<input type="text" style="margin:20px;" disabled>
 							</div>
 						</div>

@@ -1,6 +1,7 @@
 package com.vladooha.data.entities.courses;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -32,9 +33,11 @@ public class Course {
     @JoinTable(name = "course_tag_list",
             joinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
+    @EqualsAndHashCode.Exclude
     private Set<CourseTag> tags = new HashSet<>();
 
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @EqualsAndHashCode.Exclude
     private List<CoursePage> pages = new ArrayList<>();
 
     private int pageCount;
@@ -48,6 +51,7 @@ public class Course {
     private long time;
 
     @OneToMany(mappedBy = "course")
+    @EqualsAndHashCode.Exclude
     private Set<CourseProgress> courseProgresses = new HashSet<>();
 
     @OneToOne(fetch = FetchType.EAGER, cascade =  CascadeType.ALL, mappedBy = "course")
