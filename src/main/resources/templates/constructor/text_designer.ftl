@@ -3,11 +3,11 @@
 <head>
 <title>constructor</title>
 <link href="../icon.png" rel="shortcut icon" type="image/x-icon">
-<link href="../../static/css/course_designer.css" rel="stylesheet">
-<link href="../../static/css/demo1.css" rel="stylesheet">
-<link href="../../static/css/index.css" rel="stylesheet">
+<link href="../../../static/css/course_designer.css" rel="stylesheet">
+<link href="../../../static/css/demo1.css" rel="stylesheet">
+<link href="../../../static/css/index.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="../../static/scripts/course-constr.js"></script>
+<script src="../../../static/scripts/course-constr.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>

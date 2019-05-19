@@ -3,13 +3,13 @@
 <head>
 	<title>constructor</title>
 	<link href="../icon.png" rel="shortcut icon" type="image/x-icon">
-	<link href="../../static/css/course_designer.css" rel="stylesheet">
-	<link href="../../static/css/demo1.css" rel="stylesheet">
-	<link href="../../static/css/index.css" rel="stylesheet">
-	<link href="../../static/css/switch.css" rel="stylesheet" type="text/css">
+	<link href="../../../static/css/course_designer.css" rel="stylesheet">
+	<link href="../../../static/css/demo1.css" rel="stylesheet">
+	<link href="../../../static/css/index.css" rel="stylesheet">
+	<link href="../../../static/css/switch.css" rel="stylesheet" type="text/css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-	<script src="../../static/scripts/course-constr.js"></script>
-	<script src="../../static/scripts/file-upload.js"></script>
+	<script src="../../../static/scripts/course-constr.js"></script>
+	<script src="../../../static/scripts/file-upload.js"></script>
 </head>
 <body>
 <div class="main-layer">
@@ -119,7 +119,7 @@
 		</form>
 
 	</div>
-	<img src="../../static/images/miet.jpg" width="100" height="100"  style="float: right; margin: 0;"alt=""/>
+	<img src="../../../static/images/miet.jpg" width="100" height="100" style="float: right; margin: 0;" alt=""/>
 </div>
 </body>
 <script>
