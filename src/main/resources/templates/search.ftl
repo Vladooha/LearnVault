@@ -8,11 +8,42 @@
     <link href="../static/css/demo1.css" rel="stylesheet">
     <link href="../static/css/index.css" rel="stylesheet">
 	<link href="../static/css/search.css" rel="stylesheet">
+	<link href="../static/css/jquery.rating.css" rel="stylesheet" type="text/css">
     <script src="../static/scripts/libs/jquery-1.12.4.min.js"></script>
     <script src="../static/scripts/libs/wb.carousel.min.js"></script>
     <script src="../static/scripts/searchindex.js"></script>
     <script src="../static/scripts/libs/wb.sitesearch.min.js"></script>
     <script src="../static/scripts/login.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+
+	<script type="text/javascript">
+		window.jQuery || document.write('<script type="text/javascript" src="../static/scripts/libs/jquery-1.6.2.min.js"><\/script>');
+	</script>
+
+	<script type="text/javascript" src="../static/scripts/libs/jquery.rating-2.0.min.js"></script>
+	
+	<script type="text/javascript">
+			$(function(){
+
+			$('#rating_1').rating({
+				fx: 'full',
+				image: '../static/images/stars.png',
+				readOnly: 'true'
+			});
+
+			$('#rating_2').rating({
+				fx: 'full',
+				image: '../static/images/stars.png',
+				readOnly: 'true'
+			});
+
+			$('#rating_3').rating({
+				fx: 'full',
+				image: '../static/images/stars.png',
+				readOnly: 'true'
+			});
+			})
+	</script>
 </head>
 <body>
 <div id="LayerBody">
@@ -42,9 +73,6 @@
 									<div>
 										<h3 class="result_description" style="-webkit-line-clamp: 3;">
 											${course.description}
-											<#if course.feedback??>
-												</br>Сложность: ${course.feedback.complexity}
-											</#if>
 										</h3>
 									</div>
 									<div style="margin: 10px 50px;">
@@ -76,14 +104,40 @@
 											<span class="tag">${tag.name}</span>
 										</#list>
 									</div>
+									<div  style="width:750px;margin: 40px 40px;">
 									    <#if 0 < course.time>
                                             <@m.time_to_search course.time/>
                                         <#else>
                                             <label id="no_time" class="timer">Курс не ограничен по времени</label>
                                         </#if>
-
+                                    </div>
+									<#if course.feedback??>
+									<div style="width:750px;margin: 40px 40px;">
+										<div style="margin: 10px 0 0 70px;">
+											<h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Сложность:</h4>
+											<div id="rating_1">
+												<input type="hidden" id="complexity" name="vote-id" value="${course.feedback.complexity}"/>
+												<input type="hidden" name="votes" value="2">
+											</div>
+										</div>
+										<div style="margin: 10px 0 0 70px;">
+											<h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Соответствие ожиданиям:</h4>
+											<div id="rating_2">
+												<input type="hidden" id="complexity" name="vote-id" value="${course.feedback.expectation}"/>
+												<input type="hidden" name="votes" value="2">
+											</div>
+										</div>
+										<div style="margin: 10px 0 0 70px;">
+											<h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Понятность:</h4>
+											<div id="rating_3">
+												<input type="hidden" id="complexity" name="vote-id" value="${course.feedback.comprehensibility}"/>
+												<input type="hidden" name="votes" value="${course.feedback.voteCount}">
+											</div>
+										</div>
+									</div>
+									</#if>
 							  		<div style="width:750px;">
-										<input id="btn_save_page" class="orangeButton" type="button" value="Пройти курс" style="display: block; width: 200px; height: 40px; margin: 100px auto;" onClick="window.location.href='/course/${course.id}';return false;">
+										<input id="btn_save_page" class="orangeButton" type="button" value="Пройти курс" style="display: block; width: 200px; height: 40px; margin: 20px auto;" onClick="window.location.href='/course/${course.id}';return false;">
 									</div>
 								</div>
 							</div>
@@ -121,11 +175,9 @@
 		$('#mask').fadeTo("fast",0.8);
 
 		//Get the window height and width
-		var winH = $(window).height();
 		var winW = $(window).width();
 
 		//Set the popup window to center
-		$(id).css('top',  winH/2-$(id).height()/2);
 		$(id).css('left', winW/2-$(id).width()/2);
 
 		//transition effect
