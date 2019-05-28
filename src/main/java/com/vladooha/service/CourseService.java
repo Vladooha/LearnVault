@@ -53,12 +53,11 @@ public class CourseService {
     private ProfileInfoRepo profileInfoRepo;
     @Autowired
     private FeedbackRepo feedbackRepo;
+    @Autowired
+    private MetatagRepo metatagRepo;
 
     @PersistenceUnit
     private EntityManagerFactory entityManagerFactory;
-
-    @Value("${courses.path}")
-    private String coursePath;
 
     public List<CourseCategory> getCategories() {
         return courseCategoryRepo.findAll();
@@ -85,7 +84,8 @@ public class CourseService {
                              String description,
                              String[] tags,
                              boolean isPrivate,
-                             long time) {
+                             long time,
+                             String pic) {
         CourseCategory courseCategory = courseCategoryRepo.findByNum(category_num);
         if (courseCategory != null) {
 
@@ -95,6 +95,7 @@ public class CourseService {
             course.setName(name);
             course.setDescription(description);
             course.setTime(time);
+            course.setPic(pic);
 
             Set<CourseTag> tagSet = new HashSet<>();
             for (String tagName : tags) {
@@ -109,6 +110,11 @@ public class CourseService {
                 tagSet.add(courseTag);
             }
             course.setTags(tagSet);
+
+            String specialization = getSpecialization(tagSet);
+            if (specialization != null) {
+                course.setSpecialization(specialization);
+            }
 
             if (teacherRepo.findByUsername(author) != null) {
                 course.setPrivate(isPrivate);
@@ -284,52 +290,6 @@ public class CourseService {
 
         return "";
     }
-
-//    @Nullable
-//    public CoursePage verifyPage(long course_id,
-//                              long page_id) {
-//        Optional<Course> courseQuery = courseRepo.findById(course_id);
-//
-//        if (courseQuery.isPresent()) {
-//            Course course = courseQuery.get();
-//            Optional<CourseTestPage> pageQuery = courseTestPageRepo.findById(page_id);
-//
-//            if (pageQuery.isPresent()) {
-//                CourseTestPage coursePage = pageQuery.get();
-//
-//                if (course.getPages().contains(coursePage)) {
-//                    return coursePage;
-//                }
-//            }
-//        }
-//
-//        return null;
-//    }
-
-//    public Long checkAnswer(CoursePage coursePage, String ans) {
-//        Long nextPageId = null;
-//
-//        if (coursePageRepo.pageTypeById(coursePage.getId()).equals(TEXT_PAGE)) {
-//            nextPageId = coursePage.getNextPageId();
-//        } else if (coursePageRepo.pageTypeById(coursePage.getId()).equals(TEST_PAGE)) {
-//            Optional<CourseTestPage> courseTestPageQuery = courseTestPageRepo.findById(coursePage.getId());
-//            if (courseTestPageQuery.isPresent()) {
-//                CourseTestPage courseTestPage = courseTestPageQuery.get();
-//
-//                if (courseTestPage != null) {
-//                    for (String rightAns : courseTestPage.getRightAns().split(DELIMITER)) {
-//                        if (ans.compareToIgnoreCase(rightAns) == 0) {
-//                            nextPageId = courseTestPage.getNextPageId();
-//
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        return nextPageId;
-//    }
 
     public boolean checkAnswer(String username, long course_id, int pageNum, String ans) {
         logger.debug("Answer checking...");
@@ -560,74 +520,32 @@ public class CourseService {
         return null;
     }
 
-//    @Nullable
-//    public CoursePage getCoursePageByNum(long course_id, int page_num, String username, String answer) {
-//        Course course = getCourse(course_id);
-//        if (course != null) {
-//            ProfileInfo profileInfo = profileInfoRepo.findByUsername(username);
-//            if (profileInfo != null) {
-//                CourseProgress courseProgress = getCourseProgress(profileInfo, course);
-//
-//                if (page_num == 0) {
-//                    if (courseProgress == null) {
-//                        courseProgress = new CourseProgress();
-//                        courseProgress.setCourse(course);
-//                        courseProgress.setUser(profileInfo);
-//                        courseProgress.setCurrScore(0);
-//                        courseProgress.setCurrPage(0);
-//
-//                        courseProgressRepo.save(courseProgress);
-//                    }
-//
-//                    return getCastablePage(course.getFirstPageId());
-//                } else if (page_num > 0) {
-//                    if (courseProgress != null) {
-////                        CoursePage coursePage =  getCastablePage(course.getFirstPageId());
-////
-////                        for (int i = 0; i < page_num; ++i) {
-////                            if (coursePage.getNextPageId() != END_OF_LIST) {
-////                                coursePage = getCastablePage(coursePage.getNextPageId());
-////                            } else {
-////                                return null;
-////                            }
-////                        }
-//
-//                        CoursePage coursePage = coursePageRepo.findByCourseAndNum(course, page_num);
-//                        if (coursePage != null) {
-//                            int currPageNum = courseProgress.getCurrPage();
-//
-//                            if (currPageNum >= page_num) {
-//                                return coursePage;
-//                            }
-//
-//                            if (currPageNum + 1 == page_num) {
-//                                Long nextPageId = checkAnswer(coursePage, answer);
-//
-//                                if (nextPageId != null) {
-//                                    if (nextPageId == END_OF_LIST) {
-//                                        CourseTextPage courseTextPage = new CourseTextPage();
-//                                        courseTextPage.setTitle("Вы завершили курс '" + course.getName() + "'!");
-//                                        courseTextPage.setText("Поздравляем!");
-//
-//                                        return courseTextPage;
-//                                    } else {
-//                                        if (coursePage.getPageType().equals(TEST_PAGE)) {
-//                                            CourseTestPage courseTestPage = courseTestPageRepo.getOne(coursePage.getId());
-//                                            int currScore = courseProgress.getCurrScore();
-//                                            courseProgress.setCurrScore(currScore + courseTestPage.getScore());
-//                                        }
-//                                        courseProgress.setCurrPage(currPageNum + 1);
-//
-//                                        return coursePage;
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        return null;
-//    }
+    @Nullable
+    private String getSpecialization(Set<CourseTag> courseTags) {
+        //Map<String, Integer> specScore = new HashMap<>();
+        String result = null;
+        int maxScore = 1;
+        for (Metatag metatag : metatagRepo.findAll()) {
+            int score = 0;
+            for (MetatagTag metatagTag : metatag.getMetatagTags()) {
+                if (courseTags.contains(metatagTag.getTag())) {
+                    score += metatagTag.getWeight();
+                }
+            }
+
+            if (score > maxScore) {
+                result = metatag.getName();
+                maxScore = score;
+            } else if (score == maxScore) {
+                if (result == null) {
+                    result = metatag.getName();
+                } else {
+                    result += ", " + metatag.getName();
+                }
+                maxScore = score;
+            }
+        }
+
+        return result;
+    }
 }

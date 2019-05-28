@@ -8,10 +8,10 @@
     <link href="../static/css/demo1.css" rel="stylesheet">
     <link href="../static/css/index.css" rel="stylesheet">
 	<link href="../static/css/search.css" rel="stylesheet">
-    <script src="../static/scripts/jquery-1.12.4.min.js"></script>
-    <script src="../static/scripts/wb.carousel.min.js"></script>
+    <script src="../static/scripts/libs/jquery-1.12.4.min.js"></script>
+    <script src="../static/scripts/libs/wb.carousel.min.js"></script>
     <script src="../static/scripts/searchindex.js"></script>
-    <script src="../static/scripts/wb.sitesearch.min.js"></script>
+    <script src="../static/scripts/libs/wb.sitesearch.min.js"></script>
     <script src="../static/scripts/login.js"></script>
 </head>
 <body>
@@ -32,12 +32,19 @@
 					<#list courses as course>
 					    <a href="#dialog${course.id}" name="modal">
 						    <div class="result_container">
-								<img src="../static/images/business.jpg" style="width:160px;height:160px;float:left;">
+								<#if course.pic??>
+									<img src=${course.pic} style="width:160px;height:160px;float:left;">
+								<#else>
+									<img src="../static/images/business.jpg" style="width:160px;height:160px;float:left;">
+								</#if>
 								<div style="float:left;min-height:160px;max-width:900px;">
 									<div><h5 class="H5" style="margin: 10px 50px; font-size:18px;">${course.name}</h5></div>
 									<div>
 										<h3 class="result_description" style="-webkit-line-clamp: 3;">
 											${course.description}
+											<#if course.feedback??>
+												</br>Сложность: ${course.feedback.complexity}
+											</#if>
 										</h3>
 									</div>
 									<div style="margin: 10px 50px;">

@@ -39,6 +39,7 @@ public class CourseConstructController {
             @RequestParam String[] tags,
             @RequestParam boolean isPrivate,
             @RequestParam long time,
+            @RequestParam String pic,
             Principal principal
     ) {
         logger.debug("ajax: course_create");
@@ -54,7 +55,8 @@ public class CourseConstructController {
                 description,
                 tags,
                 isPrivate,
-                time);
+                time,
+                pic);
 
         if (course_id != -1L) {
             return String.valueOf(course_id);

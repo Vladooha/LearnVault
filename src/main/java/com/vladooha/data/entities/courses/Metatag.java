@@ -8,9 +8,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "course_tag")
+@Table(name = "metatag")
 @Data
-public class CourseTag {
+public class Metatag {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -18,10 +18,7 @@ public class CourseTag {
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "tags")
-    private Set<Course> courses;
-
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "metatag", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     private Set<MetatagTag> metatagTags = new HashSet<>();
 }

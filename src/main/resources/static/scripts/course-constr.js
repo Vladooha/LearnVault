@@ -147,7 +147,8 @@ function sendCourse() {
             name: getLocalKey("course_name"),
             description: getLocalKey("description"),
             time: getLocalKey("time"), 			//добавил время!
-            isPrivate: getLocalKey("type_course")
+            isPrivate: getLocalKey("type_course"),
+            pic: localStorage.getItem("picture")
 }),
     success: function (data) {
         if (data === "") { }
@@ -234,6 +235,8 @@ function sendTextPage(course, page, local_page) {
 }
 
 function sendTestPage(course, page, local_page) {
+    console.log("Sending test page " + page);
+
     var list_pageId = getLocalList("list_pageId"); //list LOCAL pageId
     var list_title = getLocalList("list_title");
     var list_text = getLocalList("list_text");
@@ -246,7 +249,7 @@ function sendTestPage(course, page, local_page) {
     var list_types_test = getLocalList('list_types_test');
 	
 	//NEW добавил флаг возможности повторного прохождения
-	var list_flag_again = getLocalList('list_types_test');
+	var list_flag_again = getLocalList('list_flag_again');
 
     //alert("List: " + list_pageId);
 

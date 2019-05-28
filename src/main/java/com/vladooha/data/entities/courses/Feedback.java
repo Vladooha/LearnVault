@@ -14,7 +14,7 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade =  CascadeType.ALL)
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 

@@ -65,6 +65,14 @@ body
     font-weight:500;
     font-size: 15px;
 }
+.successText{
+   color: #1EBF0B;
+   display: block;
+   text-align: center;
+   font-family:'Exo 2';
+   font-weight:500;
+   font-size: 15px;
+}
 .errorEditbox{
    border-color: red;
    opacity: 1;

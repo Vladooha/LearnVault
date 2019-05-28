@@ -1,3 +1,5 @@
+<#import "../common/macro/upload_macro.ftl" as m>
+
 <!doctype html>
 <html>
 <head>
@@ -9,7 +11,22 @@
 	<link href="../../static/css/switch.css" rel="stylesheet" type="text/css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="../../static/scripts/course-constr.js"></script>
-	<script src="../../static/scripts/constructor.js"></script>
+	<script src="../../static/scripts/file-upload.js"></script>
+
+	<style>
+		.inline {
+			display: inline-grid;
+			grid-gap: 50px;
+		}
+
+		#grid {
+			display: grid;
+			height: 100px;
+			grid-template-columns: repeat(3, 1fr);
+			grid-template-rows: 100px;
+			column-gap: 20px;
+		}
+	</style>
 </head>
 <body>
 <div class="main-layer">
@@ -26,7 +43,7 @@
 					<div>
 						<select autofocus style="margin: 20px 0 20px 40px;width: 300px; height: 30px;" id = "category" required class="style_input">
 							<#list categories as category>
-							<option value=${category.getNum()}>${category.getName()}</option>
+								<option value=${category.getNum()}>${category.getName()}</option>
 							</#list>[
 						</select>
 					</div>
@@ -35,18 +52,24 @@
 					<div><h3 class="h3">Название курса:</h3></div>
 					<div><input type="text" size="70" id="course_name" autofocus autocomplete="on" style="height: 23px; margin: 20px 0 20px 40px;" required class="style_input"></div>
 				</div>
-				<div style="margin-top:40px;">
-					<div><h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Введите теги для курса:</h4></div>
-					<div style="margin-top:20px;">
-						<div id="tags">
-							<input type="text" value="" placeholder="Добавьте тэг" autocomplete="on" id ='tag'/>
+				<div>
+					<div class="inline" style="grid-row-start: 1;">
+						<div><h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Введите теги для курса:</h4></div>
+						<div>
+							<div id="tags">
+								<input type="text" value="" placeholder="Добавьте тэг" autocomplete="on" id ='tag'/>
+							</div>
 						</div>
+						<br>
 					</div>
-					<br>
+					<!--div class="inline" style="grid-row-start: 2; grid-column-start: 1; grid-column-end: 1;"/-->
+					<div class="inline" style="grid-row-start: 2;">
+						<@m.upload 'file'/>
+					</div>
 				</div>
-				<div style="margin-top:60px;">
+				<div>
 					<div><h5 class="H5">Описание курса:</h5></div>
-					<div><textarea id="description" required cols="100" rows="5" style="resize:none; margin: 20px 0 20px 40px;" id="textAnswer" class="style_input"></textarea></div>
+					<div><textarea id="description" required cols="75" rows="5" style="resize:none; margin: 20px 0 20px 40px;" id="textAnswer" class="style_input"></textarea></div>
 				</div>
 				<div style="margin-top:10px;">
 					<div><h5 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Выберите тип курса:</h5></div>
@@ -98,19 +121,20 @@
 						</datalist>
 					</div>
 				</div>
-				<div >
+				<div>
+					<input type="hidden" name="_csrf" value="${_csrf.token}"/>
 					<input class="orangeButton" type="button" value="Далее" style="display: block; margin: 100px auto; width: 200px; height: 40px;"
 						   onclick="setCourse();sendCourse();">
 				</div>
 			</div>
 		</form>
-
 	</div>
 	<img src="../../static/images/miet.jpg" width="100" height="100"  style="float: right; margin: 0;"alt=""/>
 </div>
 </body>
 <script>
 	localStorage.clear();
+	var photo_path;
 	var count_tags = 0;
 	var max_tags = 11;
 	$(function(){ // DOM ready
@@ -153,6 +177,10 @@
 		localStorage.setItem('list_tags', JSON.stringify(tags));
 		//отправляем описание курса
 		localStorage.setItem('description', JSON.stringify($('#description').val()));
+
+		// File upload
+		var pic = uploadFile('file');
+		localStorage.setItem('picture', pic);
 
 		//отправляем время, ограничивающее курс (если не огр - 0)
 		if ($('#myonoffswitch').is(':checked')){

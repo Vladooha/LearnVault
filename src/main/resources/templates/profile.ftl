@@ -14,11 +14,20 @@
  
     <div class="profile_image"><img src="../static/images/profile.png" width="200" height="120" alt=""/></div>
     <div class="column">
-	  <!--<img src="images/profile.png" width="127" height="121" alt=""/-->
-      <h3 id="name_of_user">${name} ${surname}</h3>
-      <h3 id="email_of_user">Email: ${email}</h3>
-      <h3 id="telephone_of_user">Табельный номер: ${tnumber}</h3>
-      <h3 id="profession_of_user">Специализация: программист</h3>
+      <#if profile??>
+	    <!--<img src="images/profile.png" width="127" height="121" alt=""/-->
+        <h3 id="name_of_user">${profile.name} ${profile.surname}</h3>
+        <h3 id="telephone_of_user">Табельный номер: ${profile.tnumber}</h3>
+        <#if profile.courseProgresses??>
+          <h3 id="courses_of_user">Изучаемые курсы:</h3>
+          <#list profile.courseProgresses as courseProgress>
+            <h5 id="courses_of_user">Название: ${courseProgress.course.name}</h5>
+            <h5 id="courses_of_user">Баллов заработано: ${courseProgress.currScore} из ${courseProgress.course.score}</h5>
+          </#list>
+        </#if>
+      <#else>
+
+      </#if>
   </div>
   <div>
     <form action="/logout">

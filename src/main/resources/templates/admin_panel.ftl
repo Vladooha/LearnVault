@@ -1,4 +1,5 @@
-<#import "index_macro.ftl" as m>
+<#import "index_macro.ftl" as m/>
+<#import "/spring.ftl" as spring/>
 <!doctype html>
 <html>
 <head>
@@ -7,10 +8,10 @@
     <link href="../static/images/icon.png" rel="shortcut icon" type="image/x-icon">
     <link href="../static/css/demo1.css" rel="stylesheet">
     <link href="../static/css/index.css" rel="stylesheet">
-    <script src="../static/scripts/jquery-1.12.4.min.js"></script>
-    <script src="../static/scripts/wb.carousel.min.js"></script>
+    <script src="../static/scripts/libs/jquery-1.12.4.min.js"></script>
+    <script src="../static/scripts/libs/wb.carousel.min.js"></script>
     <script src="../static/scripts/searchindex.js"></script>
-    <script src="../static/scripts/wb.sitesearch.min.js"></script>
+    <script src="../static/scripts/libs/wb.sitesearch.min.js"></script>
     <script src="../static/scripts/login.js"></script>
 </head>
 <body>
@@ -18,6 +19,56 @@
     <div id="LayerBody_Container">
         <div id="LayerMain" style="width:1200px; min-height: 800px;">
             <@m.header_site/>
+            <div>
+                <div style="margin: 60px auto 40px auto;width:660px;">
+                    <form action="/ajax/add_metatag" method="post">
+                        Метатэг:<br>
+                        <@spring.bind "metatagCreateForm.metatagName"/>
+                        <input id="metatagName"
+                               name="${spring.status.expression}"
+                               value="${spring.status.value?default("")}"/>
+                        <#list spring.status.errorMessages as error> <b>${error}</b></#list>
+                        <br><br>
+
+                        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+            <div>
+                <div style="margin: 60px auto 40px auto;width:660px;">
+                    <form action="/ajax/add_tag_to_metatag" method="post">
+                        Метатэг:<br>
+                        <@spring.bind "metatagForm.metatagName"/>
+                        <input id="metatagName"
+                               name="${spring.status.expression}"
+                               value="${spring.status.value?default("")}"/>
+                        <#list spring.status.errorMessages as error> <b>${error}</b></#list>
+                        <br><br>
+
+                        Имя тэга:<br>
+                        <@spring.bind "metatagForm.tagName"/>
+                        <input id="tagName"
+                               name="${spring.status.expression}"
+                               value="${spring.status.value?default("")}"/>
+                        <#list spring.status.errorMessages as error> <b>${error}</b></#list>
+                        <br><br>
+
+                        Вес:<br>
+                        <@spring.bind "metatagForm.weight"/>
+                        <input id="weight"
+                               name="${spring.status.expression}"
+                               value="${spring.status.value?default("")}"/>
+                        <#list spring.status.errorMessages as error> <b>${error}</b></#list>
+                        <br><br>
+
+                        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
             <div>
                 <div style="margin: 60px auto 40px auto;width:660px;">
                     <label><b>Добавить админа: </b></label><br>

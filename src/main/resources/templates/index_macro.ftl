@@ -6,7 +6,7 @@
         <div style="width:350px;float:left; padding:17px 0 0 100px;">
             <form name="SiteSearch1_form" id="SiteSearch1_form" role="search" accept-charset="UTF-8" onsubmit="return searchPage(features)">
                 <input type="search" class="fa-search" id="SiteSearch1" style="width:138px;height:25px;" name="SiteSearch1" value="" spellcheck="false" placeholder="Поиск по порталу" role="searchbox">
-                <input type="button" onclick="searchPage();return false;" name="Search" value="поиск" class="ButtonSearch" style="width:96px;height:25px;">
+                <input type="submit" onclick="searchPage();return false;" name="Search" value="поиск" class="ButtonSearch" style="width:96px;height:25px;">
             </form>
         </div>
         <div style="width:250px;float:right;padding:17px 0 0 49px;cursor:pointer;" onclick="window.location.href='/profile'">
