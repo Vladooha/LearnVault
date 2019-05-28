@@ -68,9 +68,9 @@ h5.h5 {
 }
   
 #boxes .window {
-  position:absolute;
+  position:fixed;
   left:0;
-  top:0;
+  top:5%;
   width:440px;
   height:200px;
   display:none;
@@ -80,7 +80,7 @@ h5.h5 {
 
 #boxes .window{
   width:1160px; 
-  height:400px;
+  height:700px;
   padding:10px;
   background-color:#d2e8fc;
   border: 0,5px double rgb(0, 45, 86); /* Параметры границы */
