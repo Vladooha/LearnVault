@@ -5,88 +5,130 @@
 <head>
     <meta charset="UTF-8">
     <title>Оценка курса</title>
-    <!--link href="/css/main.css" rel="stylesheet"-->
+    <link href="../../static/css/demo1.css" rel="stylesheet">
+    <link href="../../static/css/index.css" rel="stylesheet">
+    <link href="../../static/css/Page_of_courses.css" rel="stylesheet">
+    <link href="../../static/css/jquery.rating.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        window.jQuery || document.write('<script type="text/javascript" src="../../static/scripts/libs/jquery-1.6.2.min.js"><\/script>');
+    </script>
+
+    <script type="text/javascript" src="../../static/scripts/libs/jquery.rating-2.0.min.js"></script>
+
+    <script type="text/javascript">
+            $('#complexityStar').change(function() {
+                $('#complexity').val($(this).val());
+            });
+
+            $('#comprehensibilityStar').change(function() {
+                $('#comprehensibility').val($(this).val());
+            });
+
+            $('#expressionStar').change(function() {
+                $('#expression').val($(this).val());
+            });
+
+            $(function(){
+
+            $('#rating_1').rating({
+                fx: 'full',
+                image: '../../static/images/stars.png',
+            });
+
+            $('#rating_2').rating({
+                fx: 'full',
+                image: '../../static/images/stars.png',
+            });
+
+            $('#rating_3').rating({
+                fx: 'full',
+                image: '../../static/images/stars.png',
+            });
+            })
+    </script>
 </head>
 <body>
-<h2><b>Оцените курс:</b></h2>
+<div id="LayerBody">
+    <div id="LayerBody_Container">
+        <div id="LayerMain">
+            <div class="page_title" id="name_of_page" style="margin-top:180px;">Оцените курс:</div>
 
-<#assign path = "/course/" + course_id + "/rate">
+            <#assign path = "/course/" + course_id + "/rate">
 
-<@spring.bind "feedbackForm"/>
-<!-- Input id is like field name. For example this input id='complexity' -->
-<!-- Custom input is required for all 3 inputs and then value of each custom input
-should be pasted in spring input forms by JS-->
-<!--form-- action=${path} method="post">
-    Оцените сложность курса:<br>
-    <@spring.formHiddenInput "feedbackForm.complexity"/>
-    <@spring.showErrors "<br>"/>
-    <br><br>
-    Насколько курс оправдал ваши ожидания:<br>
-    <@spring.formHiddenInput "feedbackForm.expectation"/>
-    <@spring.showErrors "<br>"/>
-    <br><br>
-    Насколько сложным вам показался курс:<br>
-    <@spring.formHiddenInput "feedbackForm.comprehensibility"/>
-    <@spring.showErrors "<br>"/>
-    <br><br>
+            <@spring.bind "feedbackForm"/>
 
-    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+            <form action=${path} method="post">
+                <div style="margin: 30px 0 0 70px;">
+                    <h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Оцените сложность курса:</h4>
+                    <div id="rating_1">
+                        <input type="hidden" id="complexityStar" name="vote-id" value="0"/>
+                    </div>
+                </div>
+                <@spring.bind "feedbackForm.complexity"/>
 
-    <input type="submit" value="Submit">
-</form-->
+                <div style="margin: 30px 0 0 70px;">
+                    <h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Насколько курс оправдал ваши ожидания:</h4>
+                    <div id="rating_2">
+                        <input type="hidden" id="expectationStar" name="vote-id" value="0"/>
+                    </div>
+                </div>
+                <@spring.bind "feedbackForm.expectation"/>
 
-<!--springForm:form modelAttribute="feedbackForm" method="POST" action=${path}>
-    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                <div style="margin: 30px 0 0 70px;">
+                    <h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Насколько понятным вам показался курс:</h4>
+                    <div id="rating_3">
+                        <input type="hidden" id="comprehensibilityStar" name="vote-id" value="0"/>
+                    </div>
+                </div>
+                <@spring.bind "feedbackForm.comprehensibility"/>
 
-    <table>
-        <tr>
-            <td><springForm:label path="complexity">Оцените сложность курса:</springForm:label></td>
-            <td><springForm:input path="complexity"/></td>
-        </tr>
-        <tr>
-            <td><springForm:label path="expectation">Насколько сложным вам показался курс:</springForm:label></td>
-            <td><springForm:input path="expectation"/></td>
-        </tr>
-        <tr>
-            <td><springForm:label path="comprehensibility">Насколько сложным вам показался курс:</springForm:label></td>
-            <td><springForm:input path="comprehensibility"/></td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="Submit"/></td>
-        </tr>
-    </table>
-</springForm:form-->
+                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
 
-<form action=${path} method="post">
-    Оцените сложность курса:<br>
-    <@spring.bind "feedbackForm.complexity"/>
-    <input id="complexity"
-           name="${spring.status.expression}"
-           value="${spring.status.value?default("")}"/>
-    <#list spring.status.errorMessages as error> <b>${error}</b></#list>
-    <br><br>
+                <!--input type="submit" value="Проголосовать" class="orangeButton" style="width: 200px; height: 40px; margin:70px auto;"-->
+            </form>
 
-    Насколько курс оправдал ваши ожидания:<br>
-    <@spring.bind "feedbackForm.expectation"/>
-    <input id="expectation"
-           name="${spring.status.expression}"
-           value="${spring.status.value?default("")}"/>
-    <#list spring.status.errorMessages as error> <b>${error}</b></#list>
-    <br><br>
+            <form action=${path} method="post">
+                <@spring.bind "feedbackForm.complexity"/>
+                <input id="complexity"
+                       type="hidden"
+                       name="${spring.status.expression}"
+                       value="${spring.status.value?default("")}"/>
+                <#list spring.status.errorMessages as error> <b>${error}</b></#list>
 
-    Насколько сложным вам показался курс:<br>
-    <@spring.bind "feedbackForm.comprehensibility"/>
-    <input id="comprehensibility"
-           name="${spring.status.expression}"
-           value="${spring.status.value?default("")}"/>
-    <#list spring.status.errorMessages as error> <b>${error}</b></#list>
-    <br><br>
+                <@spring.bind "feedbackForm.expectation"/>
+                <input id="expectation"
+                       type="hidden"
+                       name="${spring.status.expression}"
+                       value="${spring.status.value?default("")}"/>
+                <#list spring.status.errorMessages as error> <b>${error}</b></#list>
 
-    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                <@spring.bind "feedbackForm.comprehensibility"/>
+                <input type="hidden"
+                       id="comprehensibility"
+                       name="${spring.status.expression}"
+                       value="${spring.status.value?default("")}"/>
+                <#list spring.status.errorMessages as error> <b>${error}</b></#list>
 
-    <input type="submit" value="Submit">
-</form>
+                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
 
-<!--script src="/js/main.js"></script-->
+                <input type="submit" value="Проголосовать" class="orangeButton" style="width: 200px; height: 40px; margin:70px auto;">
+            </form>
+        </div>
+    </div>
+</div>
 </body>
+<script type="text/javascript">
+    function getRating(){
+         var boxes = document.getElementsByClassName("vote-success");
+         var res_rating = []
+         for (var i = 0; i < 3; i++) {
+            var str = boxes[i].textContent;
+            res_rating.push(Number(str.match(/\d/)));
+         }
+        console.log(res_rating);
+        return res_rating;
+    }
+</script>
 </html>

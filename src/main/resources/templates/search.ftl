@@ -21,7 +21,7 @@
 	</script>
 
 	<script type="text/javascript" src="../static/scripts/libs/jquery.rating-2.0.min.js"></script>
-	
+
 	<script type="text/javascript">
 			$(function(){
 
@@ -118,23 +118,23 @@
 									<#if course.feedback??>
 									<div style="width:750px;margin: 40px 40px;">
 										<div style="margin: 10px 0 0 70px;">
-											<h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Сложность:</h4>
+											<h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Сложность: </h4>
 											<div id="rating_1">
-												<input type="hidden" id="complexity" name="vote-id" value="${course.feedback.complexity}"/>
+												<input type="hidden" id="complexity" name="val" value="${course.feedback.complexity}"/>
 												<input type="hidden" name="votes" value="${course.feedback.voteCount}">
 											</div>
 										</div>
 										<div style="margin: 10px 0 0 70px;">
-											<h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Соответствие ожиданиям:</h4>
+											<h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Соответствие ожиданиям: </h4>
 											<div id="rating_2">
-												<input type="hidden" id="complexity" name="vote-id" value="${course.feedback.expectation}"/>
+												<input type="hidden" id="complexity" name="val" value="${course.feedback.expectation}"/>
 												<input type="hidden" name="votes" value="${course.feedback.voteCount}">
 											</div>
 										</div>
 										<div style="margin: 10px 0 0 70px;">
 											<h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Понятность:</h4>
 											<div id="rating_3">
-												<input type="hidden" id="complexity" name="vote-id" value="${course.feedback.comprehensibility}"/>
+												<input type="hidden" id="complexity" name="val" value="${course.feedback.comprehensibility}"/>
 												<input type="hidden" name="votes" value="${course.feedback.voteCount}">
 											</div>
 										</div>
