@@ -1,0 +1,171 @@
+@charset "utf-8";
+/* CSS Document */
+.tab_container{
+	width:70%;
+	height:90%;
+	background:#f0f0f0; 
+	margin:0 auto;
+}
+.containerLi {
+	width:90%;
+	height:90%;
+	background:rgba(255,255,255,1.00); 
+	overflow: auto;
+	border: 1px #828790 solid;
+}
+.containerLi li {
+	list-style-type: none; /* Убираем маркеры */
+	cursor: pointer;
+	width: 100%;
+}
+.containerLi li:hover{
+	background: #FF9700;
+}
+.containerLi p {
+	padding: 0 5px;
+	margin: 0 5px;
+}
+.containerLi ul {
+	margin-left: 0; /* Отступ слева в браузере IE и Opera */
+	padding-left: 0; /* Отступ слева в браузере Firefox, Safari, Chrome */
+}
+.table {
+	width:90%;
+	height:90%;
+	background:rgba(255,255,255,1.00); 
+	overflow: auto;
+	border: 1px #828790 solid;
+}
+.table li{
+  	display: table-cell;
+  	width: 50%;
+	list-style-type: none; /* Убираем маркеры */
+	cursor: pointer;
+}
+.table ul:hover{
+	background: #FF9700;
+}
+.table ul{
+	list-style-type: none;
+  	width: 100%;
+  	display: table;
+  	table-layout: fixed;
+	margin-left: 0; /* Отступ слева в браузере IE и Opera */
+	padding-left: 0; /* Отступ слева в браузере Firefox, Safari, Chrome */
+}
+.table p {
+	padding: 0 5px;
+	margin: 0 5px;
+}
+button:disabled { 
+	border-radius : 3px;
+	border : 1px rgb(196, 196, 196) solid;
+	background-color: #DFDFDF;
+	color:rgb(146, 146, 146);
+}
+button:disabled:hover{
+	border-radius : 3px;
+	border : 1px rgb(196, 196, 196) solid;
+	background-color: #DFDFDF;
+	color:rgb(146, 146, 146);
+}
+.selectedLi{
+	background-color: #2E42BC;
+	color: white;
+}
+.btnUserMenu {
+	margin: 0 auto;
+	width: 80%;
+	height: 17%;
+	text-align: center;
+	color: #04396C;
+	background: white;
+	border: 1px solid #04396C;
+	border-radius: 4px;
+}
+.btnUser{
+	margin: 0 auto;
+	width: 100%;
+	text-align: center;
+	color: #04396C;
+	background: white;
+	border: 1px solid #04396C;
+	border-radius: 4px;
+}
+.btnUserMenu:hover{
+	background: #04396C;
+	color: white;
+}
+/*----------------------------------------------------- */
+@import url("https://fonts.googleapis.com/css?family=Lato");
+* {
+  margin: 0;
+  padding: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+
+.tabs {
+  float: none;
+  list-style: none;
+  position: relative;
+  margin: 80px 0 0 10px;
+  text-align: left;
+}
+.tabs li {
+  float: left;
+  display: block;
+}
+.tabs input[type="radio"] {
+  position: absolute;
+  top: 0;
+  left: -9999px;
+}
+.tabs label {
+  display: block;
+  padding: 14px 21px;
+  border: 2px white solid;
+  border-radius: 2px 2px 0 0;
+  font-size: 20px;
+  font-weight: normal;
+  text-transform: uppercase;
+  background: #04396C;
+  color: white;
+  cursor: pointer;
+  position: relative;
+  top: 4px;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.tabs label:hover {
+  background: #FF9700;
+}
+.tabs .tab-content {
+  z-index: 2;
+  display: none;
+  overflow: hidden;
+  width: 100%;
+  font-size: 17px;
+  line-height: 25px;
+  padding: 25px;
+  position: absolute;
+  top: 53px;
+  left: 0;
+  background: #f0f0f0;
+  border: 1px #828790 solid;
+}
+.tabs [id^="tab"]:checked + label {
+  top: 0;
+  padding-top: 17px;
+  background:  #828790;
+  border-color: #828790;
+  color: white;
+  border-width: 1px;
+}
+.tabs [id^="tab"]:checked ~ [id^="tab-content"] {
+  display: block;
+}
