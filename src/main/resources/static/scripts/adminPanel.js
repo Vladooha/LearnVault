@@ -283,7 +283,7 @@ function addUser(select){
 	});
 }
 function changeTeacher(){
-	swal("Введите имя пользователя (логин):", {
+	swal("Введите имя нового учителя (логин):", {
 	  content: "input",
 	})
 	.then((value) => {
@@ -296,12 +296,14 @@ function changeTeacher(){
 			//FUNCTION CHANGE TEACHER HERE
 			//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 			//
-
+			swal("Учитель переназначен!", {
+			  icon: "success",
+			});
 		}
 	});
 }
 function changeUser(select){
-	swal("Введите имя пользователя (логин):", {
+	swal("Введите новое имя пользователя (логин):", {
 	  content: "input",
 	})
 	.then((value) => {
