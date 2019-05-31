@@ -89,7 +89,7 @@ function start_init(){
 //удаляет у всех страниц класс текущей
 function popCurrentClass(list_pageId){
     for (var i = 0; i < list_pageId.length; i++)
-        document.getElementById(list_pageId[i]).classList.remove("currentPage");
+        document.getElementById(list_pageId[i]).className = "pages";
 }
 
 //-----------------------------------------------------------------------------

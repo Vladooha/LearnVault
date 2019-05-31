@@ -61,6 +61,35 @@ function addAdmin(value) {
 		}
 	});
 }
+//functrion removeTeacher(name){
+//
+//}
+
+//functrion removeAdmin(name){
+//
+//}
+
+//functrion removeCategory(name){
+//
+//}
+
+//functrion removeMetaTag(nameMetaTag){
+//
+//}
+
+//function addMetatag(nameMetaTag){
+//
+//}
+
+//function changeUserName(name){
+//
+//}
+
+//function addTagToMetaTag(nameMetaTag, nameTag){
+//
+//}
+
+
 
 //DIMA--------------------------------------------------------------------------------
 function clickOnUser(id, select = undefined){
@@ -81,6 +110,11 @@ function clickOnUser(id, select = undefined){
 				activatedBtns(false, "C");
 				selectedCategories = id;
 				break;
+			case "tag":
+				lies = document.getElementById('container_tags').getElementsByTagName("li");
+				activatedBtns(false, "TAG");
+				selectedTag = id;
+				break;	
 			default:
 				lies = document.getElementById('container_admins').getElementsByTagName("li");	
 				activatedBtns(false, "A");
@@ -99,10 +133,17 @@ function clickOnUser(id, select = undefined){
 	}
 //включает/выключает кнопки удалить и изменить
 function activatedBtns(flag, type){
-	document.getElementById("changeBtn"+type).disabled = flag;
-	document.getElementById("deleteBtn"+type).disabled = flag;
-	if (type = "U")
-		document.getElementById("changeTeacher").disabled = flag;
+	switch(type){
+		case "TAG":
+			document.getElementById("btnAddTag").disabled = flag;
+			document.getElementById("deleteBtn"+type).disabled = flag
+			break;
+		case "U":
+			document.getElementById("changeTeacher").disabled = flag;
+		default:
+			document.getElementById("changeBtn"+type).disabled = flag;
+			document.getElementById("deleteBtn"+type).disabled = flag;
+	}
 }
 //удалить пользователя 
 function deleteUser(select){
@@ -138,6 +179,16 @@ function deleteUser(select){
 					currentUserLi = document.getElementById(selectedTeacher);
 					
 					//FUNCTION DELETE TEACHER HERE
+					//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+					//
+					
+					break;
+
+				case "tag":
+					activatedBtns(true, "TAG");
+					currentUserLi = document.getElementById(selectedTag);
+					
+					//FUNCTION DELETE METATAG HERE
 					//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 					//
 					
@@ -216,7 +267,7 @@ function addUser(select){
 				case "admin":
 					createdLi.id = value;
 					createdLi.onclick = function(){
-						clickOnUser(createdLi.id, "user");
+						clickOnUser(createdLi.id, "admin");
 					}
 
 					parent = document.getElementById("container_admins");
@@ -227,6 +278,24 @@ function addUser(select){
 
 					//ADD ADMIN
 					addAdmin(value)
+					break;
+
+				case "tag":
+					createdLi.id = value;
+					createdLi.onclick = function(){
+						clickOnUser(createdLi.id, "tag");
+					}
+
+					parent = document.getElementById("container_tags");
+					parent.appendChild(createdLi);
+
+					//делаем ее выбранной
+					clickOnUser(createdLi.id, "tag");
+
+					//FUNCTION ADD METATAG
+					//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+					//
+					
 					break;
 					
 				case "category":
@@ -282,24 +351,46 @@ function addUser(select){
 		}
 	});
 }
-function changeTeacher(){
-	swal("Введите имя нового учителя (логин):", {
-	  content: "input",
-	})
-	.then((value) => {
-		if(value != null){
-			alert(selectedUser);
-			document.getElementById("T" + selectedUser).innerHTML = value;
-			document.getElementById("T" + selectedUser).id = "P" + value;
-			selectedUser = value;
 
-			//FUNCTION CHANGE TEACHER HERE
-			//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-			//
-			swal("Учитель переназначен!", {
+//В РАЗРАБОТКЕ
+function changeTeacher(){
+
+	var myArrayOfThings = [
+            { id: 1, name: 'Item 1' },
+            { id: 2, name: 'Item 2' },
+            { id: 3, name: 'Item 3' }
+        ];
+
+    var options = {};
+    $.map(myArrayOfThings,
+        function(o) {
+            options[o.id] = o.name;
+        });
+
+	swal({
+	  title: 'Выберите группу:',
+	  input: 'select',
+	  inputOptions: options,
+	  inputPlaceholder: 'required',
+	  showCancelButton: true,
+	  inputValidator: function (value) {
+	    return new Promise(function (resolve, reject) {
+	      if (value !== '') {
+	        resolve();
+	      } else {
+	        reject('You need to select a Tier');
+	      }
+	    });
+	  }
+	}).then(function (result) {
+	  if (result.value) {
+	  	var paragraf = document.getElementById("T" + selectedUser);
+	  	paragraf.innerHTML = result.value;
+	  	paragraf.id = "T" + result.value;
+	    swal("Группа обучения успешно изменена!", {
 			  icon: "success",
 			});
-		}
+	  }
 	});
 }
 function changeUser(select){
