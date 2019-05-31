@@ -1,4 +1,5 @@
-﻿<!doctype html>
+﻿<#import "../index_macro.ftl" as i>
+<!doctype html>
 <html>
 <head>
 <title>constructor</title>
@@ -16,6 +17,7 @@
 		<div id="LayerBody" >
 			<div id="LayerBody_Container">
 				<div id="LayerMain">
+					<@i.logo_site/>
 					<!-- body code goes here -->
 					<div class="main-layer">
 						<div class="my-header">Конструктор курсов</div>

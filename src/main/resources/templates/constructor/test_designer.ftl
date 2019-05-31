@@ -1,3 +1,4 @@
+<#import "../index_macro.ftl" as i>
 <!doctype html>
 <html>
 <head>
@@ -17,6 +18,7 @@
 		<div id="LayerBody" >
 			<div id="LayerBody_Container">
 				<div id="LayerMain">
+					<@i.logo_site/>
 					<!-- body code goes here -->
 					<div class="main-layer">
 						<div class="my-header">Конструктор курсов</div>
@@ -245,7 +247,6 @@
 			//создаем новую страницу
 			var new_page = document.createElement('li');
 			new_page.innerHTML = "Тест";
-			new_page.className = "pages";
 			new_page.className = "currentPage";
 			new_page.id = "test"+count_test_pages;
 			new_page.onclick = function(){
