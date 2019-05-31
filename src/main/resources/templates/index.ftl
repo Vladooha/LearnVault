@@ -18,9 +18,6 @@
 	<div id="LayerBody_Container">
 		<div id="LayerMain">
 			<@m.header_site/>
-			<div>
-				<input class="orangeButton" style="width: 200px; height: 40px; margin:50px auto;" type="button" value="Создать курс" onclick="window.location.href='/constructor/course_create';return false;">
-			</div>
 		</div>
 	</div>
 </div>

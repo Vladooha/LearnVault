@@ -1,98 +1,97 @@
 <#macro header_site>
-    <div  style="padding:20px 0 0 20px;width:1200px;height:85px;">
-        <div style="width:350px;float:left;">
-            <h1 id="Heading" style="float:left;"><a href="#" style="color:#FF9700;font-size:50px;" onclick="window.location.href='/';return false;">Training portal</a></h1>
+    <div  style="padding:20px 0;;width:100%;height:65px;">
+        <div style="width:30%;float:left;margin-left:2%;height:65px;text-align:top;">
+            <h1 id="Heading"><a href="#" style="color:#FF9700;font-size:50px;" onclick="window.location.href='/';return false;">Training portal</a></h1>
         </div>
-        <div style="width:350px;float:left; padding:17px 0 0 100px;">
+        <div style="width:46%;float:left;height:85px;">
             <form name="SiteSearch1_form" id="SiteSearch1_form" role="search" accept-charset="UTF-8" onsubmit="return searchPage(features)">
-                <input type="search" class="fa-search" id="SiteSearch1" style="width:138px;height:25px;" name="SiteSearch1" value="" spellcheck="false" placeholder="Поиск по порталу" role="searchbox">
-                <input type="submit" onclick="searchPage();return false;" name="Search" value="поиск" class="ButtonSearch" style="width:96px;height:25px;">
+               <div style="margin:20px auto; width:60%;">
+                    <input type="search" class="fa-search" id="SiteSearch1" style="width:138px;height:25px;" name="SiteSearch1" value="" spellcheck="false" placeholder="Поиск по порталу" role="searchbox">
+                    <input type="submit" onclick="searchPage();return false;" name="Search" value="поиск" class="ButtonSearch" style="width:96px;height:25px;">
+                </div>
             </form>
         </div>
-        <div style="width:250px;float:right;padding:17px 0 0 49px;cursor:pointer;" onclick="window.location.href='/profile'">
+        <div style="width:22%;float:left;height:65px;cursor:pointer;margin-top:20px;" onclick="window.location.href='/profile'">
             <span class="textExo2" style="width:100px;float:left;">Профиль</span>
             <img src="../static/images/noavatar.png" id="Image1" alt="" style="width:33px;height:30px;">
         </div>
     </div>
-    <div id="wb_CssMenu1" style="width:1200px;height:60px;">
-        <ul role="menubar">
+    <div id="wb_CssMenu1" style="width:100%;height:60px;z-index: 999999;">
+        <ul role="menubar" style="z-index: 1000;">
             <li class="firstmain">
                 <a role="menuitem" class="withsubmenu" href="#" target="_self">Программы и курсы</a>
                 <ul role="menu">
-                    <li class="firstitem"><a role="menuitem" class="withsubmenu" href="#" target="_self">Курсы</a>
-                        <ul role="menu">
                             <!-- LIST CATEGORIES -->
                             <#if categories??>
                                 <#list categories as category>
                                     <#assign path='/category?num='+category.getNum()>
-                                    <li class="firstitem">
-                                        <a role="menuitem" href='${path}' target="_self">
+                                    <li class="firstitem" style="z-index: 1000;">
+                                        <a role="menuitem" href='${path}' target="_self" style="z-index: 1000;">
                                             ${category.getName()}
                                         </a>
                                     </li>
                                 </#list>
                             </#if>
                             <!-- LIST CATEGORIES -->
-                        </ul>
-                    </li>
-                    <li class="lastitem"><a role="menuitem" href="#" target="_self">&#1058;&#1077;&#1089;&#1090;&#1099;</a>
-                    </li>
                 </ul>
             </li>
             <li>
-                <a role="menuitem" class="withsubmenu" href="#" target="_self">Мое обучение</a>
-                <ul role="menu">
-                    <li class="firstitem">
-                        <a role="menuitem" class="withsubmenu" href="#" target="_self">Индивидуальное</a>
-                        <ul role="menu">
-                            <li class="firstitem">
-                                <a role="menuitem" href="#" target="_self">Мои курсы</a>
-                            </li>
-                            <li>
-                                <a role="menuitem" href="#" target="_self">Мои тесты</a>
-                            </li>
-                            <li class="lastitem">
-                                <a role="menuitem" href="#" target="_self">Домашняя работа</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="lastitem"><a role="menuitem" class="withsubmenu" href="#" target="_self">Корпоративное</a>
-                        <ul role="menu">
-                            <li class="firstitem">
-                                <a role="menuitem" href="#" target="_self">Назначенные тесты</a>
-                            </li>
-                            <li class="lastitem">
-                                <a role="menuitem" href="#" target="_self">Назначенные курсы</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+                <a role="menuitem" class="withsubmenu" href="/constructor/course_create" target="_self">Создать курс</a>
             </li>
             <li>
-                <a role="menuitem" class="withsubmenu" href="#" target="_self">Оценка</a>
-
-                <ul role="menu">
-                    <li class="firstitem">
-                        <a role="menuitem" href="#" target="_self">Аттестация</a>
-                    </li>
-                    <li class="lastitem">
-                        <a role="menuitem" href="#" target="_self">Тестировани</a>
-                    </li>
-                </ul>
+                <a role="menuitem" class="withsubmenu" href="" target="_self">Мои курсы</a>
             </li>
+            <!--IF USER ->
             <li>
-                <a role="menuitem" href="#" target="_self">Центр практики</a>
+    			<a role="menuitem" class="withsubmenu" href="" target="_self">Стать учителем</a>
             </li>
+            <-- end -->
+            <!-- IF ADMIN -->
             <li>
-                <a role="menuitem" href="#" target="_self">База знаний</a>
+                <a role="menuitem" class="withsubmenu" href="admin_panel" target="_self">Администрирование</a>
             </li>
+            <!-- end -->
+            <!--IF TEACHER ->
             <li>
-                <a role="menuitem" href="#" target="_self">Контакты</a>
+    			<a role="menuitem" class="withsubmenu" href="teacher_panel" target="_self">Администрирование</a>
+            </li>
+            <-- end -->
+            <li>
+                <a role="menuitem" class="withsubmenu" href="/constructor/contacts" target="_self">Администрирование</a>
             </li>
         </ul>
     </div>
 </#macro>
+<#macro logo_site>
+<div  style="padding:20px 0;;width:100%;height:65px;">
+    <div style="width:30%;float:left;margin-left:2%;height:65px;text-align:top;">
+        <h1 id="Heading"><a href="#" style="color:#FF9700;font-size:50px;" onclick="hrefWithAlert('/index')">Training portal</a></h1>
+    </div>
+    <div style="width:46%;float:left;height:85px;"></div>
+    <div style="width:22%;float:left;height:65px;cursor:pointer;margin-top:20px;" onclick="hrefWithAlert('/profile')">
+        <span class="textExo2" style="width:100px;float:left;">Профиль</span>
+        <img src="../static/images/noavatar.png" id="Image1" alt="" style="width:33px;height:30px;">
+    </div>
+</div>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+	function hrefWithAlert(href){
+	swal({
+	  title: "Вы действительно хотите покинуть страницу?",
+	  text: "При этом все данные будут утеряны!",
+	  icon: "warning",
+	  buttons: true,
+	  dangerMode: true,
+	})
+	.then((willDelete) => {
 
+		if (willDelete) {
+			window.location.href=href;
+		} 
+	});
+	}
+</script>
+</#macro>
 <#macro time_to_search time>
     <div id="id_parent_timer" style="text-align:center;"></div>
     <label id="time" hidden="hidden">${time}</label>

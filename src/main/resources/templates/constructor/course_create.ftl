@@ -1,4 +1,5 @@
 <#import "../common/macro/upload_macro.ftl" as m>
+<#import "../index_macro.ftl" as i>
 
 <!doctype html>
 <html>
@@ -29,107 +30,117 @@
 	</style>
 </head>
 <body>
-<div class="main-layer">
-	<div class="my-header">Конструктор курсов</div>
-	<div class="project-explorer-container">
+<div id="LayerBody" >
+	<div id="LayerBody_Container">
+		<div id="LayerMain">
+			<@i.logo_site/>
+            <div class="main-layer">
+                <div class="my-header">Конструктор курсов</div>
+                <div class="project-explorer-container">
 
-	</div>
+                </div>
 
-	<div class="constructor-panel">
-		<form style="width: 860px;height: 770px; float:left; margin: 30px 0 0 40px">
-			<div>
-				<div>
-					<div><h3 class="h3">Категорию страницы курса:</h3></div>
-					<div>
-						<select autofocus style="margin: 20px 0 20px 40px;width: 300px; height: 30px;" id = "category" required class="style_input">
-							<#list categories as category>
-								<option value=${category.getNum()}>${category.getName()}</option>
-							</#list>[
-						</select>
-					</div>
-				</div>
-				<div>
-					<div><h3 class="h3">Название курса:</h3></div>
-					<div><input type="text" size="70" id="course_name" autofocus autocomplete="on" style="height: 23px; margin: 20px 0 20px 40px;" required class="style_input"></div>
-				</div>
-				<div>
-					<div class="inline" style="grid-row-start: 1;">
-						<div><h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Введите теги для курса:</h4></div>
-						<div>
-							<div id="tags">
-								<input type="text" value="" placeholder="Добавьте тэг" autocomplete="on" id ='tag'/>
-							</div>
-						</div>
-						<br>
-					</div>
-					<!--div class="inline" style="grid-row-start: 2; grid-column-start: 1; grid-column-end: 1;"/-->
-					<div class="inline" style="grid-row-start: 2;">
-						<@m.upload 'file'/>
-					</div>
-				</div>
-				<div>
-					<div><h5 class="H5">Описание курса:</h5></div>
-					<div><textarea id="description" required cols="75" rows="5" style="resize:none; margin: 20px 0 20px 40px;" id="textAnswer" class="style_input"></textarea></div>
-				</div>
-				<div style="margin-top:10px;">
-					<div><h5 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Выберите тип курса:</h5></div>
-					<div>
-						<div style="margin:20px 0 20px 40px;">
-							<label>
-								<input type="radio" name="type-course" checked>
-								<h5 class="h5" style="color:rgba(0,21,41,1.00); margin-left: 5px"; >Общедоступный курс</h5>
-							</label>
-						</div>
-					</div>
-					<div>
-						<div style="margin:20px 0 20px 40px;">
-							<label>
-								<input type="radio" id="isPrivate" name="type-course" <#if !isTeacher>disabled="true"</#if>>
-								<h5 class="h5"
-								<#if isTeacher>
-									style="color:rgba(0,21,41,1.00); margin-left: 5px;"
-								<#else>
-									style="color:rgba(0,21,41,0.50); margin-left: 5px;"
-								</#if>>
-									Курс только для учебной группы (доступно учителям)
-								</h5>
-							</label>
-						</div>
-					</div>
-				</div>
-				<div>
-					<div><h5 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Ограничение по времени:</h5></div>
-					<div class="onoffswitch" style="margin-top:20px;float:left; width:175px;">
-						<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" onChange="switchTime()">
-						<label class="onoffswitch-label" for="myonoffswitch">
-							<span class="onoffswitch-inner"></span>
-							<span class="onoffswitch-switch"></span>
-						</label>
-					</div>
-					<div style="margin:25px 0 0 40px;float:left; width:600px;"><input type="time" name="selected_time" list="time-list" value="00:30" id="timebox" style="visibility:hidden;"></p>
-						<datalist id="time-list">
-							<option value="00:05" label="5 минут">
-							<option value="00:10" label="10 минут">
-							<option value="00:15" label="15 минут">
-							<option value="00:20" label="20 минут">
-							<option value="00:25" label="25 минут">
-							<option value="00:30" label="30 минут">
-							<option value="00:40" label="40 минут">
-							<option value="01:00" label="1 час">
-							<option value="01:30" label="полтора часа">
-							<option value="02:00" label="2 часа">
-						</datalist>
-					</div>
-				</div>
-				<div>
-					<input type="hidden" name="_csrf" value="${_csrf.token}"/>
-					<input class="orangeButton" type="button" value="Далее" style="display: block; margin: 100px auto; width: 200px; height: 40px;"
-						   onclick="setCourse();sendCourse();">
-				</div>
-			</div>
-		</form>
-	</div>
-	<img src="../../static/images/miet.jpg" width="100" height="100"  style="float: right; margin: 0;"alt=""/>
+                <div class="constructor-panel">
+                    <form style="width: 860px;height: 770px; float:left; margin: 30px 0 0 40px">
+                        <div>
+                            <div>
+                                <div><h3 class="h3">Категорию страницы курса:</h3></div>
+                                <div>
+                                    <select autofocus style="margin: 20px 0 20px 40px;width: 300px; height: 30px;" id = "category" required class="style_input">
+                                        <#list categories as category>
+                                            <option value=${category.getNum()}>${category.getName()}</option>
+                                        </#list>[
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <div><h3 class="h3">Название курса:</h3></div>
+                                <div><input type="text" size="70" id="course_name" autofocus autocomplete="on" style="height: 23px; margin: 20px 0 20px 40px;" required class="style_input"></div>
+                            </div>
+                            <div style="width: 100%;">
+                                <div style="width: 50%;float:left;">
+                                    <div><h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Введите теги для курса:</h4></div>
+                                    <div>
+                                        <div id="tags" style="margin-bottom: 10px;">
+                                            <input type="text" value="" placeholder="Добавьте тэг" autocomplete="on" id ='tag'/>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                                <!--div class="inline" style="grid-row-start: 2; grid-column-start: 1; grid-column-end: 1;"/-->
+                                <div style="width: 50%;float:left;">
+                                    <@m.upload 'file'/>
+                                </div>
+                            </div>
+                            <div>
+                                <div><h5 class="H5">Описание курса:</h5></div>
+                                <div><textarea id="description" required cols="75" rows="5" style="resize:none; margin: 20px 0 20px 40px;" id="textAnswer" class="style_input"></textarea></div>
+                            </div>
+                            <div style="margin-top:10px;">
+                                <div><h5 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Выберите тип курса:</h5></div>
+                                <div>
+                                    <div style="margin:20px 0 20px 40px;">
+                                        <label>
+                                            <input type="radio" name="type-course" checked>
+                                            <h5 class="h5" style="color:rgba(0,21,41,1.00); margin-left: 5px"; >Общедоступный курс</h5>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style="margin:20px 0 20px 40px;">
+                                        <label>
+                                            <input type="radio" id="isPrivate" name="type-course" <#if !isTeacher>disabled="true"</#if>>
+                                            <h5 class="h5"
+                                            <#if isTeacher>
+                                                style="color:rgba(0,21,41,1.00); margin-left: 5px;"
+                                            <#else>
+                                                style="color:rgba(0,21,41,0.50); margin-left: 5px;"
+                                            </#if>>
+                                                Курс только для учебной группы (доступно учителям)
+                                            </h5>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width: 100%;">
+                                <div style="width: 50%;float:left;">
+                                    <div><h5 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Ограничение по времени:</h5></div>
+                                    <div class="onoffswitch" style="margin-top:20px;float:left; width:175px;">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" onChange="switchTime()">
+                                        <label class="onoffswitch-label" for="myonoffswitch">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                    <div style="margin:25px 0 0 40px;float:left; width:600px;">
+                                        <input type="time" name="selected_time" list="time-list" value="00:30" id="timebox" style="visibility:hidden;">
+                                        <datalist id="time-list">
+                                            <option value="00:05" label="5 минут">
+                                            <option value="00:10" label="10 минут">
+                                            <option value="00:15" label="15 минут">
+                                            <option value="00:20" label="20 минут">
+                                            <option value="00:25" label="25 минут">
+                                            <option value="00:30" label="30 минут">
+                                            <option value="00:40" label="40 минут">
+                                            <option value="01:00" label="1 час">
+                                            <option value="01:30" label="полтора часа">
+                                            <option value="02:00" label="2 часа">
+                                        </datalist>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width: 50%;float:left;">
+                                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                                <input class="orangeButton" type="button" value="Далее" style="margin: 0 auto; width: 200px; height: 40px;"
+                                       onclick="setCourse();sendCourse();">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <img src="../../static/images/miet.jpg" width="100" height="100"  style="float: right; margin: 0;"alt=""/>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 <script>

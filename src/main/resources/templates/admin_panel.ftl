@@ -26,9 +26,9 @@
 <body>
 <div id="LayerBody" >
     <div id="LayerBody_Container">
-        <div id="LayerMain" style="width:70%;">
+        <div id="LayerMain">
             <@m.header_site/>
-            <div>
+            <!-- div>
                 <div style="margin: 60px auto 40px auto;width:660px;">
                     <form action="/ajax/add_metatag" method="post">
                         Метатэг:<br>
@@ -77,12 +77,12 @@
                         <input type="submit" value="Submit">
                     </form>
                 </div>
-            </div>
-            <div style="width:90%; margin: 0 auto;">
+            </div -->
+            <div style="width:90%; margin: 0 auto;z-index: 0;">
                         <ul class="tabs" role="tablist">
                         <li>
                             <input type="radio" name="tabs" id="tab1" checked />
-                            <label for="tab1" role="tab" aria-selected="true" aria-controls="panel1" tabindex="0">Students</label>
+                            <label for="tab1" role="tab" aria-selected="true" aria-controls="panel1" tabindex="1">Students</label>
                             <div id="tab-content1" class="tab-content" role="tabpanel" aria-labelledby="description" aria-hidden="false" style="">
                               <div class="tab_container">
                                     <div class="row">
@@ -91,11 +91,11 @@
                                                 <div class="users" id="container_users">
 													<ul id="{UserName1}" onclick="clickOnUser(this.id, 'user')">
 														<li><p id="P{UserName1}">{UserName1}</p></li>
-														<li><p id="T{UserName1}">{TeacherName1}</p></li>
+														<li><p id="T{UserName1}">{GroupName1}</p></li>
 													</ul>
 													<ul id="{UserName2}" onclick="clickOnUser(this.id, 'user')">
 														<li><p id="P{UserName2}">{UserName2}</p></li>
-														<li><p id="T{UserName2}">{TeacherName2}</p></li>
+														<li><p id="T{UserName2}">{GroupName2}</p></li> <!-- p.s. не обращай внимание на то, что группа - это учитель, потом переименую, когда буду более сконцентрированный, чтобы ничего не потерять.  -->
 													</ul>
                                                 </div>
                                             </div>
@@ -113,7 +113,7 @@
 
                         <li>
                             <input type="radio" name="tabs" id="tab2" />
-                            <label for="tab2" role="tab" aria-selected="false" aria-controls="panel2" tabindex="0">Teachers</label>
+                            <label for="tab2" role="tab" aria-selected="false" aria-controls="panel2" tabindex="2">Teachers</label>
                             <div id="tab-content2" class="tab-content" role="tabpanel" aria-labelledby="specification" aria-hidden="true">
                               <div class="tab_container">
                                     <div class="row">
@@ -139,7 +139,7 @@
 
                         <li>
                             <input type="radio" name="tabs" id="tab3" />
-                            <label for="tab3" role="tab" aria-selected="false" aria-controls="panel3" tabindex="0">Admins</label>
+                            <label for="tab3" role="tab" aria-selected="false" aria-controls="panel3" tabindex="3">Admins</label>
                             <div id="tab-content2" class="tab-content" role="tabpanel" aria-labelledby="specification" aria-hidden="true">
                               <div class="tab_container">
                                     <div class="row">
@@ -164,7 +164,7 @@
 							
 						<li>
                             <input type="radio" name="tabs" id="tab4" />
-                            <label for="tab4" role="tab" aria-selected="true" aria-controls="panel1" tabindex="0">Сourse categories</label>
+                            <label for="tab4" role="tab" aria-selected="true" aria-controls="panel4" tabindex="4">Сourse categories</label>
                             <div id="tab-content1" class="tab-content" role="tabpanel" aria-labelledby="description" aria-hidden="false">
                               <div class="tab_container">
                                     <div class="row">
@@ -186,6 +186,32 @@
                                 </div>
                             </div>
                         </li>
+							
+						<li>
+							<input type="radio" name="tabs" id="tab5" />
+							<label for="tab5" role="tab" aria-selected="true" aria-controls="panel5" tabindex="5">meta tags</label>
+							<div id="tab-content1" class="tab-content" role="tabpanel" aria-labelledby="description" aria-hidden="false">
+							  <div class="tab_container">
+									<div class="row">
+										<div class="col-md-9" style="height:200px;">
+											<div class="containerLi">
+												<ul class="users" id="container_tags">
+													<li onclick='clickOnUser(this.id, "tag")' id="{metaName1}"><p id="P{metaName1}">{metaName1}</p></li>
+													<li onclick='clickOnUser(this.id, "tag")' id="{metaName2}"><p id="P{metaName2}">{metaName2}</p></li>
+													<li onclick='clickOnUser(this.id, "tag")' id="{metaName3}"><p id="P{metaName3}">{metaName3}</p></li>
+												</ul>
+											</div>
+										</div>
+										<div class="col-md-3" style="height:200px;">
+											<div style="margin: 10px 0 0 20px;"><button type="button" onClick='addUser("tag")' class="btnUserMenu">Добавить</button></div>
+											<div  style="margin: 20px 0 0 20px;"><button type="button" disabled id="deleteBtnTAG" onClick='deleteUser("tag")' class="btnUserMenu">Удалить</button></div>
+											<div style="margin: 20px 0 0 20px;"><button type="button" style="height:30%;" disabled id="btnAddTag" onClick='addTag()' class="btnUserMenu">Привязать тег</button></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+							
                     </ul>
                 </div>
         </div>
@@ -206,6 +232,7 @@
 	var selectedTeacher = undefined;
 	var selectedAdmin = undefined;
 	var selectedCategories = undefined;
+	var selectedTag = undefined;
     
 </script>
 </body>
