@@ -61,34 +61,143 @@ function addAdmin(value) {
 		}
 	});
 }
-//functrion removeTeacher(name){
-//
-//}
 
-//functrion removeAdmin(name){
-//
-//}
+function removeTeacher(name){
+	$.ajax({
+		url: "/ajax/remove_teacher",
+		data: ({
+			teacherName: name
+		}),
+		success: function f() {
+			// Process answer
+		}
+	});
+}
 
-//functrion removeCategory(name){
-//
-//}
+function addTeacherToGroup(groupName, teacherName){
+	$.ajax({
+		url: "/ajax/add_teacher_to_group",
+		data: ({
+			groupName: groupName,
+			teacherName: teacherName
+		}),
+		success: function f() {
+			// Process answer
+		}
+	});
+}
 
-//functrion removeMetaTag(nameMetaTag){
-//
-//}
+function removeTeacherFromGroup(groupName, teacherName){
+	$.ajax({
+		url: "/ajax/remove_teacher_from_group",
+		data: ({
+			groupName: groupName,
+			teacherName: teacherName
+		}),
+		success: function f() {
+			// Process answer
+		}
+	});
+}
 
-//function addMetatag(nameMetaTag){
-//
-//}
+function removeAdmin(name){
+	$.ajax({
+		url: "/ajax/remove_admin",
+		data: ({
+			adminName: name
+		}),
+		success: function f() {
+			// Process answer
+		}
+	});
+}
 
-//function changeUserName(name){
-//
-//}
+function removeCategory(name){
+	$.ajax({
+		url: "/ajax/remove_course_category",
+		data: ({
+			categoryName: name
+		}),
+		success: function f() {
+			// Process answer
+		}
+	});
+}
 
-//function addTagToMetaTag(nameMetaTag, nameTag){
-//
-//}
+function removeMetaTag(nameMetaTag){
+	$.ajax({
+		url: "/ajax/remove_metatag",
+		data: ({
+			metetagName: nameMetaTag
+		}),
+		success: function f() {
+			// Process answer
+		}
+	});
+}
 
+function addMetatag(nameMetaTag){
+	$.ajax({
+		url: "/ajax/add_metatag",
+		data: ({
+			metetagName: nameMetaTag
+		}),
+		success: function f() {
+			// Process answer
+		}
+	});
+}
+
+function changeUserName(oldname, newname){
+	$.ajax({
+		url: "/ajax/change_username",
+		data: ({
+			oldUsername: oldname,
+			newUsername: newname
+		}),
+		success: function f() {
+			// Process answer
+		}
+	});
+}
+
+function addTagToMetaTag(nameMetaTag, nameTag, weight){
+	$.ajax({
+		url: "/ajax/add_tag_to_metatag",
+		data: ({
+			mameMetaTag: nameMetaTag,
+			nameTag: nameTag,
+			weight: weight
+		}),
+		success: function f() {
+			// Process answer
+		}
+	});
+}
+
+function createGroup(groupName){
+	$.ajax({
+		url: "/ajax/create_group",
+		data: ({
+			groupName: groupName
+		}),
+		success: function f() {
+			// Process answer
+		}
+	});
+}
+
+function deleteGroup(groupName){
+	$.ajax({
+		url: "/ajax/delete_group",
+		data: ({
+			groupName: groupName
+		}),
+		success: function f() {
+			// Process answer
+		}
+	});
+}
 
 
 //DIMA--------------------------------------------------------------------------------

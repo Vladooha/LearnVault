@@ -7,7 +7,7 @@ import javax.validation.*;
 
 @Documented
 @Constraint(validatedBy = MetatagExistsValidator.class)
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MetatagExists {
 

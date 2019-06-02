@@ -46,7 +46,11 @@ public class Course {
 
     private Long firstPageId;
 
-    private boolean isPrivate;
+    //private boolean isPrivate;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    private StudyGroup studyGroup;
 
     private long time;
 

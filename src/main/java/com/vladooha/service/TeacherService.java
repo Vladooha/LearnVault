@@ -1,13 +1,13 @@
 package com.vladooha.service;
 
-import com.vladooha.data.entities.LoginInfo;
 import com.vladooha.data.entities.ProfileInfo;
-import com.vladooha.data.entities.Role;
+import com.vladooha.data.entities.courses.StudyGroup;
 import com.vladooha.data.entities.courses.Teacher;
 import com.vladooha.data.form.StudentForm;
 import com.vladooha.data.repositories.LoginInfoRepo;
 import com.vladooha.data.repositories.ProfileInfoRepo;
 import com.vladooha.data.repositories.courses.CourseCategoryRepo;
+import com.vladooha.data.repositories.courses.StudyGroupRepo;
 import com.vladooha.data.repositories.courses.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,62 +26,61 @@ public class TeacherService {
     @Autowired
     private TeacherRepo teacherRepo;
     @Autowired
+    private StudyGroupRepo studyGroupRepo;
+    @Autowired
     private CourseCategoryRepo courseCategoryRepo;
+    @Autowired
+    private AdminService adminService;
 
-    public String removeStudent(Principal principal, String teacherName, String studentName) {
-        if (isTeacher(principal)) {
-            return removeStudentOperation(teacherName, studentName);
-        } else {
-            return "NO_PERMISSIONS";
-        }
-    }
+    public String createGroup(String groupName) {
+        if (studyGroupRepo.findByName(groupName) == null) {
+            StudyGroup studyGroup = new StudyGroup();
+            studyGroup.setName(groupName);
 
-    public List<StudentForm> getStudents(Principal principal, String teacherName) {
-        if (isTeacher(principal)) {
-            return  getStudentsOperation(teacherName);
-        }
-
-        return null;
-    }
-
-    public boolean isTeacher(Principal principal) {
-        LoginInfo loginInfo = loginInfoRepo.findByUsername(principal.getName());
-
-        if (loginInfo != null) {
-            if (loginInfo.getRoles().contains(Role.TEACHER)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    protected String removeStudentOperation(String teacherName, String studentName) {
-        Teacher teacher = teacherRepo.findByUsername(teacherName);
-
-        if (teacher != null) {
-            ProfileInfo studentProfileInfo = profileInfoRepo.findByUsername(studentName);
-
-            if (studentProfileInfo != null) {
-                Set<ProfileInfo> students = teacher.getStudents();
-                students.remove(studentProfileInfo);
-                teacher.setStudents(students);
-            }
-
-            teacherRepo.save(teacher);
+            studyGroupRepo.save(studyGroup);
 
             return "OK";
-        } else {
-            return "USER_NOT_FOUND";
         }
+
+        return "ALREADY_EXISTS";
     }
 
-    protected List<StudentForm> getStudentsOperation(String teacherName) {
-        Teacher teacher = teacherRepo.findByUsername(teacherName);
+    public String deleteGroup(Principal principal, String groupName) {
+        StudyGroup studyGroup = getGroupIfAllowed(principal, groupName);
 
-        if (teacher != null) {
+        if (studyGroup != null) {
+            studyGroupRepo.delete(studyGroup);
+
+            return "OK";
+        }
+
+        return "NO_PERMISSION";
+    }
+
+    public String removeStudent(Principal principal, String groupName, String studentName) {
+        StudyGroup studyGroup = getGroupIfAllowed(principal, groupName);
+
+        if (studyGroup != null) {
+            ProfileInfo profileInfo = profileInfoRepo.findByUsername(studentName);
+
+            if (studyGroup.getStudents().remove(profileInfo)) {
+                studyGroupRepo.save(studyGroup);
+
+                return "OK";
+            } else {
+                return "USER_NOT_FOUND";
+            }
+        }
+
+        return "NO_PERMISSION";
+    }
+
+    public List<StudentForm> getStudents(Principal principal, String groupName) {
+        StudyGroup studyGroup = getGroupIfAllowed(principal, groupName);
+
+        if (studyGroup != null) {
             List<StudentForm> response = new ArrayList<>();
-            for (ProfileInfo student : teacher.getStudents()) {
+            for (ProfileInfo student : studyGroup.getStudents()) {
                 StudentForm studentForm = new StudentForm();
 
                 studentForm.setId(student.getId());
@@ -96,5 +95,27 @@ public class TeacherService {
         }
 
         return null;
+    }
+
+    public StudyGroup getGroupIfAllowed(Principal principal, String groupName) {
+        StudyGroup studyGroup = studyGroupRepo.findByName(groupName);
+        String teacherName = principal.getName();
+
+        if (studyGroup != null &&
+                studyGroup.getTeachers().contains(teacherName) || adminService.isAdmin(principal)) {
+            return studyGroup;
+        }
+
+        return null;
+    }
+
+    public boolean isGroup(String groupName) {
+        StudyGroup studyGroup = studyGroupRepo.findByName(groupName);
+
+        if (studyGroup != null) {
+            return true;
+        }
+
+        return false;
     }
 }

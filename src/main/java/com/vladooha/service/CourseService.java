@@ -116,11 +116,12 @@ public class CourseService {
                 course.setSpecialization(specialization);
             }
 
-            if (teacherRepo.findByUsername(author) != null) {
-                course.setPrivate(isPrivate);
-            } else {
-                course.setPrivate(false);
-            }
+            // TODO set course
+//            if (teacherRepo.findByUsername(author) != null) {
+//                course.setPrivate(isPrivate);
+//            } else {
+//                course.setPrivate(false);
+//            }
 
             courseRepo.save(course);
 
@@ -465,22 +466,23 @@ public class CourseService {
                     logger.debug("Course progress - " + courseProgress.getCurrPage());
                     logger.debug("Page num - " + pageNum);
                     logger.debug("Pages in course - " + course.getPageCount());
-                    logger.debug("Privacy - " + course.isPrivate());
 
                     long currTime = System.currentTimeMillis();
                     long beginTime = courseProgress.getBeginTime();
                     long allowedTime = course.getTime();
                     if (allowedTime <= 0L || currTime - beginTime < allowedTime) {
-                        if (course.isPrivate()) {
-                            logger.debug("Accesing to private course");
-
-                            Set<ProfileInfo> students = teacherRepo.findByUsername(course.getAuthor()).getStudents();
-                            if (!students.contains(profileInfo)) {
-                                return null;
-                            } else {
-                                logger.debug(profileInfo.getUsername() + " is student!");
-                            }
-                        }
+                        // TODO Change access
+//                        if (course.isPrivate()) {
+//                            logger.debug("Accesing to private course");
+//
+//
+//                            Set<ProfileInfo> students = teacherRepo.findByUsername(course.getAuthor()).getStudents();
+//                            if (!students.contains(profileInfo)) {
+//                                return null;
+//                            } else {
+//                                logger.debug(profileInfo.getUsername() + " is student!");
+//                            }
+//                        }
 
                         if (course.getPageCount() == pageNum) {
                             CoursePage endCoursePage = new CoursePage();

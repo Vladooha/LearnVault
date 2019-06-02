@@ -12,14 +12,15 @@ import com.vladooha.data.repositories.ProfileInfoRepo;
 import com.vladooha.data.repositories.courses.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.omg.CORBA.NO_PERMISSION;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.PersistenceUnit;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
@@ -45,32 +46,34 @@ public class AdminService {
     @Autowired
     private MetatagTagRepo metatagTagRepo;
     @Autowired
+    private StudyGroupRepo studyGroupRepo;
+    @Autowired
     private TeacherService teacherService;
 
     public String addTeacher(Principal principal, String teacherName) {
         if (isAdmin(principal)) {
-            ProfileInfo teacherProfileInfo = profileInfoRepo.findByUsername(teacherName);
+            LoginInfo loginInfo = loginInfoRepo.findByUsername(teacherName);
+            if (loginInfo != null) {
+                Teacher teacher = teacherRepo.findByUsername(teacherName);
+                if (teacher == null) {
+                    ProfileInfo teacherProfile = profileInfoRepo.findByUsername(teacherName);
+                    if (teacherProfile != null) {
+                        teacher = new Teacher();
+                        teacher.setProfileInfo(teacherProfile);
 
-            if (teacherProfileInfo != null) {
-                if (teacherRepo.findByUsername(teacherName) == null) {
-                    Teacher teacher = new Teacher();
-                    teacher.setUsername(teacherName);
+                        teacherRepo.save(teacher);
 
-                    teacherRepo.save(teacher);
-
-                    LoginInfo loginInfo = loginInfoRepo.findByUsername(teacherName);
-                    if (loginInfo != null) {
                         Set<Role> roles = loginInfo.getRoles();
                         roles.add(Role.TEACHER);
                         loginInfo.setRoles(roles);
 
                         loginInfoRepo.save(loginInfo);
-                    }
 
-                    return OK;
-                } else {
-                    return ALREADY_EXISTS;
+                        return OK;
+                    }
                 }
+
+                return ALREADY_EXISTS;
             } else {
                 return USER_NOT_FOUND;
             }
@@ -79,36 +82,105 @@ public class AdminService {
         }
     }
 
-    public String addStudent(Principal principal, String teacherName, String studentName) {
+    public String removeTeacher(Principal principal, String teacherName) {
         if (isAdmin(principal)) {
-            Teacher teacher = teacherRepo.findByUsername(teacherName);
-
-            if (teacher != null) {
-                ProfileInfo studentProfileInfo = profileInfoRepo.findByUsername(studentName);
-
-                if (studentProfileInfo != null) {
-                    Set<ProfileInfo> students = teacher.getStudents();
-                    students.add(studentProfileInfo);
-                    teacher.setStudents(students);
+            LoginInfo loginInfo = loginInfoRepo.findByUsername(teacherName);
+            if (loginInfo != null) {
+                Teacher teacher = teacherRepo.findByUsername(teacherName);
+                if (teacher != null) {
+                    teacherRepo.delete(teacher);
                 }
 
-                teacherRepo.save(teacher);
+                Set<Role> roles = loginInfo.getRoles();
+                if (roles.contains(Role.TEACHER)) {
+                    roles.remove(Role.TEACHER);
+                    loginInfo.setRoles(roles);
+
+                    loginInfoRepo.save(loginInfo);
+                }
+
+                return OK;
+            } else {
+                return USER_NOT_FOUND;
+            }
+        } else {
+            return NO_PERMISSION;
+        }
+    }
+
+    public String addTeacherToGroup(Principal principal, String groupName, String teacherName) {
+        if (isAdmin(principal)) {
+            Teacher teacher = teacherRepo.findByUsername(teacherName);
+            if (teacher != null) {
+                StudyGroup studyGroup = teacherService.getGroupIfAllowed(principal, groupName);
+                if (studyGroup != null) {
+                    studyGroup.getTeachers().add(teacher);
+
+                    studyGroupRepo.save(studyGroup);
+                }
+            }
+
+            return OK;
+        } else {
+            return NO_PERMISSION;
+        }
+    }
+
+    public String removeTeacherFromGroup(Principal principal, String groupName, String teacherName) {
+        if (isAdmin(principal)) {
+            Teacher teacher = teacherRepo.findByUsername(teacherName);
+            if (teacher != null) {
+                StudyGroup studyGroup = teacherService.getGroupIfAllowed(principal, groupName);
+                if (studyGroup != null) {
+                    studyGroup.getTeachers().remove(teacher);
+
+                    studyGroupRepo.save(studyGroup);
+                }
+            }
+
+            return OK;
+        } else {
+            return NO_PERMISSION;
+        }
+    }
+
+    public String addStudent(Principal principal, String groupName, String studentName) {
+        if (isAdmin(principal)) {
+            StudyGroup studyGroup = studyGroupRepo.findByName(groupName);
+
+            if (studyGroup != null) {
+                ProfileInfo profileInfo = profileInfoRepo.findByUsername(studentName);
+
+                if (profileInfo != null) {
+                    Set<ProfileInfo> students = studyGroup.getStudents();
+                    students.add(profileInfo);
+
+                    studyGroupRepo.save(studyGroup);
+                }
 
                 return "OK";
-            } else {
-                return "USER_NOT_FOUND";
             }
+
+            return "NOT_FOUND";
+        } else {
+            return "NO_PERMISSION";
+        }
+    }
+
+    public String removeStudent(Principal principal, String groupName, String studentName) {
+        if (isAdmin(principal)) {
+            return teacherService.removeStudent(principal, groupName, studentName);
         } else {
             return "NO_PERMISSIONS";
         }
     }
 
-    public String removeStudent(Principal principal, String teacherName, String studentName) {
-        if (isAdmin(principal)) {
-            return teacherService.removeStudentOperation(teacherName, studentName);
-        } else {
-            return "NO_PERMISSIONS";
-        }
+    public String createGroup(String groupName) {
+        return teacherService.createGroup(groupName);
+    }
+
+    public String deleteGroup(Principal principal, String groupName) {
+        return teacherService.deleteGroup(principal, groupName);
     }
 
     public String addAdmin(Principal principal, String newAdminName) {
@@ -121,6 +193,28 @@ public class AdminService {
                 loginInfo.setRoles(roles);
 
                 loginInfoRepo.save(loginInfo);
+
+                return "OK";
+            } else {
+                return "USER_NOT_FOUND";
+            }
+        } else {
+            return "NO_PERMISSIONS";
+        }
+    }
+
+    public String removeAdmin(Principal principal, String adminName) {
+        if (isAdmin(principal)) {
+            LoginInfo loginInfo = loginInfoRepo.findByUsername(adminName);
+
+            if (loginInfo != null) {
+                Set<Role> roles = loginInfo.getRoles();
+                if (roles.contains(Role.ADMIN)) {
+                    roles.remove(Role.ADMIN);
+                    loginInfo.setRoles(roles);
+
+                    loginInfoRepo.save(loginInfo);
+                }
 
                 return "OK";
             } else {
@@ -152,22 +246,37 @@ public class AdminService {
         }
     }
 
-    public List<StudentForm> getStudentsByTeacher(Principal principal, String teacherName) {
+    public String removeCourseCategory(Principal principal, String categoryName) {
         if (isAdmin(principal)) {
-            return teacherService.getStudentsOperation(teacherName);
+            CourseCategory courseCategory = courseCategoryRepo.findByName(categoryName);
+
+            if (courseCategory != null) {
+                courseCategoryRepo.delete(courseCategory);
+            }
+
+            return "OK";
+        } else {
+            return "NO_PERMISSIONS";
+        }
+    }
+
+    public List<StudentForm> getStudentsByGroup(Principal principal, String groupName) {
+        if (isAdmin(principal)) {
+            return teacherService.getStudents(principal, groupName);
         }
 
         return null;
     }
 
-    public String addMetatag(Principal principal, MetatagCreateForm metatagCreateForm) {
+    public String addMetatag(Principal principal, String metatagName) {
         if (isAdmin(principal)) {
-            String name = metatagCreateForm.getMetatagName();
-            Metatag metatag = metatagRepo.findByName(name);
-            metatag = new Metatag();
-            metatag.setName(name);
+            Metatag metatag = metatagRepo.findByName(metatagName);
+            if (metatag == null) {
+                metatag = new Metatag();
+                metatag.setName(metatagName);
 
-            metatagRepo.save(metatag);
+                metatagRepo.save(metatag);
+            }
 
             return OK;
         }
@@ -175,13 +284,27 @@ public class AdminService {
         return NO_PERMISSION;
     }
 
-    public String addTagToMetatag(Principal principal, MetatagForm metatagForm) {
+    public String removeMetatag(Principal principal, String metatagName) {
         if (isAdmin(principal)) {
-            Metatag metatag = metatagRepo.findByName(metatagForm.getMetatagName());
-            CourseTag courseTag = courseTagRepo.findByName(metatagForm.getTagName());
+            Metatag metatag = metatagRepo.findByName(metatagName);
+
+            if (metatag != null) {
+                metatagRepo.delete(metatag);
+            }
+
+            return OK;
+        }
+
+        return NO_PERMISSION;
+    }
+
+    public String addTagToMetatag(Principal principal, String metatagName, String tagName, int weight) {
+        if (isAdmin(principal)) {
+            Metatag metatag = metatagRepo.findByName(metatagName);
+            CourseTag courseTag = courseTagRepo.findByName(tagName);
             if (courseTag == null) {
                 courseTag = new CourseTag();
-                courseTag.setName(metatagForm.getTagName());
+                courseTag.setName(tagName);
 
                 courseTagRepo.save(courseTag);
 
@@ -194,29 +317,67 @@ public class AdminService {
             }
             metatagTag.setMetatag(metatag);
             metatagTag.setTag(courseTag);
-            metatagTag.setWeight(metatagForm.getWeight());
+            metatagTag.setWeight(weight);
 
             metatagTagRepo.save(metatagTag);
 
-            /*
-            logger.debug("MetatagTag tag id: " + metatagTag.getTag().getId());
-
-            Set<MetatagTag> metatagSet = metatag.getMetatagTags();
-            if (metatagSet.contains(metatagTag)) {
-                metatagSet.remove(metatagTag);
-            }
-            metatagSet.add(metatagTag);
-
-            metatagSet = courseTag.getMetatagTags();
-            if (metatagSet.contains(metatagTag)) {
-                metatagSet.remove(metatagTag);
-            }
-            metatagSet.add(metatagTag);
-
-            metatagRepo.save(metatag);
-            */
-
             return OK;
+        }
+
+        return NO_PERMISSION;
+    }
+
+    public List<StudyGroup> getAllGroups(Principal principal) {
+        if (isAdmin(principal)) {
+            return studyGroupRepo.findAll();
+        }
+
+        return null;
+    }
+
+    public List<Teacher> getAllTeachers(Principal principal) {
+        if (isAdmin(principal)) {
+            return teacherRepo.findAll();
+        }
+
+        return null;
+    }
+
+    public List<String> getAllAdmins(Principal principal) {
+        if (isAdmin(principal)) {
+            List<String> adminNames = loginInfoRepo.findByRolesContaining(Role.ADMIN)
+                    .stream()
+                    .map(a -> a.getUsername())
+                    .collect(Collectors.toList());
+
+            return adminNames;
+        }
+
+        return null;
+    }
+
+    public List<CourseCategory> getAllCategories(Principal principal) {
+        if (isAdmin(principal)) {
+            return courseCategoryRepo.findAll();
+        }
+
+        return null;
+    }
+
+    public String changeUsername(Principal principal, String oldName, String newName) {
+        if (isAdmin(principal)) {
+            LoginInfo loginInfo = loginInfoRepo.findByUsername(oldName);
+            ProfileInfo profileInfo = profileInfoRepo.findByUsername(oldName);
+
+            if (loginInfo != null && profileInfo != null) {
+                loginInfo.setUsername(newName);
+                profileInfo.setUsername(newName);
+
+                loginInfoRepo.save(loginInfo);
+                profileInfoRepo.save(profileInfo);
+            }
+
+            return "NOT_FOUND";
         }
 
         return NO_PERMISSION;
