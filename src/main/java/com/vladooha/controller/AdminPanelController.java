@@ -241,7 +241,7 @@ public class AdminPanelController {
         }
 
         List<StudentInfo> studentInfoList = new ArrayList<>();
-        List<StudyGroup> groups = adminService.getAllGroups(principal);
+        List<StudyGroup> groups = adminService.getAllGroups();
         for (StudyGroup group : groups) {
             for (ProfileInfo student : group.getStudents()) {
                 studentInfoList.add(

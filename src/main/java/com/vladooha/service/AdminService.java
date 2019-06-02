@@ -327,9 +327,19 @@ public class AdminService {
         return NO_PERMISSION;
     }
 
-    public List<StudyGroup> getAllGroups(Principal principal) {
-        if (isAdmin(principal)) {
-            return studyGroupRepo.findAll();
+    public List<StudyGroup> getAllGroups() {
+        return studyGroupRepo.findAll();
+    }
+
+    public List<StudyGroup> getAllGroupsByTeacher(String teacherName) {
+        Teacher teacher = teacherRepo.findByUsername(teacherName);
+        if (teacher != null) {
+            List<StudyGroup> result = getAllGroups()
+                    .stream()
+                    .filter(group -> group.getTeachers().contains(teacher))
+                    .collect(Collectors.toList());
+
+            return result;
         }
 
         return null;

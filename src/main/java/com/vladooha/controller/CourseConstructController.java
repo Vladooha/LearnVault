@@ -1,4 +1,5 @@
 package com.vladooha.controller;
+import com.vladooha.service.AdminService;
 import com.vladooha.service.CourseService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +18,8 @@ public class CourseConstructController {
 
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private AdminService adminService;
 
     /// Simple requests
     @GetMapping("/constructor/course_create")
@@ -25,6 +28,7 @@ public class CourseConstructController {
             Principal principal) {
         model.put("categories", courseService.getCategories());
         model.put("isTeacher", courseService.isTeacher(principal.getName()));
+        model.put("groups", adminService.getAllGroupsByTeacher(principal.getName()));
 
         return "/constructor/course_create";
     }
@@ -37,7 +41,7 @@ public class CourseConstructController {
             @RequestParam String name,
             @RequestParam String description,
             @RequestParam String[] tags,
-            @RequestParam boolean isPrivate,
+            @RequestParam String groupName,
             @RequestParam long time,
             @RequestParam String pic,
             Principal principal
@@ -47,14 +51,13 @@ public class CourseConstructController {
         logger.debug("Name - " + name);
         logger.debug("Description - " + description);
         logger.debug("Time - " + time);
-        logger.debug("isPrivate - " + isPrivate);
 
         Long course_id = courseService.createCourse(categoryNum,
                 principal.getName(),
                 name,
                 description,
                 tags,
-                isPrivate,
+                groupName,
                 time,
                 pic);
 

@@ -55,6 +55,8 @@ public class CourseService {
     private FeedbackRepo feedbackRepo;
     @Autowired
     private MetatagRepo metatagRepo;
+    @Autowired
+    private StudyGroupRepo studyGroupRepo;
 
     @PersistenceUnit
     private EntityManagerFactory entityManagerFactory;
@@ -83,7 +85,7 @@ public class CourseService {
                              String name,
                              String description,
                              String[] tags,
-                             boolean isPrivate,
+                             String groupName,
                              long time,
                              String pic) {
         CourseCategory courseCategory = courseCategoryRepo.findByNum(category_num);
@@ -117,11 +119,12 @@ public class CourseService {
             }
 
             // TODO set course
-//            if (teacherRepo.findByUsername(author) != null) {
-//                course.setPrivate(isPrivate);
-//            } else {
-//                course.setPrivate(false);
-//            }
+            if (groupName != "none") {
+                StudyGroup studyGroup = studyGroupRepo.findByName(groupName);
+                course.setStudyGroup(studyGroup);
+            } else {
+                course.setStudyGroup(null);
+            }
 
             courseRepo.save(course);
 
@@ -472,17 +475,17 @@ public class CourseService {
                     long allowedTime = course.getTime();
                     if (allowedTime <= 0L || currTime - beginTime < allowedTime) {
                         // TODO Change access
-//                        if (course.isPrivate()) {
-//                            logger.debug("Accesing to private course");
-//
-//
-//                            Set<ProfileInfo> students = teacherRepo.findByUsername(course.getAuthor()).getStudents();
-//                            if (!students.contains(profileInfo)) {
-//                                return null;
-//                            } else {
-//                                logger.debug(profileInfo.getUsername() + " is student!");
-//                            }
-//                        }
+                        StudyGroup studyGroup = course.getStudyGroup();
+                        if (studyGroup != null) {
+                            logger.debug("Accesing to private course");
+
+                            Set<ProfileInfo> students = studyGroup.getStudents();
+                            if (!students.contains(profileInfo)) {
+                                return null;
+                            } else {
+                                logger.debug(profileInfo.getUsername() + " is student!");
+                            }
+                        }
 
                         if (course.getPageCount() == pageNum) {
                             CoursePage endCoursePage = new CoursePage();
