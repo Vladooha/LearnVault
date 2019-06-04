@@ -12,12 +12,12 @@ function addTeacher(value) {
 	});
 }
 
-function addStudent(teacher, student) {
+function addStudent(student, group) {
 	$.ajax({
 		url: "/ajax/add_student",
 		data: ({
-			teacherName: teacher,
-			studentName: student
+			studentName: student,
+			groupName: group
 		}),
 		success: function f() {
 			// Process answer
@@ -25,12 +25,12 @@ function addStudent(teacher, student) {
 	});
 }
 
-function removeStudent(teacher, student) {
+function removeStudent(student, group) {
 	$.ajax({
 		url: "/ajax/remove_student",
 		data: ({
-			teacherName: teacher,
-			studentName: student
+			studentName: student,
+			groupName: group
 		}),
 		success: function f() {
 			// Process answer
@@ -201,13 +201,66 @@ function deleteGroup(groupName){
 
 
 //DIMA--------------------------------------------------------------------------------
+function addTag(){
+	var nameTag = undefined, weightTag = undefined;
+	swal("Введите тег:", {
+	  content: "input",
+	})
+	.then((value) => {
+		nameTag = value;
+		swal("Введите его вес:", {
+		  content: "input",
+		})
+		.then((value) => {
+			weightTag = value;
+			addTagToMetaTag(selectedTag, nameTag, weightTag);
+			swal("Тэг успешно добавлен!", {
+			  icon: "success",
+			});
+		});
+	});
+}
+function addGroup(){
+	swal("Введите название группы:", {
+	  content: "input",
+	})
+	.then((value) => {
+		createGroup(value);
+		swal("Новая группа успешно создана!", {
+			  icon: "success",
+			}).then((value) => {
+				location.reload();
+			});
+		setTimeout(function() { location.reload(); }, 2000);
+	});
+}
+function delGroup(){
+	swal({
+	  title: "Вы уверены?",
+	  text: "Это действие приведет к безвозвратному удалению группы!",
+	  icon: "warning",
+	  buttons: true,
+	  dangerMode: true,
+	})
+	.then((willDelete) => {
+		deleteGroup(selectedGroup);
+		document.getElementById("delGroup").hidden = true;
+		swal("Группа успешно удалена!", {
+			  icon: "success",
+			}).then((value) => {
+				location.reload();
+			});
+		setTimeout(function() { location.reload(); }, 2000);
+	});
+}
 function clickOnUser(id, select = undefined){
 		var lies =  undefined;
 		switch(select){
 			case "user":
-				lies = document.getElementById('container_users').getElementsByTagName("ul");
-				activatedBtns(false, "U");
-				selectedUser = id;
+				var buf = id.split('_');
+				lies = document.getElementById('container_users_'+buf[0]).getElementsByTagName("li");
+				activatedBtns(false, "U_"+selectedGroup);
+				selectedUser = buf[1];
 				break;
 			case "teacher":
 				lies = document.getElementById('container_teachers').getElementsByTagName("li");
@@ -224,6 +277,12 @@ function clickOnUser(id, select = undefined){
 				activatedBtns(false, "TAG");
 				selectedTag = id;
 				break;	
+			case "teacherG":
+				var buf = id.split('_');
+				lies = document.getElementById('container_teachers_'+buf[0]).getElementsByTagName("li");
+				activatedBtns(false, "T_"+selectedGroup);
+				selectedTeacherInGroup = buf[1];
+				break;
 			default:
 				lies = document.getElementById('container_admins').getElementsByTagName("li");	
 				activatedBtns(false, "A");
@@ -250,7 +309,8 @@ function activatedBtns(flag, type){
 		case "U":
 			document.getElementById("changeTeacher").disabled = flag;
 		default:
-			document.getElementById("changeBtn"+type).disabled = flag;
+			if ($("changeBtn"+type).length) 
+				document.getElementById("changeBtn"+type).disabled = flag;
 			document.getElementById("deleteBtn"+type).disabled = flag;
 	}
 }
@@ -274,12 +334,12 @@ function deleteUser(select){
 			});
 			switch(select){
 				case "user":
-					activatedBtns(true, "U");
-					currentUserLi = document.getElementById(selectedUser);
-					var teacher = document.getElementById("T" + selectedUser).innerHTML;
+					activatedBtns(true, "U_"+selectedGroup);
+
+					currentUserLi = document.getElementById(selectedGroup+ "_" + selectedUser);
 					
 					//DELETE USER 
-					removeStudent(teacher, selectedUser)
+					removeStudent(selectedUser, selectedGroup);
 					
 					break;
 
@@ -289,6 +349,15 @@ function deleteUser(select){
 					
 					//DELETE TEACHER 
 					removeTeacher(selectedTeacher);
+					
+					break;
+
+				case "teacherG":
+					activatedBtns(true, "T_"+selectedGroup);
+					currentUserLi = document.getElementById(selectedGroup+ "_" + selectedTeacherInGroup);
+					
+					//DELETE TEACHER 
+					removeTeacherFromGroup(selectedGroup, selectedTeacherInGroup);
 					
 					break;
 
@@ -324,7 +393,6 @@ function deleteUser(select){
 	});
 }
 function addUser(select){
-	var createdStudentUl = document.createElement('ul');
 	swal("Введите новое имя:", {
 	  content: "input",
 	})
@@ -335,7 +403,10 @@ function addUser(select){
 
 			//создаем параграф с текстом внутри строки
 			var createdP = document.createElement('p');
-			createdP.id = "P" + value;
+			if (select != "teacherG")
+				createdP.id = "P" + value;
+			else
+				createdP.id = "P" + selectedGroup + "_" + value;
 			createdP.innerHTML = value;
 			//добавляем параграм в строку
 			createdLi.appendChild(createdP);
@@ -345,12 +416,19 @@ function addUser(select){
 
 			switch(select){
 				case "user":
-					createdStudentUl.id = value;
-					createdStudentUl.onclick = function(){
-						clickOnUser(createdStudentUl.id, "user");
+					createdLi.id = selectedGroup + "_" + value;
+					createdLi.onclick = function(){
+						clickOnUser(createdLi.id, "user");
 					}
-					
-					createdStudentUl.appendChild(createdLi);
+
+					parent = document.getElementById("container_users_" + selectedGroup);
+					parent.appendChild(createdLi);
+
+					//делаем ее выбранной
+					clickOnUser(createdLi.id, "user");
+
+					addStudent(value, selectedGroup);
+
 					break;
 
 				case "teacher":
@@ -367,6 +445,22 @@ function addUser(select){
 
 					//ADD TEACHER
 					addTeacher(value);
+					break;
+
+				case "teacherG":
+					createdLi.id = selectedGroup + "_" + value;
+					createdLi.onclick = function(){
+						clickOnUser(createdLi.id, "teacherG");
+					}
+
+					parent = document.getElementById("container_teachers_" + selectedGroup);
+					parent.appendChild(createdLi);
+
+					//делаем ее выбранной
+					clickOnUser(createdLi.id, "teacherG");
+
+					//ADD TEACHER
+					addTeacherToGroup(selectedGroup, value)
 					break;
 
 				case "admin":
@@ -417,86 +511,14 @@ function addUser(select){
 					addCourseCategory(value);
 					break;
 			}
-			if (select === "user"){
-			swal("Введите имя преподавателя:", {
-			  content: "input",
-			})
-			.then((value) => {
-				if(value != null){
-					var createdLiTeach = document.createElement('li');
-					var createdPTeach = document.createElement('p');
-					createdPTeach.id = "T" + value;
-					createdPTeach.innerHTML = value;
-					
-					createdLiTeach.appendChild(createdPTeach);
-					
-					parent = document.getElementById("container_users");
-					createdStudentUl.appendChild(createdLiTeach);
-					parent.appendChild(createdStudentUl);
-
-					//делаем ее выбранной
-					clickOnUser(createdStudentUl.id, "user");
-
-					//ADD USER
-					addStudent(value, createdStudentUl.id);
-					
-					swal("Пользователь добавлен!", {
-					  icon: "success",
-					});
-				}
-				
-				});
-			}
-			else{
 				swal("Пользователь добавлен!", {
 					  icon: "success",
 					});
-			}
 		}
 	});
 }
 
-//В РАЗРАБОТКЕ
-function changeTeacher(){
 
-	var myArrayOfThings = [
-            { id: 1, name: 'Item 1' },
-            { id: 2, name: 'Item 2' },
-            { id: 3, name: 'Item 3' }
-        ];
-
-    var options = {};
-    $.map(myArrayOfThings,
-        function(o) {
-            options[o.id] = o.name;
-        });
-
-	swal({
-	  title: 'Выберите группу:',
-	  input: 'select',
-	  inputOptions: options,
-	  inputPlaceholder: 'required',
-	  showCancelButton: true,
-	  inputValidator: function (value) {
-	    return new Promise(function (resolve, reject) {
-	      if (value !== '') {
-	        resolve();
-	      } else {
-	        reject('You need to select a Tier');
-	      }
-	    });
-	  }
-	}).then(function (result) {
-	  if (result.value) {
-	  	var paragraf = document.getElementById("T" + selectedUser);
-	  	paragraf.innerHTML = result.value;
-	  	paragraf.id = "T" + result.value;
-	    swal("Группа обучения успешно изменена!", {
-			  icon: "success",
-			});
-	  }
-	});
-}
 function changeUser(select){
 	swal("Введите новое имя пользователя (логин):", {
 	  content: "input",
@@ -539,18 +561,17 @@ function changeUser(select){
 					//FUNCTION CHANGE ADMIN HERE
 					
 					break;
+
+				case "teacherG":{
+					document.getElementById("PG" + selectedTeacherInGroup).innerHTML = value;
+					document.getElementById("G"+selectedTeacherInGroup).id = "G" + value;
+					document.getElementById("PG" + selectedTeacherInGroup).id = "PG" + value;
 					
-				case "category":
-					document.getElementById("P" + selectedCategories).innerHTML = value;
-					document.getElementById(selectedCategories).id = value;
-					document.getElementById("P" + selectedCategories).id = "P" + value;
-					
-					changeUserName(selectedCategories, value);
+					changeUserName(selectedTeacherInGroup, value);
 					selectedCategories = value;
 					
 					//FUNCTION CHANGE ADMIN HERE
-
-					break;
+				}
 			}	
 		  swal("Имя пользователя изменено!", {
 			  icon: "success",

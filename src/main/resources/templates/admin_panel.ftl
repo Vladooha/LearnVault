@@ -22,47 +22,17 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     
     <link href="../static/css/adminPanel.css" rel="stylesheet" type="text/css">
+    <link href="../static/css/course_designer.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div id="LayerBody" >
     <div id="LayerBody_Container">
         <div id="LayerMain">
             <@m.header_site/>
-            <div style="width:90%; margin: 0 auto;z-index: 0;">
+            <div class="adminBlock">
                         <ul class="tabs" role="tablist">
                         <li>
-                            <input type="radio" name="tabs" id="tab1" checked />
-                            <label for="tab1" role="tab" aria-selected="true" aria-controls="panel1" tabindex="1">Students</label>
-                            <div id="tab-content1" class="tab-content" role="tabpanel" aria-labelledby="description" aria-hidden="false" style="">
-                              <div class="tab_container">
-                                    <div class="row">
-                                        <div class="col-md-9" style="height:200px;">
-                                            <div class="table">
-                                                <div class="users" id="container_users">
-													<ul id="{UserName1}" onclick="clickOnUser(this.id, 'user')">
-														<li><p id="P{UserName1}">{UserName1}</p></li>
-														<li><p id="T{UserName1}">{GroupName1}</p></li>
-													</ul>
-													<ul id="{UserName2}" onclick="clickOnUser(this.id, 'user')">
-														<li><p id="P{UserName2}">{UserName2}</p></li>
-														<li><p id="T{UserName2}">{GroupName2}</p></li> <!-- p.s. не обращай внимание на то, что группа - это учитель, потом переименую, когда буду более сконцентрированный, чтобы ничего не потерять.  -->
-													</ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3" style="height:200px;">
-                                            <div style="margin: 0 0 0 20px;"><button type="button" onClick='addUser("user")' class="btnUser">Добавить</button></div>
-                                            <div  style="margin: 10px 0 0 20px;"><button type="button" disabled id="deleteBtnU" onClick='deleteUser("user")' class="btnUser">Удалить</button></div>
-                                            <div style="margin: 10px 0 0 20px;"><button type="button" disabled id="changeBtnU" onClick='changeUser("user")' class="btnUser">Изменить студента</button></div>
-											<div style="margin: 10px 0 0 20px;"><button type="button" disabled id="changeTeacher" onClick='changeTeacher()' class="btnUser">Изменить преподавателя</button></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <input type="radio" name="tabs" id="tab2" />
+                            <input type="radio" name="tabs" id="tab2" checked/>
                             <label for="tab2" role="tab" aria-selected="false" aria-controls="panel2" tabindex="2">Teachers</label>
                             <div id="tab-content2" class="tab-content" role="tabpanel" aria-labelledby="specification" aria-hidden="true">
                               <div class="tab_container">
@@ -70,10 +40,10 @@
                                         <div class="col-md-8" style="height:200px;">
                                             <div class="containerLi">
                                                 <ul class="users" id="container_teachers">
-                                                	<#if teachers??> 
+                                                	<#if teachers??>
 														<#list teachers as teacher>
 															<li onclick='clickOnUser(this.id, "teacher")' id="${teacher.username}"><p id="P${teacher.username}">${teacher.username}</p></li>
-														</#list> 
+														</#list>
 													</#if>
                                                 </ul>
                                             </div>
@@ -98,10 +68,10 @@
                                         <div class="col-md-8" style="height:200px;">
                                             <div class="containerLi">
                                                 <ul class="users" id="container_admins">
-                                                	<#if admins??> 
+                                                	<#if admins??>
 														<#list admins as admin>
 															<li onclick="clickOnUser(this.id)" id="${admin}"><p id="P${admin}">${admin}</p></li>
-														</#list> 
+														</#list>
 													</#if>
                                                 </ul>
                                             </div>
@@ -115,7 +85,7 @@
                                 </div>
                             </div>
                         </li>
-							
+
 						<li>
                             <input type="radio" name="tabs" id="tab4" />
                             <label for="tab4" role="tab" aria-selected="true" aria-controls="panel4" tabindex="4">Сourse categories</label>
@@ -125,10 +95,10 @@
                                         <div class="col-md-9" style="height:200px;">
                                             <div class="containerLi">
                                                 <ul class="users" id="container_categories">
-                                                	<#if categories??> 
+                                                	<#if categories??>
 														<#list categories as category>
 															<li onclick='clickOnUser(this.id, "category")' id="${category.name}"><p id="P${category.name}">${category.name}</p></li>
-														</#list> 
+														</#list>
 													</#if>
                                                 </ul>
                                             </div>
@@ -141,7 +111,7 @@
                                 </div>
                             </div>
                         </li>
-							
+
 						<li>
 							<input type="radio" name="tabs" id="tab5" />
 							<label for="tab5" role="tab" aria-selected="true" aria-controls="panel5" tabindex="5">meta tags</label>
@@ -166,14 +136,107 @@
 								</div>
 							</div>
 						</li>
-							
+
                     </ul>
                 </div>
+				<div style="width:100%;">
+				    <div style="margin: 20px 50px;">
+                        <h3 class="h3" style="font-size:35px;">Администрирование групп:</h3>
+                    </div>
+                    <div style="margin: 20px 50px; width:100%;">
+                        <select id="groupSelector" class="style_input" style="width:200px;">
+                           <option disabled selected>Выберите группу...</option>
+
+                            <#if groups??>
+                               <#list groups as group>
+
+                                <option value="${group.name}">${group.name}</option>
+
+                               </#list>
+                        </select>
+                    </div>
+					<div style="margin: 20px 50px; width:100%;">
+					    <button type="button" onClick="addGroup()" id="crtGroup" class="orangeButton" style="width:25%;float:left; margin-right:3%;background-color:green;border-color:green;">Добавить группу</button>
+						<button type="button" onClick="delGroup()" id="delGroup" hidden class="orangeButton" style="width:25%;float:left; margin-right:4%;background-color:red;">Удалить текущую группу</button>
+					</div>
+					<#list groups as group>
+                        <div id="${group.name}" class="groupSelect" style="display:none">
+                            <ul class="tabs" role="tablist">
+                                <li>
+                                    <input type="radio" name="tabs${group.id}" id="tab1${group.id}" checked />
+                                    <label for="tab1${group.id}" role="tab" aria-selected="true" aria-controls="panel1" tabindex="1${group.id}">Students</label>
+                                    <div id="tab-content1" class="tab-content" role="tabpanel" aria-labelledby="description" aria-hidden="false" style="">
+                                      <div class="tab_container">
+                                            <div class="row">
+                                                <div class="col-md-9" style="height:200px;">
+                                                    <div class="containerLi">
+                                                        <div class="users" id="container_users_${group.name}">
+                                                            <#if group.students??>
+                                                                <#list group.students as student>
+                                                                    <li onclick='clickOnUser(this.id, "user")' id="${group.name}_${student.username}"><p id="P_${group.name}_${student.username}">${student.username}</p></li>
+                                                                </#list>
+                                                            </#if>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3" style="height:200px;">
+                                                    <div style="margin: 0 0 0 20px;"><button type="button" onClick='addUser("user")' class="btnUser">Добавить</button></div>
+                                                    <div  style="margin: 10px 0 0 20px;"><button type="button" disabled id="deleteBtnU_${group.name}" onClick='deleteUser("user")' class="btnUser">Удалить</button></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <input type="radio" name="tabs${group.id}" id="tab6${group.id}" />
+                                    <label for="tab6${group.id}" role="tab" aria-selected="false" aria-controls="panel6" tabindex="6${group.id}">Teachers</label>
+                                    <div id="tab-content2" class="tab-content" role="tabpanel" aria-labelledby="specification" aria-hidden="true">
+                                      <div class="tab_container">
+                                            <div class="row">
+                                                <div class="col-md-8" style="height:200px;">
+                                                    <div class="containerLi">
+                                                        <ul class="users" id="container_teachers_${group.name}">
+                                                            <#if teachers??>
+                                                                <#list group.teachers as teach>
+                                                                    <li onclick='clickOnUser(this.id, "teacherG")' id="${group.name}_${teach.username}"><p id="P_${group.name}_${teach.username}">${teach.username}</p></li>
+                                                                </#list>
+                                                            </#if>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4" style="height:200px;">
+
+                                                    <div style="margin: 20px;"><button type="button" onClick='addUser("teacherG")' class="btnUserMenu">Добавить</button></div>
+                                                    <div style="margin: 20px;"><button type="button" disabled id="deleteBtnT_${group.name}" onClick='deleteUser("teacherG")' class="btnUserMenu">Удалить</button></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+					</#list>
+				</#if>
+			</div>
         </div>
     </div>
 </div>
 
 <script>
+	var selectedGroup = undefined;
+
+
+	 $(function() {
+        $('#groupSelector').change(function(){
+            $('.groupSelect').hide();
+            $('#' + $(this).val()).show();
+			selectedGroup = $(this).val();
+			$('#delGroup').show();
+			$('#chngGroup').show();
+        });
+    });
+
 	//переопределения функции remove
 	if (!Element.prototype.remove) {
 		Element.prototype.remove = function remove() {
@@ -188,6 +251,7 @@
 	var selectedAdmin = undefined;
 	var selectedCategories = undefined;
 	var selectedTag = undefined;
+	var selectedTeacherInGroup = undefined;
     
 </script>
 </body>

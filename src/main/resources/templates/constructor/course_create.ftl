@@ -94,7 +94,7 @@
                                             <#if isTeacher>
                                                 <select id="groupSelect">
                                                     <#list groups as group>
-                                                        <option value='group.name'>group.name</option>
+                                                        <option value='${group.name}'>${group.name}</option>
                                                     </#list>
                                                 </select>
                                             </#if>
