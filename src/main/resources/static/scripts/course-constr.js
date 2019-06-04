@@ -147,7 +147,7 @@ function sendCourse() {
             name: getLocalKey("course_name"),
             description: getLocalKey("description"),
             time: getLocalKey("time"), 			//добавил время!
-            isPrivate: getLocalKey("type_course"),
+            groupName: getLocalKey("groupName"),
             pic: localStorage.getItem("picture")
 }),
     success: function (data) {

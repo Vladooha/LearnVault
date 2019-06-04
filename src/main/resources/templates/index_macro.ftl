@@ -57,7 +57,7 @@
             </li>
             <-- end -->
             <li>
-                <a role="menuitem" class="withsubmenu" href="/constructor/contacts" target="_self">Администрирование</a>
+                <a role="menuitem" class="withsubmenu" href="contacts" target="_self">Контакты</a>
             </li>
         </ul>
     </div>

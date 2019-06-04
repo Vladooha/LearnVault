@@ -28,56 +28,6 @@
     <div id="LayerBody_Container">
         <div id="LayerMain">
             <@m.header_site/>
-            <!-- div>
-                <div style="margin: 60px auto 40px auto;width:660px;">
-                    <form action="/ajax/add_metatag" method="post">
-                        Метатэг:<br>
-                        <@spring.bind "metatagCreateForm.metatagName"/>
-                        <input id="metatagName"
-                               name="${spring.status.expression}"
-                               value="${spring.status.value?default("")}"/>
-                        <#list spring.status.errorMessages as error> <b>${error}</b></#list>
-                        <br><br>
-
-                        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-
-                        <input type="submit" value="Submit">
-                    </form>
-                </div>
-            </div>
-            <div>
-                <div style="margin: 60px auto 40px auto;width:660px;">
-                    <form action="/ajax/add_tag_to_metatag" method="post">
-                        Метатэг:<br>
-                        <@spring.bind "metatagForm.metatagName"/>
-                        <input id="metatagName"
-                               name="${spring.status.expression}"
-                               value="${spring.status.value?default("")}"/>
-                        <#list spring.status.errorMessages as error> <b>${error}</b></#list>
-                        <br><br>
-
-                        Имя тэга:<br>
-                        <@spring.bind "metatagForm.tagName"/>
-                        <input id="tagName"
-                               name="${spring.status.expression}"
-                               value="${spring.status.value?default("")}"/>
-                        <#list spring.status.errorMessages as error> <b>${error}</b></#list>
-                        <br><br>
-
-                        Вес:<br>
-                        <@spring.bind "metatagForm.weight"/>
-                        <input id="weight"
-                               name="${spring.status.expression}"
-                               value="${spring.status.value?default("")}"/>
-                        <#list spring.status.errorMessages as error> <b>${error}</b></#list>
-                        <br><br>
-
-                        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-
-                        <input type="submit" value="Submit">
-                    </form>
-                </div>
-            </div -->
             <div style="width:90%; margin: 0 auto;z-index: 0;">
                         <ul class="tabs" role="tablist">
                         <li>
@@ -120,9 +70,11 @@
                                         <div class="col-md-8" style="height:200px;">
                                             <div class="containerLi">
                                                 <ul class="users" id="container_teachers">
-                                                    <li onclick='clickOnUser(this.id, "teacher")' id="{TeacherName1}"><p id="P{TeacherName1}">{TeacherName1}</p></li>
-                                                    <li onclick='clickOnUser(this.id, "teacher")' id="{TeacherName2}"><p id="P{TeacherName2}">{TeacherName2}</p></li>
-                                                    <li onclick='clickOnUser(this.id, "teacher")' id="{TeacherName3}"><p id="P{TeacherName3}">{TeacherName3}</p></li>
+                                                	<#if teachers??> 
+														<#list teachers as teacher>
+															<li onclick='clickOnUser(this.id, "teacher")' id="${teacher.username}"><p id="P${teacher.username}">${teacher.username}</p></li>
+														</#list> 
+													</#if>
                                                 </ul>
                                             </div>
                                         </div>
@@ -146,9 +98,11 @@
                                         <div class="col-md-8" style="height:200px;">
                                             <div class="containerLi">
                                                 <ul class="users" id="container_admins">
-                                                    <li onclick="clickOnUser(this.id)" id="{AdminName1}"><p id="P{AdminName1}">{AdminName1}</p></li>
-                                                    <li onclick="clickOnUser(this.id)" id="{AdminName2}"><p id="P{AdminName2}">{AdminName2}</p></li>
-                                                    <li onclick="clickOnUser(this.id)" id="{AdminName3}"><p id="P{AdminName3}">{AdminName3}</p></li>
+                                                	<#if admins??> 
+														<#list admins as admin>
+															<li onclick="clickOnUser(this.id)" id="${admin}"><p id="P${admin}">${admin}</p></li>
+														</#list> 
+													</#if>
                                                 </ul>
                                             </div>
                                         </div>
@@ -171,16 +125,17 @@
                                         <div class="col-md-9" style="height:200px;">
                                             <div class="containerLi">
                                                 <ul class="users" id="container_categories">
-                                                    <li onclick='clickOnUser(this.id, "category")' id="{categoriesName1}"><p id="P{categoriesName1}">{categoriesName1}</p></li>
-                                                    <li onclick='clickOnUser(this.id, "category")' id="{categoriesName2}"><p id="P{categoriesName2}">{categoriesName2}</p></li>
-                                                    <li onclick='clickOnUser(this.id, "category")' id="{categoriesName3}"><p id="P{categoriesName3}">{categoriesName3}</p></li>
+                                                	<#if categories??> 
+														<#list categories as category>
+															<li onclick='clickOnUser(this.id, "category")' id="${category.name}"><p id="P${category.name}">${category.name}</p></li>
+														</#list> 
+													</#if>
                                                 </ul>
                                             </div>
                                         </div>
                                         <div class="col-md-3" style="height:200px;">
                                             <div style="margin: 10px 0 0 20px;"><button type="button" onClick='addUser("category")' class="btnUserMenu">Добавить</button></div>
                                             <div  style="margin: 20px 0 0 20px;"><button type="button" disabled id="deleteBtnC" onClick='deleteUser("category")' class="btnUserMenu">Удалить</button></div>
-                                            <div style="margin: 20px 0 0 20px;"><button type="button" disabled id="changeBtnC" onClick='changeUser("category")' class="btnUserMenu">Изменить</button></div>
                                         </div>
                                     </div>
                                 </div>

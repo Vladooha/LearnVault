@@ -49,7 +49,7 @@
                                     <select autofocus style="margin: 20px 0 20px 40px;width: 300px; height: 30px;" id = "category" required class="style_input">
                                         <#list categories as category>
                                             <option value=${category.getNum()}>${category.getName()}</option>
-                                        </#list>[
+                                        </#list>
                                     </select>
                                 </div>
                             </div>
@@ -90,13 +90,15 @@
                                     <div style="margin:20px 0 20px 40px;">
                                         <label>
                                             <input type="radio" id="isPrivate" name="type-course" <#if !isTeacher>disabled="true"</#if>>
-                                            <h5 class="h5"
+                                            <h5 class="h5"  style="color:rgba(0,21,41,1.00); margin-left: 5px;">Курс только для учебной группы (доступно учителям)</h5>
                                             <#if isTeacher>
-                                                style="color:rgba(0,21,41,1.00); margin-left: 5px;"
-                                            <#else>
-                                                style="color:rgba(0,21,41,0.50); margin-left: 5px;"
-                                            </#if>>
-                                                Курс только для учебной группы (доступно учителям)
+                                                <select id="groupSelect">
+                                                    <#list groups as group>
+                                                        <option value='group.name'>group.name</option>
+                                                    </#list>
+                                                </select>
+                                            </#if>
+                                                
                                             </h5>
                                         </label>
                                     </div>
@@ -209,9 +211,9 @@
 
 		//отправляем тип курса
 		if (document.getElementById("isPrivate").checked == true)
-			localStorage.setItem('type_course', JSON.stringify(true));
+			localStorage.setItem('groupName', JSON.stringify($("#groupSelect").val()));
 		else
-			localStorage.setItem('type_course', JSON.stringify(false));
+			localStorage.setItem('groupName', JSON.stringify("none"));
 	}
 </script>
 <script>
@@ -221,8 +223,6 @@
 		} else {
 			document.getElementById("timebox").style.visibility = "hidden";
 		}
-		//var time = document.getElementById("timebox").value;
-		//alert(time);
 	}
 </script>
 </html>

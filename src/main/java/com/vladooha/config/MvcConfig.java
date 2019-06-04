@@ -110,6 +110,13 @@ public class MvcConfig implements WebMvcConfigurer {
         registry
                 .addViewController("/reset_success")
                 .setViewName("reset_success");
+        registry
+                .addViewController("/index")
+                .setViewName("index");
+        registry
+                .addViewController("/contacts")
+                .setViewName("contacts");
+
     }
 
     @Override

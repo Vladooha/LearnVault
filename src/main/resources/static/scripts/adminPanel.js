@@ -287,9 +287,8 @@ function deleteUser(select){
 					activatedBtns(true, "T");
 					currentUserLi = document.getElementById(selectedTeacher);
 					
-					//FUNCTION DELETE TEACHER HERE
-					//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-					//
+					//DELETE TEACHER 
+					removeTeacher(selectedTeacher);
 					
 					break;
 
@@ -297,9 +296,8 @@ function deleteUser(select){
 					activatedBtns(true, "TAG");
 					currentUserLi = document.getElementById(selectedTag);
 					
-					//FUNCTION DELETE METATAG HERE
-					//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-					//
+					//DELETE METATAG
+					removeMetaTag(selectedTag);
 					
 					break;
 
@@ -307,9 +305,8 @@ function deleteUser(select){
 					currentUserLi = document.getElementById(selectedAdmin);
 					activatedBtns(true, "A");
 					
-					//FUNCTION DELETE ADMIN HERE
-					//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-					//
+					//DELETE ADMIN 
+					removeAdmin(selectedAdmin);
 					
 					break;
 					
@@ -317,9 +314,8 @@ function deleteUser(select){
 					currentUserLi = document.getElementById(selectedCategories);
 					activatedBtns(true, "C");
 					
-					//FUNCTION DELETE CATEGORY HERE
-					//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-					//
+					//DELETE CATEGORY 
+					removeCategory(selectedCategories);
 					
 					break;
 			}
@@ -401,9 +397,8 @@ function addUser(select){
 					//делаем ее выбранной
 					clickOnUser(createdLi.id, "tag");
 
-					//FUNCTION ADD METATAG
-					//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-					//
+					//ADD METATAG
+					addMetatag(value);
 					
 					break;
 					
@@ -419,7 +414,7 @@ function addUser(select){
 					clickOnUser(createdLi.id, "category");
 
 					//ADD CATEGORY
-					addCourseCategory(value)
+					addCourseCategory(value);
 					break;
 			}
 			if (select === "user"){
@@ -513,11 +508,11 @@ function changeUser(select){
 					document.getElementById("P" + selectedUser).innerHTML = value;
 					document.getElementById(selectedUser).id = value;
 					document.getElementById("P" + selectedUser).id = "P" + value;
+
+					changeUserName(selectedUser, value);
 					selectedUser = value;
 					
 					//FUNCTION CHANGE USER HERE
-					//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-					//
 					
 					break;
 
@@ -525,11 +520,11 @@ function changeUser(select){
 					document.getElementById("P" + selectedTeacher).innerHTML = value;
 					document.getElementById(selectedTeacher).id = value;
 					document.getElementById("P" + selectedTeacher).id = "P" + value;
+
+					changeUserName(selectedTeacher, value);
 					selectedTeacher = value;
 					
 					//FUNCTION CHANGE TEACHER HERE
-					//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-					//
 					
 					break;
 
@@ -537,11 +532,11 @@ function changeUser(select){
 					document.getElementById("P" + selectedAdmin).innerHTML = value;
 					document.getElementById(selectedAdmin).id = value;
 					document.getElementById("P" + selectedAdmin).id = "P" + value;
+					
+					changeUserName(selectedAdmin, value);
 					selectedAdmin = value;
 					
 					//FUNCTION CHANGE ADMIN HERE
-					//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-					//
 					
 					break;
 					
@@ -549,12 +544,12 @@ function changeUser(select){
 					document.getElementById("P" + selectedCategories).innerHTML = value;
 					document.getElementById(selectedCategories).id = value;
 					document.getElementById("P" + selectedCategories).id = "P" + value;
+					
+					changeUserName(selectedCategories, value);
 					selectedCategories = value;
 					
 					//FUNCTION CHANGE ADMIN HERE
-					//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-					//
-					
+
 					break;
 			}	
 		  swal("Имя пользователя изменено!", {
