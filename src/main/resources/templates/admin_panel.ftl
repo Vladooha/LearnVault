@@ -42,7 +42,7 @@
                                                 <ul class="users" id="container_teachers">
                                                 	<#if teachers??>
 														<#list teachers as teacher>
-															<li onclick='clickOnUser(this.id, "teacher")' id="${teacher.username}"><p id="P${teacher.username}">${teacher.username}</p></li>
+															<li onclick='clickOnUser(this.id, "teacher")' id="${teacher.profileInfo.username}"><p id="P${teacher.profileInfo.username}">${teacher.profileInfo.username}</p></li>
 														</#list>
 													</#if>
                                                 </ul>

@@ -18,7 +18,7 @@ public class Metatag {
     @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "metatag", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "metatag", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
     private Set<MetatagTag> metatagTags = new HashSet<>();
 }

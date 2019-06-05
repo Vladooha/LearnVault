@@ -1,6 +1,8 @@
 package com.vladooha.service;
 
+import com.vladooha.data.entities.LoginInfo;
 import com.vladooha.data.entities.ProfileInfo;
+import com.vladooha.data.entities.Role;
 import com.vladooha.data.entities.courses.StudyGroup;
 import com.vladooha.data.entities.courses.Teacher;
 import com.vladooha.data.form.StudentForm;
@@ -45,6 +47,24 @@ public class TeacherService {
         return "ALREADY_EXISTS";
     }
 
+    public String createGroup(String groupName, String teacherName) {
+        if (studyGroupRepo.findByName(groupName) == null) {
+            StudyGroup studyGroup = new StudyGroup();
+            studyGroup.setName(groupName);
+
+            Teacher teacher = teacherRepo.findByUsername(teacherName);
+            if (teacher != null) {
+                studyGroup.getTeachers().add(teacher);
+            }
+
+            studyGroupRepo.save(studyGroup);
+
+            return "OK";
+        }
+
+        return "ALREADY_EXISTS";
+    }
+
     public String deleteGroup(Principal principal, String groupName) {
         StudyGroup studyGroup = getGroupIfAllowed(principal, groupName);
 
@@ -55,6 +75,25 @@ public class TeacherService {
         }
 
         return "NO_PERMISSION";
+    }
+
+    public String addStudent(String groupName, String studentName) {
+        StudyGroup studyGroup = studyGroupRepo.findByName(groupName);
+
+        if (studyGroup != null) {
+            ProfileInfo profileInfo = profileInfoRepo.findByUsername(studentName);
+
+            if (profileInfo != null) {
+                Set<ProfileInfo> students = studyGroup.getStudents();
+                students.add(profileInfo);
+
+                studyGroupRepo.save(studyGroup);
+            }
+
+            return "OK";
+        }
+
+        return "NOT_FOUND";
     }
 
     public String removeStudent(Principal principal, String groupName, String studentName) {
@@ -117,5 +156,23 @@ public class TeacherService {
         }
 
         return false;
+    }
+
+    public boolean isTeacher(Principal principal) {
+        LoginInfo loginInfo = loginInfoRepo.findByUsername(principal.getName());
+        if (loginInfo != null && loginInfo.getRoles().contains(Role.TEACHER)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public Set<StudyGroup> getTeachersGroups(String teacherName) {
+        Teacher teacher = teacherRepo.findByUsername(teacherName);
+        if (teacher != null) {
+            return teacher.getStudyGroups();
+        }
+
+        return null;
     }
 }

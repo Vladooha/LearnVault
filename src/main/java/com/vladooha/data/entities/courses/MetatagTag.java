@@ -19,7 +19,7 @@ public class MetatagTag {
     @JoinColumn(name = "metatag_id")
     private Metatag metatag;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tag_id")
     private CourseTag tag;
 

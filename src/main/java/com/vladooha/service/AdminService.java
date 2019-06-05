@@ -51,7 +51,7 @@ public class AdminService {
     private TeacherService teacherService;
 
     public String addTeacher(Principal principal, String teacherName) {
-        if (isAdmin(principal)) {
+        //if (isAdmin(principal)) {
             LoginInfo loginInfo = loginInfoRepo.findByUsername(teacherName);
             if (loginInfo != null) {
                 Teacher teacher = teacherRepo.findByUsername(teacherName);
@@ -77,9 +77,9 @@ public class AdminService {
             } else {
                 return USER_NOT_FOUND;
             }
-        } else {
-            return NO_PERMISSION;
-        }
+//        } else {
+//            return NO_PERMISSION;
+//        }
     }
 
     public String removeTeacher(Principal principal, String teacherName) {
@@ -146,22 +146,7 @@ public class AdminService {
 
     public String addStudent(Principal principal, String groupName, String studentName) {
         if (isAdmin(principal)) {
-            StudyGroup studyGroup = studyGroupRepo.findByName(groupName);
-
-            if (studyGroup != null) {
-                ProfileInfo profileInfo = profileInfoRepo.findByUsername(studentName);
-
-                if (profileInfo != null) {
-                    Set<ProfileInfo> students = studyGroup.getStudents();
-                    students.add(profileInfo);
-
-                    studyGroupRepo.save(studyGroup);
-                }
-
-                return "OK";
-            }
-
-            return "NOT_FOUND";
+            return teacherService.addStudent(groupName, studentName);
         } else {
             return "NO_PERMISSION";
         }
@@ -391,6 +376,10 @@ public class AdminService {
         }
 
         return NO_PERMISSION;
+    }
+
+    public List<Metatag> getAllMetatags() {
+        return metatagRepo.findAll();
     }
 
     public boolean isAdmin(Principal principal) {

@@ -199,6 +199,55 @@ function deleteGroup(groupName){
 	});
 }
 
+function createGroupByTeacher(groupName){
+	$.ajax({
+		url: "/ajax/create_group_by_teacher",
+		data: ({
+			groupName: groupName
+		}),
+		success: function f() {
+			// Process answer
+		}
+	});
+}
+
+function deleteGroupByTeacher(groupName){
+	$.ajax({
+		url: "/ajax/delete_group_by_teacher",
+		data: ({
+			groupName: groupName
+		}),
+		success: function f() {
+			// Process answer
+		}
+	});
+}
+
+function addStudentByTeacher(student, group) {
+	$.ajax({
+		url: "/ajax/add_student_by_teacher",
+		data: ({
+			studentName: student,
+			groupName: group
+		}),
+		success: function f() {
+			// Process answer
+		}
+	});
+}
+
+function removeStudentByTeacher(student, group) {
+	$.ajax({
+		url: "/ajax/remove_student_by_teacher",
+		data: ({
+			studentName: student,
+			groupName: group
+		}),
+		success: function f() {
+			// Process answer
+		}
+	});
+}
 
 //DIMA--------------------------------------------------------------------------------
 function addTag(){

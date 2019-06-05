@@ -256,5 +256,6 @@ public class AdminPanelController {
         model.putIfAbsent("admins", adminService.getAllAdmins(principal));
         model.putIfAbsent("teachers", adminService.getAllTeachers(principal));
         model.putIfAbsent("categories", adminService.getAllCategories(principal));
+        model.putIfAbsent("metatags", adminService.getAllMetatags());
     }
 }
