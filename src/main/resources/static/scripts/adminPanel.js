@@ -128,7 +128,7 @@ function removeMetaTag(nameMetaTag){
 	$.ajax({
 		url: "/ajax/remove_metatag",
 		data: ({
-			metetagName: nameMetaTag
+			metatagName: nameMetaTag
 		}),
 		success: function f() {
 			// Process answer
@@ -140,7 +140,7 @@ function addMetatag(nameMetaTag){
 	$.ajax({
 		url: "/ajax/add_metatag",
 		data: ({
-			metetagName: nameMetaTag
+			metatagName: nameMetaTag
 		}),
 		success: function f() {
 			// Process answer
@@ -165,8 +165,8 @@ function addTagToMetaTag(nameMetaTag, nameTag, weight){
 	$.ajax({
 		url: "/ajax/add_tag_to_metatag",
 		data: ({
-			mameMetaTag: nameMetaTag,
-			nameTag: nameTag,
+			metatagName: nameMetaTag,
+			tagName: nameTag,
 			weight: weight
 		}),
 		success: function f() {
@@ -358,7 +358,7 @@ function activatedBtns(flag, type){
 		case "U":
 			document.getElementById("changeTeacher").disabled = flag;
 		default:
-			if ($("changeBtn"+type).length) 
+			if ($("#changeBtn"+type).length) 
 				document.getElementById("changeBtn"+type).disabled = flag;
 			document.getElementById("deleteBtn"+type).disabled = flag;
 	}
@@ -415,6 +415,7 @@ function deleteUser(select){
 					currentUserLi = document.getElementById(selectedTag);
 					
 					//DELETE METATAG
+
 					removeMetaTag(selectedTag);
 					
 					break;

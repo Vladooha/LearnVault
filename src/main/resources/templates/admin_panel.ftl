@@ -25,11 +25,16 @@
     <link href="../static/css/course_designer.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+<#if roles??>
+	<#list roles as role>
+		<p id="A${role}" hidden="true">${role}</p></li>
+	</#list>
+</#if>
 <div id="LayerBody" >
     <div id="LayerBody_Container">
         <div id="LayerMain">
             <@m.header_site/>
-            <div class="adminBlock">
+            <div class="adminBlock" hidden="true" id="adminpanel">
                         <ul class="tabs" role="tablist">
                         <li>
                             <input type="radio" name="tabs" id="tab2" checked/>
@@ -121,9 +126,13 @@
 										<div class="col-md-9" style="height:200px;">
 											<div class="containerLi">
 												<ul class="users" id="container_tags">
-													<li onclick='clickOnUser(this.id, "tag")' id="{metaName1}"><p id="P{metaName1}">{metaName1}</p></li>
-													<li onclick='clickOnUser(this.id, "tag")' id="{metaName2}"><p id="P{metaName2}">{metaName2}</p></li>
-													<li onclick='clickOnUser(this.id, "tag")' id="{metaName3}"><p id="P{metaName3}">{metaName3}</p></li>
+													<#if metatags??>
+					                              	 <#list metatags as metatag>
+
+	 													<li onclick='clickOnUser(this.id, "tag")' id="${metatag.name}"><p id="P${metatag.name}">${metatag.name}</p></li>
+
+					                              	 </#list>
+					                              	</#if>
 												</ul>
 											</div>
 										</div>
@@ -153,12 +162,14 @@
                                 <option value="${group.name}">${group.name}</option>
 
                                </#list>
+                            </#if>
                         </select>
                     </div>
 					<div style="margin: 20px 50px; width:100%;">
 					    <button type="button" onClick="addGroup()" id="crtGroup" class="orangeButton" style="width:25%;float:left; margin-right:3%;background-color:green;border-color:green;">Добавить группу</button>
 						<button type="button" onClick="delGroup()" id="delGroup" hidden class="orangeButton" style="width:25%;float:left; margin-right:4%;background-color:red;">Удалить текущую группу</button>
 					</div>
+					<#if groups??>
 					<#list groups as group>
                         <div id="${group.name}" class="groupSelect" style="display:none">
                             <ul class="tabs" role="tablist">
@@ -188,7 +199,7 @@
                                     </div>
                                 </li>
 
-                                <li>
+                                <li id="teacherFORteacher" hidden="true">
                                     <input type="radio" name="tabs${group.id}" id="tab6${group.id}" />
                                     <label for="tab6${group.id}" role="tab" aria-selected="false" aria-controls="panel6" tabindex="6${group.id}">Teachers</label>
                                     <div id="tab-content2" class="tab-content" role="tabpanel" aria-labelledby="specification" aria-hidden="true">
@@ -197,9 +208,9 @@
                                                 <div class="col-md-8" style="height:200px;">
                                                     <div class="containerLi">
                                                         <ul class="users" id="container_teachers_${group.name}">
-                                                            <#if teachers??>
+                                                            <#if group.teachers??>
                                                                 <#list group.teachers as teach>
-                                                                    <li onclick='clickOnUser(this.id, "teacherG")' id="${group.name}_${teach.username}"><p id="P_${group.name}_${teach.username}">${teach.username}</p></li>
+                                                                    <li onclick='clickOnUser(this.id, "teacherG")' id="${group.name}_${teach.profileInfo.username}"><p id="P_${group.name}_${teach.profileInfo.username}">${teach.profileInfo.username}</p></li>
                                                                 </#list>
                                                             </#if>
                                                         </ul>
@@ -225,7 +236,10 @@
 
 <script>
 	var selectedGroup = undefined;
-
+	if($("#AADMIN").length){
+		$(teacherFORteacher).show();
+		$("#adminpanel").show();
+	}
 
 	 $(function() {
         $('#groupSelector').change(function(){

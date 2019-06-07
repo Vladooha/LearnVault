@@ -1,4 +1,10 @@
 <#macro header_site>
+
+<#if roles??>
+    <#list roles as role>
+        <p id="${role}" hidden="true">${role}</p></li>
+    </#list>
+</#if>
     <div  style="padding:20px 0;;width:100%;height:65px;">
         <div style="width:30%;float:left;margin-left:2%;height:65px;text-align:top;">
             <h1 id="Heading"><a href="#" style="color:#FF9700;font-size:50px;" onclick="window.location.href='/';return false;">Training portal</a></h1>
@@ -41,26 +47,40 @@
             <li>
                 <a role="menuitem" class="withsubmenu" href="" target="_self">Мои курсы</a>
             </li>
-            <!--IF USER ->
-            <li>
-    			<a role="menuitem" class="withsubmenu" href="" target="_self">Стать учителем</a>
+            <!--IF USER -->
+            <li id="userRef" hidden="true">
+    			<a role="menuitem" class="withsubmenu" href="beTeacher" target="_self">Стать учителем</a>
             </li>
-            <-- end -->
             <!-- IF ADMIN -->
-            <li>
-                <a role="menuitem" class="withsubmenu" href="admin_panel" target="_self">Администрирование</a>
+            <li id="adminRef" hidden="true">
+    			<a role="menuitem" class="withsubmenu" href="admin_panel" target="_self">Администрирование</a>
             </li>
-            <!-- end -->
-            <!--IF TEACHER ->
-            <li>
-    			<a role="menuitem" class="withsubmenu" href="teacher_panel" target="_self">Администрирование</a>
+            <!-- IF TEACHER -->
+            <li id="teacherRef" hidden="true">
+                <a role="menuitem" class="withsubmenu" href="teacher_panel" target="_self">Администрирование</a>
             </li>
-            <-- end -->
+            
             <li>
                 <a role="menuitem" class="withsubmenu" href="contacts" target="_self">Контакты</a>
             </li>
         </ul>
     </div>
+<script>
+    if($("#ADMIN").length || $("#TEACHER").length)
+        if ($("#ADMIN").length){
+           // alert("admin!");
+            $("#adminRef").show();
+        }
+        else{
+            $("#teacherRef").show();
+            //alert("teacher!");
+        }
+    else{
+        //alert("user!");
+        $("#userRef").show();
+    }
+
+</script>
 </#macro>
 <#macro logo_site>
 <div  style="padding:20px 0;;width:100%;height:65px;">

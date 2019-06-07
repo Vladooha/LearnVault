@@ -15,6 +15,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
@@ -36,11 +37,14 @@ public class MainMenuInterceptor extends HandlerInterceptorAdapter {
             throws Exception {
         if (modelAndView != null) {
             List<CourseCategory> courseCategoryList = courseCategoryRepo.findAll();
-            String username = request.getUserPrincipal().getName();
-            Set<Role> roles = loginInfoRepo.findByUsername(username).getRoles();
+            Principal principal = request.getUserPrincipal();
+            if(principal != null) {
+                String username = principal.getName();
+                Set<Role> roles = loginInfoRepo.findByUsername(username).getRoles();
+                modelAndView.addObject("roles", roles);
+            }
             if (courseCategoryList != null) {
                 modelAndView.addObject("categories", courseCategoryList);
-                modelAndView.addObject("roles", roles);
             }
         }
     }

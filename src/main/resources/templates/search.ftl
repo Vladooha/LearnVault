@@ -128,14 +128,14 @@
 											<h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Соответствие ожиданиям: </h4>
 											<div id="rating_2">
 												<input type="hidden" id="complexity" name="val" value="${course.feedback.expectation}"/>
-												<input type="hidden" name="votes" value="${course.feedback.voteCount}">
+												<!-- input type="hidden" name="votes" value="${course.feedback.voteCount}" -->
 											</div>
 										</div>
 										<div style="margin: 10px 0 0 70px;">
 											<h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Понятность:</h4>
 											<div id="rating_3">
 												<input type="hidden" id="complexity" name="val" value="${course.feedback.comprehensibility}"/>
-												<input type="hidden" name="votes" value="${course.feedback.voteCount}">
+												<!-- input type="hidden" name="votes" value="${course.feedback.voteCount}" -->
 											</div>
 										</div>
 									</div>

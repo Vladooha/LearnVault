@@ -23,6 +23,8 @@ public class FileService {
         ApplicationHome home = new ApplicationHome(ServerApplication.class);
         File jarDir = home.getDir();
         uploadPath = jarDir.getAbsolutePath() + "/storage";
+        uploadPath = uploadPath.replace("\\", "/");
+
 
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
@@ -39,6 +41,7 @@ public class FileService {
 
             multipartFile.transferTo(new File(filepath));
 
+            //return uploadPathMask + "/" + filename;
             return uploadPathMask + "/" + filename;
         }
 
@@ -47,6 +50,8 @@ public class FileService {
 
     @Bean(name = "upload_path")
     public String getUploadPath() {
+        System.err.println(uploadPath);
+
         return uploadPath;
     }
 

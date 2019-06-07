@@ -88,15 +88,19 @@
                                 </div>
                                 <div>
                                     <div style="margin:20px 0 20px 40px;">
-                                        <label>
+                                        <label style="width:100%;">
                                             <input type="radio" id="isPrivate" name="type-course" <#if !isTeacher>disabled="true"</#if>>
-                                            <h5 class="h5"  style="color:rgba(0,21,41,1.00); margin-left: 5px;">Курс только для учебной группы (доступно учителям)</h5>
+                                            <h5 class="h5"  style="color:rgba(0,21,41,1.00); margin-left: 5px;">Курс только для учебной группы 
                                             <#if isTeacher>
-                                                <select id="groupSelect">
+                                                </h5>
+                                                <select id="groupSelect" class="style_input" style="width:200px; margin-left:20px;">
+                                                <option disabled selected>Выберите группу...</option>
                                                     <#list groups as group>
                                                         <option value='${group.name}'>${group.name}</option>
                                                     </#list>
                                                 </select>
+                                            <#else>
+                                                (доступно учителям)</h5>
                                             </#if>
                                                 
                                             </h5>

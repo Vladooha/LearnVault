@@ -53,7 +53,7 @@
 <div id="LayerBody">
     <div id="LayerBody_Container">
         <div id="LayerMain">
-            <div class="page_title" id="name_of_page" style="margin-top:180px;">Оцените курс:</div>
+            <div class="page_title" id="name_of_page">Оцените курс:</div>
 
             <#assign path = "/course/" + course_id + "/rate">
 

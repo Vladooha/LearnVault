@@ -4,10 +4,13 @@ body {
 	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", serif;
 	background-color: #FFFFFF;
 	margin: 0;
+	position: relative;
+    min-height: 100%;
+	
 }
 /* Container */
 .container {
-	width: 90%;
+	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 	background-color: #FFFFFF;
@@ -25,8 +28,31 @@ body {
 	margin-top: -5px;
 	margin-bottom: 0px;
 }
+.thumbnails{
+	//padding-left: 120px;
+	border-radius: 2px;
+    overflow: hidden;
+	overflow-x: hidden;
+    overflow-y: hidden;
+	display: flex;
+	transition-property: transform,-webkit-transform;
+    -webkit-box-orient: vertical;
+	-webkit-box-pack: justify;
+    -webkit-box-direction: normal;
+	flex-shrink: 0;
+	justify-content: space-between;
+	flex-direction: line;
+    -webkit-box-align: start;
+	align-items: flex-start;
+    min-height: 200px;
+    max-width: 1310px;
+    width: 100%;
+    margin: 0 auto 40px;
+	position: relative;
+	z-index: 1;
+}
 .thumbnail {
-	width: 23%;
+	width: 20%;
 	text-align: center;
 	float: left;
 	margin-top: 35px;
@@ -37,14 +63,18 @@ body {
 	border-radius: 3px;
 	padding-top: 20px;
 	border-bottom: 4px solid #6DC7D0;
+	
 }
 .gallery .thumbnail h4 {
-	margin-top: 5px;
-	margin-bottom: 5px;
 	color: #52BAD5;
 	text-align: left;
-	padding-left: 20px;
-	padding-right: 20px;
+   	font-weight: bold;
+    font-size: 15px;
+    text-decoration: none;
+    background-color: transparent;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    display: inline;
 }
 .gallery .thumbnail p {
 	margin: 0;
@@ -57,32 +87,47 @@ body {
 	background-color: #FFFFFF;
 	padding-bottom: 35px;
 }
-
-.profile_image{
-	width: 10%;
-	
-}
 .column {
 	width: 100%;
+	padding-left: 20px;
 	text-align: left;
-	padding-top: 10px;
 	float:right;
+	display:flex;
+}
+.profile_image{
+	width: 10%;
+	float:left;
+}
+.information {
+	width: 80%;
+	text-align: left;
+	float:left;
+	margin-left: 10%;
 }
 .intro .column h3 {
+	font-family: Arial;
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: none;
 	color: #FFFFFF;
 	text-align: center;
+	background-color: transparent;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+   
 }
 .intro .column p {
 	color: #FFFFFF;
 }
 .sign{
 	align-self: baseline;
-	padding-bottom: 30px;	
+	padding-bottom: 0px;
+	background: #0C5AA6;
 }
 .sign h5 {
 	margin-top: 5px;
 	margin-bottom: 5px;
-	color: #52BAD5;
+	color: white;
 	text-align: left;
 	padding-left: 20px;
 	padding-right: 20px;
@@ -214,8 +259,9 @@ footer {
 	width: 100%;
 }
 .column {
-	width: 100%;
-	margin-top: 0px;
+	max-width: 100%;
+	height: auto;
+    overflow:hidden
 }
 .thumbnail {
 	width: 100%;
@@ -255,6 +301,9 @@ footer {
 }
 .intro .column p {
 	width: 80%;
+}
+img{
+	width: 100%;		
 }
 progress[value] {
   /* Reset the default appearance */

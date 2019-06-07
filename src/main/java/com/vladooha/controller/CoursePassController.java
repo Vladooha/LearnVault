@@ -166,7 +166,7 @@ public class CoursePassController {
 
         ratingService.addRating(feedbackForm, course_id, principal.getName());
 
-        return "redirect:/course/course_rate_ending";
+        return "redirect:/index";
     }
 
     /// AJAX

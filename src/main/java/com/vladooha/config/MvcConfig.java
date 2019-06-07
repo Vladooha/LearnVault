@@ -116,6 +116,9 @@ public class MvcConfig implements WebMvcConfigurer {
         registry
                 .addViewController("/contacts")
                 .setViewName("contacts");
+        registry
+                .addViewController("/beTeacher")
+                .setViewName("beTeacher");
 
     }
 
@@ -136,7 +139,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
         registry
                 .addResourceHandler(uploadPathMask + "/**")
-                .addResourceLocations("file://" + uploadPath + "/");
+                .addResourceLocations("file:///" + uploadPath + "/");
     }
 
     @Bean
