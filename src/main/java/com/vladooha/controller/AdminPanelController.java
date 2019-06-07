@@ -1,9 +1,11 @@
 package com.vladooha.controller;
 
 import com.vladooha.data.entities.ProfileInfo;
+import com.vladooha.data.entities.Role;
 import com.vladooha.data.entities.courses.StudyGroup;
 import com.vladooha.data.form.MetatagCreateForm;
 import com.vladooha.data.form.MetatagForm;
+import com.vladooha.data.repositories.LoginInfoRepo;
 import com.vladooha.data.validators.annotations.MetatagExists;
 import com.vladooha.data.validators.annotations.MetatagNotExists;
 import com.vladooha.service.AdminService;
@@ -19,14 +21,18 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @Validated
 public class AdminPanelController {
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private LoginInfoRepo loginInfoRepo;
 
     @GetMapping("/admin_panel")
     public String adminPanel(
@@ -255,6 +261,7 @@ public class AdminPanelController {
         model.putIfAbsent("students", studentInfoList);
         model.putIfAbsent("admins", adminService.getAllAdmins(principal));
         model.putIfAbsent("teachers", adminService.getAllTeachers(principal));
+        model.putIfAbsent("users", adminService.getAllUsers(principal));
         model.putIfAbsent("categories", adminService.getAllCategories(principal));
         model.putIfAbsent("metatags", adminService.getAllMetatags());
     }

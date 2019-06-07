@@ -19,6 +19,13 @@
 		<div id="LayerMain">
 			<@m.header_site/>
 		</div>
+		<div>
+			<#if lastCourses??>
+				<#list lastCourses as course>
+					${course.id} '${course.name}'
+				</#list>
+			</#if>
+		</div>
 	</div>
 </div>
 </body>

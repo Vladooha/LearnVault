@@ -115,7 +115,7 @@
                                             <label id="no_time" class="timer">Курс не ограничен по времени</label>
                                         </#if>
                                     </div>
-									<#if course.feedback??>
+									<#if course.feedback?? && course.feedback.voteCount!=0>
 									<div style="width:750px;margin: 40px 40px;">
 										<div style="margin: 10px 0 0 70px;">
 											<h4 class="h5" style="font-size:18px; color:rgba(0,70,134,1.00); ">Сложность: </h4>

@@ -1,5 +1,5 @@
 <#import "index_macro.ftl" as m/>
-<#import "/spring.ftl" as spring/>
+<#import "spring.ftl" as spring/>
 <!doctype html>
 <html>
 <head>

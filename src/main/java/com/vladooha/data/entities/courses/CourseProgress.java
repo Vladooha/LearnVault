@@ -24,22 +24,10 @@ public class CourseProgress {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    //@PrimaryKeyJoinColumn(name="user_key", referencedColumnName="id")
-    /* if this JPA model doesn't create a table for the "PROJ_EMP" entity,
-     * please comment out the @PrimaryKeyJoinColumn, and use the ff:
-     * @JoinColumn(name = "employeeId", updatable = false, insertable = false)
-     * or @JoinColumn(name = "employeeId", updatable = false, insertable = false, referencedColumnName = "id")
-     */
     private ProfileInfo user;
+
     @ManyToOne
     @JoinColumn(name = "course_id")
-    //@PrimaryKeyJoinColumn(name="course_key", referencedColumnName="id")
-    /* the same goes here:
-     * if this JPA model doesn't create a table for the "PROJ_EMP" entity,
-     * please comment out the @PrimaryKeyJoinColumn, and use the ff:
-     * @JoinColumn(name = "projectId", updatable = false, insertable = false)
-     * or @JoinColumn(name = "projectId", updatable = false, insertable = false, referencedColumnName = "id")
-     */
     private Course course;
 
 //    @ManyToMany(cascade = CascadeType.ALL)

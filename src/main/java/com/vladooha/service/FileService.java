@@ -36,7 +36,8 @@ public class FileService {
     public String saveFile(MultipartFile multipartFile) throws IOException {
         if (multipartFile != null && new File(uploadPath).exists()) {
             String fileUUID  = UUID.randomUUID().toString();
-            String filename = fileUUID + "_" + multipartFile.getOriginalFilename();
+            String originalName = multipartFile.getOriginalFilename().replace(' ', '_');
+            String filename = fileUUID + "_" + originalName;
             String filepath = uploadPath + "/" + filename;
 
             multipartFile.transferTo(new File(filepath));
@@ -50,8 +51,6 @@ public class FileService {
 
     @Bean(name = "upload_path")
     public String getUploadPath() {
-        System.err.println(uploadPath);
-
         return uploadPath;
     }
 

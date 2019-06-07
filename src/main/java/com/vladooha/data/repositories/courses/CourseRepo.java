@@ -15,4 +15,5 @@ public interface CourseRepo extends JpaRepository<Course, Long> {
     List<Course> findByNameContaining(String name);
     List<Course> findByTags(CourseTag courseTag);
     List<Course> findByCategory(CourseCategory courseCategory);
+    List<Course> findByAuthor(String author);
 }

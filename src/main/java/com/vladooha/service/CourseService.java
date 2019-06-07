@@ -303,13 +303,18 @@ public class CourseService {
 
         Course course = courseRepo.getOne(course_id);
         if (course != null) {
+            logger.debug("Answer checked course...");
             CoursePage coursePage = getCoursePageByNum(course, pageNum);
             if (coursePage != null) {
+                logger.debug("Answer checked course page...");
                 ProfileInfo profileInfo = profileInfoRepo.findByUsername(username);
                 if (profileInfo != null) {
+                    logger.debug("Answer checked profile...");
                     CourseProgress courseProgress = courseProgressRepo.findByUserAndCourse(profileInfo, course);
 
                     if (coursePage.getPageType().equals(TEXT_PAGE)) {
+                        logger.debug("Text page!");
+
                         answer = true;
                     }
 

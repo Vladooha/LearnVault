@@ -30,7 +30,7 @@ import java.util.zip.ZipInputStream;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan({"com.vladooha.controller"})
+@ComponentScan({"com.vladooha"})
 public class MvcConfig implements WebMvcConfigurer {
     private static final Logger logger = LogManager.getLogger(MvcConfig.class);
 
@@ -92,12 +92,15 @@ public class MvcConfig implements WebMvcConfigurer {
 //            logger.error("Can't load templates", e);
 //        }
 
+//        registry
+//                .addViewController("/")
+//                .setViewName("index");
+//        registry
+//                .addViewController("/index")
+//                .setViewName("index");
         registry
                 .addViewController("/login")
                 .setViewName("login");
-        registry
-                .addViewController("/")
-                .setViewName("index");
         registry
                 .addViewController("/constructor/test_designer")
                 .setViewName("constructor/test_designer");
@@ -110,9 +113,6 @@ public class MvcConfig implements WebMvcConfigurer {
         registry
                 .addViewController("/reset_success")
                 .setViewName("reset_success");
-        registry
-                .addViewController("/index")
-                .setViewName("index");
         registry
                 .addViewController("/contacts")
                 .setViewName("contacts");

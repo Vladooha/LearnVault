@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.PersistenceUnit;
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -346,6 +347,20 @@ public class AdminService {
                     .collect(Collectors.toList());
 
             return adminNames;
+        }
+
+        return null;
+    }
+
+    public List<String> getAllUsers(Principal principal) {
+        if (isAdmin(principal)) {
+            List<String> users = loginInfoRepo.findByRoles(Collections.singleton(Role.USER))
+                    .stream()
+                    .filter(u -> u.getRoles().size() == 1)
+                    .map(u -> u.getUsername())
+                    .collect(Collectors.toList());
+
+            return users;
         }
 
         return null;

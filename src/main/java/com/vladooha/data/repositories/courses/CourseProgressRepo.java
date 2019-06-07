@@ -5,7 +5,10 @@ import com.vladooha.data.entities.courses.Course;
 import com.vladooha.data.entities.courses.CourseProgress;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface CourseProgressRepo extends JpaRepository<CourseProgress, Long> {
     CourseProgress findByUserAndCourse(ProfileInfo user, Course course);
     CourseProgress findByUserIdAndCourseId(Long userId, Long courseId);
+    List<CourseProgress> findByUser(ProfileInfo user);
 }
