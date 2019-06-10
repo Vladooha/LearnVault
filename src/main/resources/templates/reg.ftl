@@ -23,6 +23,9 @@
         <div class="wb_Text2" style="margin: 40px 0 0 auto;">
             <span>Регистрация</span>
         </div>
+        <div class="wb_Text2" style="margin: 10px 0 0 auto;">
+            <span style="font-size:15px;">(все поля обязательны)</span>
+        </div>
         <div id="username-box"><input type="text" class="Editbox1" name="username" id="username" value=""
                                       spellcheck="false" placeholder="   Никнейм" autocomplete="off" onkeyup="checkUsername()"></div>
 
@@ -37,13 +40,13 @@
                                   placeholder="   Имя"></div>
         <div id="date-box"><input required type="text" class="Editbox1" placeholder="   Дата рождения"
                                   onfocus="(this.type='date')" id="date" name="date"/></div>
-        <div id="tnumber-box"><input type="number" class="Editbox1" id="tnumber" name="tnumber" id="tnumber" value=""
+        <div id="tnumber-box"><input required type="number" class="Editbox1" id="tnumber" name="tnumber" id="tnumber" value=""
                                      spellcheck="false" placeholder="   Табельный номер" min="90000000" max="99999999">
         </div>
 
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
 
-        <div id="btn-box"><input type="submit" name="submit" value="Зарегистрироваться" class="orangeButton"
+        <div id="btn-box" style="display: inline-block;margin: 30px auto;width: 100%;"><input type="submit" name="submit" value="Зарегистрироваться" class="orangeButton"
                                  style="margin:30px auto 0 auto;height:50px;width:300px;"></div>
     </form>
 </div>

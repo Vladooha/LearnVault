@@ -1,4 +1,5 @@
 <#import "macro/course_macro.ftl" as m>
+<#import "../index_macro.ftl" as i>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +24,8 @@
 <body>
 	<div id="LayerBody" >
 		<div id="LayerBody_Container">
-			<div id="LayerMain">
+			<div id="LayerMain" style="width: 1200px;">
+			<@i.logo_site/>
 				<div class="main-layer">
 					<div class="paige_of_course_name" id="name_of_course">${course_name}</div>
 					<@m.pagelist course_id, pages/>

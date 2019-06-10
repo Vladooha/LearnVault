@@ -59,7 +59,7 @@ input:focus, textarea:focus, select:focus
 }
 #Heading a
 {
-   color: #04396C;
+   color: #FF9700;
    font-family: "Baloo Chettan";
    font-weight: bold;
    font-size: 75px;
@@ -213,4 +213,17 @@ h6, .h6
    background-color: #DBDBDB;
    border: 1px solid #DBDBDB;
    /*cursor:*/
+}
+.blueButton
+{
+   display: block;
+   font-family: "Exo 2";
+   font-weight: 400;
+   font-size: 21px;
+   text-decoration: none;
+   border-radius: 4px;
+   cursor: pointer;
+   color: #FFFFFF;
+   background-color: #044077;
+   border: 1px solid #044077;
 }

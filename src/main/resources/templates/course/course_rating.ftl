@@ -1,4 +1,5 @@
 <#import "/spring.ftl" as spring />
+<#import "../index_macro.ftl" as i>
 
 <!DOCTYPE html>
 <html lang="ru" xmlns:form="http://www.w3.org/1999/html">
@@ -10,6 +11,7 @@
     <link href="../../static/css/Page_of_courses.css" rel="stylesheet">
     <link href="../../static/css/jquery.rating.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <!--script type="text/javascript">
         window.jQuery || document.write('<script type="text/javascript" src="../../static/scripts/libs/jquery-1.6.2.min.js"><\/script>');
@@ -57,7 +59,8 @@
 <body>
 <div id="LayerBody">
     <div id="LayerBody_Container">
-        <div id="LayerMain">
+        <div id="LayerMain" style="width: 1200px;">
+        <@i.header_site/>
             <div class="page_title" id="name_of_page">Оцените курс:</div>
 
             <#assign path = "/course/" + course_id + "/rate">
@@ -94,7 +97,7 @@
                 <!--input type="submit" value="Проголосовать" class="orangeButton" style="width: 200px; height: 40px; margin:70px auto;"-->
             </form>
 
-            <form action=${path} method="post">
+            <form action=${path} method="post" name="action_test">
                 <@spring.bind "feedbackForm.complexity"/>
                 <input id="complexity"
                        type="hidden"
@@ -118,7 +121,7 @@
 
                 <input type="hidden" name="_csrf" value="${_csrf.token}"/>
 
-                <input type="submit" value="Проголосовать" class="orangeButton" style="width: 200px; height: 40px; margin:70px auto;" onclick="getRating()">
+                <input type="button" value="Проголосовать" class="orangeButton" style="width: 200px; height: 40px; margin:70px auto;" onclick="getRating()">
             </form>
         </div>
     </div>
@@ -135,8 +138,10 @@
         $('#complexity').val(res_rating[0]);
         $('#comprehensibility').val(res_rating[1]);
         $('#expectation').val(res_rating[2]);
-        console.log(res_rating);
-        return res_rating;
+        swal("Спасибо!", "Спасибо за вашу оценку!", "success").then((value) => {
+            console.log(res_rating);
+            document.action_test.submit();
+        });
     }
 </script>
 </html>

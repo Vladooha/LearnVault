@@ -16,7 +16,7 @@
 <body>
 		<div id="LayerBody" >
 			<div id="LayerBody_Container">
-				<div id="LayerMain">
+				<div id="LayerMain" style="width: 1200px;">
 					<@i.logo_site/>
 					<!-- body code goes here -->
 					<div class="main-layer">
@@ -229,7 +229,7 @@
         sendCourseStruct();
             swal({
                 title: "Хорошая работа!",
-                text: "Курс сохраняется...",
+                text: "Курс сохранен!",
                 icon: "success"
             }).then((value) => {
                     window.location.href='/index';

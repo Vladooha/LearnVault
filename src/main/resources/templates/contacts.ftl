@@ -21,7 +21,7 @@
 		<div id="LayerMain">
 			<@m.header_site/>
 			<form action="" enctype="text/plain" method="post">
-				<div style="margin:5% 10%; border:1px #A3A3A3 solid">
+				<div style="margin:5% 10%; border:1px #A3A3A3 solid; display: inline-block;width: 80%;">
 					<div style="margin:2% 5%;">
 						<div><h3 class="h3" style="font-size:35px;">Форма обратной связи</h3></div>
 						<div style="margin:5% 0;">
@@ -47,6 +47,7 @@
 				</div>
 			</form>
 		</div>
+		<@m.footer_site/>
 	</div>
 </div>
 </body>

@@ -4,36 +4,36 @@
 <!doctype html>
 <html>
 <head>
-	<title>constructor</title>
-	<link href="../icon.png" rel="shortcut icon" type="image/x-icon">
-	<link href="../../static/css/course_designer.css" rel="stylesheet">
-	<link href="../../static/css/demo1.css" rel="stylesheet">
-	<link href="../../static/css/index.css" rel="stylesheet">
-	<link href="../../static/css/switch.css" rel="stylesheet" type="text/css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-	<script src="../../static/scripts/course-constr.js"></script>
-	<script src="../../static/scripts/file-upload.js"></script>
+    <title>constructor</title>
+    <link href="../icon.png" rel="shortcut icon" type="image/x-icon">
+    <link href="../../static/css/course_designer.css" rel="stylesheet">
+    <link href="../../static/css/demo1.css" rel="stylesheet">
+    <link href="../../static/css/index.css" rel="stylesheet">
+    <link href="../../static/css/switch.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="../../static/scripts/course-constr.js"></script>
+    <script src="../../static/scripts/file-upload.js"></script>
 
-	<style>
-		.inline {
-			display: inline-grid;
-			grid-gap: 50px;
-		}
+    <style>
+        .inline {
+            display: inline-grid;
+            grid-gap: 50px;
+        }
 
-		#grid {
-			display: grid;
-			height: 100px;
-			grid-template-columns: repeat(3, 1fr);
-			grid-template-rows: 100px;
-			column-gap: 20px;
-		}
-	</style>
+        #grid {
+            display: grid;
+            height: 100px;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 100px;
+            column-gap: 20px;
+        }
+    </style>
 </head>
 <body>
 <div id="LayerBody" >
-	<div id="LayerBody_Container">
-		<div id="LayerMain">
-			<@i.logo_site/>
+    <div id="LayerBody_Container">
+        <div id="LayerMain" style="width: 1200px;">
+            <@i.logo_site/>
             <div class="main-layer">
                 <div class="my-header">Конструктор курсов</div>
                 <div class="project-explorer-container">
@@ -150,83 +150,83 @@
 </div>
 </body>
 <script>
-	localStorage.clear();
-	var photo_path;
-	var count_tags = 0;
-	var max_tags = 11;
-	$(function(){ // DOM ready
-		// ::: TAGS BOX
-		$("#tags input").on({
-			focusout : function() {
-				var txt = this.value.replace(/[^a-z0-9\+\-\.\#]/ig,''); // allowed characters
-				if(txt && max_tags > count_tags) $("<span/>", {text:txt.toLowerCase(), insertBefore:this});
-				this.value = "";
-				count_tags++;
-			},
-			keyup : function(ev) {
-				// if: comma|enter (delimit more keyCodes with | pipe)
-				if(/(188|13)/.test(ev.which)) $(this).focusout();
-			}
-		});
-		var availableTags = ["php Script", "Супер Script JS", "asp Script", "Java" ]; //
-		// $("#tag").autocomplete({ //на какой input:text назначить результаты списка
-		// 	source: availableTags
-		// });
-		$('#tags').on('click', 'span', function() {
-			if(confirm("Remove "+ $(this).text() +"?")) $(this).remove();
-			count_tags--;
-		});
-	});
+    localStorage.clear();
+    var photo_path;
+    var count_tags = 0;
+    var max_tags = 11;
+    $(function(){ // DOM ready
+        // ::: TAGS BOX
+        $("#tags input").on({
+            focusout : function() {
+                var txt = this.value.replace(/[^a-z0-9\+\-\.\#]/ig,''); // allowed characters
+                if(txt && max_tags > count_tags) $("<span/>", {text:txt.toLowerCase(), insertBefore:this});
+                this.value = "";
+                count_tags++;
+            },
+            keyup : function(ev) {
+                // if: comma|enter (delimit more keyCodes with | pipe)
+                if(/(188|13)/.test(ev.which)) $(this).focusout();
+            }
+        });
+        var availableTags = ["php Script", "Супер Script JS", "asp Script", "Java" ]; //
+        // $("#tag").autocomplete({ //на какой input:text назначить результаты списка
+        //  source: availableTags
+        // });
+        $('#tags').on('click', 'span', function() {
+            if(confirm("Remove "+ $(this).text() +"?")) $(this).remove();
+            count_tags--;
+        });
+    });
 </script>
 <script>
-	function setCourse() {
-		//отправляем категорию курса
-		localStorage.setItem('category', JSON.stringify($("#category option:selected").text()));
-		//отправляем название курса
-		localStorage.setItem('course_name', JSON.stringify(document.getElementById('course_name').value));
-		//отправляем теги курса
-		var div_tags = document.getElementById("tags");
-		var list_spans = div_tags.getElementsByTagName('span');
-		var list_tags = [];
-		for (var i = 0; i < list_spans.length; i++) {
-			list_tags.push(list_spans[i].innerHTML);
-		}
-		localStorage.setItem('list_tags', JSON.stringify(tags));
-		//отправляем описание курса
-		localStorage.setItem('description', JSON.stringify($('#description').val()));
+    function setCourse() {
+        //отправляем категорию курса
+        localStorage.setItem('category', JSON.stringify($("#category option:selected").text()));
+        //отправляем название курса
+        localStorage.setItem('course_name', JSON.stringify(document.getElementById('course_name').value));
+        //отправляем теги курса
+        var div_tags = document.getElementById("tags");
+        var list_spans = div_tags.getElementsByTagName('span');
+        var list_tags = [];
+        for (var i = 0; i < list_spans.length; i++) {
+            list_tags.push(list_spans[i].innerHTML);
+        }
+        localStorage.setItem('list_tags', JSON.stringify(tags));
+        //отправляем описание курса
+        localStorage.setItem('description', JSON.stringify($('#description').val()));
 
-		// File upload
-		var pic = uploadFile('file');
-		localStorage.setItem('picture', pic);
+        // File upload
+        var pic = uploadFile('file');
+        localStorage.setItem('picture', pic);
 
-		//отправляем время, ограничивающее курс (если не огр - 0)
-		if ($('#myonoffswitch').is(':checked')){
-			var buf_time = $('#timebox').val().split(':',2);
-			for(var i = 0; i < 2; i++){
-				if (buf_time[i].substring(0, 1) == '0')
-					buf_time[i] = buf_time[i].substring(1, 2);
-			}
-			var time = buf_time[0]*36*Math.pow(10,5) + buf_time[1]*6*Math.pow(10,4);
-			localStorage.setItem('time', JSON.stringify(time));
-		}
-		else{
-			localStorage.setItem('time', JSON.stringify("0"));
-		}
+        //отправляем время, ограничивающее курс (если не огр - 0)
+        if ($('#myonoffswitch').is(':checked')){
+            var buf_time = $('#timebox').val().split(':',2);
+            for(var i = 0; i < 2; i++){
+                if (buf_time[i].substring(0, 1) == '0')
+                    buf_time[i] = buf_time[i].substring(1, 2);
+            }
+            var time = buf_time[0]*36*Math.pow(10,5) + buf_time[1]*6*Math.pow(10,4);
+            localStorage.setItem('time', JSON.stringify(time));
+        }
+        else{
+            localStorage.setItem('time', JSON.stringify("0"));
+        }
 
-		//отправляем тип курса
-		if (document.getElementById("isPrivate").checked == true)
-			localStorage.setItem('groupName', JSON.stringify($("#groupSelect").val()));
-		else
-			localStorage.setItem('groupName', JSON.stringify("none"));
-	}
+        //отправляем тип курса
+        if (document.getElementById("isPrivate").checked == true)
+            localStorage.setItem('groupName', JSON.stringify($("#groupSelect").val()));
+        else
+            localStorage.setItem('groupName', JSON.stringify("none"));
+    }
 </script>
 <script>
-	function switchTime(){
-		if ($('#myonoffswitch').is(':checked')){
-			document.getElementById("timebox").style.visibility = "visible";
-		} else {
-			document.getElementById("timebox").style.visibility = "hidden";
-		}
-	}
+    function switchTime(){
+        if ($('#myonoffswitch').is(':checked')){
+            document.getElementById("timebox").style.visibility = "visible";
+        } else {
+            document.getElementById("timebox").style.visibility = "hidden";
+        }
+    }
 </script>
 </html>

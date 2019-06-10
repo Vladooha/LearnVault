@@ -28,7 +28,7 @@
 
                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
 
-                <input type="submit" name="submit" value="Войти" class="orangeButton" style="width:150px;height:50px;margin:0 auto;">
+                <input type="submit" name="submit" value="Войти" class="blueButton" style="width:150px;height:50px;margin:0 auto;">
 				<div  style="height:19px; width:660px;">
 					<span class="wb_Text_link" style="width:330px; float: left;"><a href="reset">Напомнить логин или пароль</a></span>
 					<span class="wb_Text_link" style="float: right; margin-right: 50px;"><a href="reg">Зарегистрироваться</a></span>

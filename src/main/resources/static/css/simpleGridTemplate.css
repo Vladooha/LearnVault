@@ -95,14 +95,14 @@ body {
 	display:flex;
 }
 .profile_image{
-	width: 10%;
-	float:left;
+	width: 20%;
+    float: left;
 }
 .information {
-	width: 80%;
-	text-align: left;
-	float:left;
-	margin-left: 10%;
+    width: 75%;
+    text-align: left;
+    float: left;
+    margin-left: 5%;
 }
 .intro .column h3 {
 	font-family: Arial;

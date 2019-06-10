@@ -11,6 +11,7 @@
 	min-height: 160px;
 	max-width: 1160px;
 	margin: 20px 0;
+	border: 2.5px solid #d2e8fc;
 }
 .result_container:hover{
 	border: 2.5px double rgb(0, 45, 86);
@@ -76,6 +77,8 @@ h5.h5 {
   display:none;
   z-index:9999;
   padding:20px;
+  border: 2px solid rgb(0,45,86);
+  border-radius: 10px;
 }
 
 #boxes .window{

@@ -1,5 +1,4 @@
 <#macro header_site>
-
 <#if roles??>
     <#list roles as role>
         <p id="${role}" hidden="true">${role}</p></li>
@@ -25,14 +24,14 @@
     <div id="wb_CssMenu1" style="width:100%;height:60px;z-index: 999999;">
         <ul role="menubar" style="z-index: 1000;">
             <li class="firstmain">
-                <a role="menuitem" class="withsubmenu" href="#" target="_self">Программы и курсы</a>
-                <ul role="menu">
+                <a role="menuitem" class="withsubmenu" href="#" target="_self" id="tab1">Программы и курсы</a>
+                <ul role="menu" style="z-index:9999;">
                             <!-- LIST CATEGORIES -->
                             <#if categories??>
                                 <#list categories as category>
                                     <#assign path='/category?num='+category.getNum()>
                                     <li class="firstitem" style="z-index: 1000;">
-                                        <a role="menuitem" href='${path}' target="_self" style="z-index: 1000;">
+                                        <a role="menuitem" href='${path}' target="_self" style="z-index: 1000;" onclick="changeCurrentLI('tab1')">
                                             ${category.getName()}
                                         </a>
                                     </li>
@@ -42,30 +41,46 @@
                 </ul>
             </li>
             <li>
-                <a role="menuitem" class="withsubmenu" href="/constructor/course_create" target="_self">Создать курс</a>
+                <a role="menuitem" class="withsubmenu" href="/constructor/course_create" target="_self" id="tab2" onclick="changeCurrentLI(this.id)">Создать курс</a>
             </li>
             <li>
-                <a role="menuitem" class="withsubmenu" href="" target="_self">Мои курсы</a>
+                <a role="menuitem" class="withsubmenu" href="" target="_self" id="tab3" onclick="changeCurrentLI(this.id)">Мои курсы</a>
             </li>
             <!--IF USER -->
             <li id="userRef" hidden="true">
-    			<a role="menuitem" class="withsubmenu" href="beTeacher" target="_self">Стать учителем</a>
+    			<a role="menuitem" class="withsubmenu" href="beTeacher" target="_self" id="tab41" onclick="changeCurrentLI(this.id)">Стать учителем</a>
             </li>
             <!-- IF ADMIN -->
             <li id="adminRef" hidden="true">
-    			<a role="menuitem" class="withsubmenu" href="admin_panel" target="_self">Администрирование</a>
+    			<a role="menuitem" class="withsubmenu" href="admin_panel" target="_self" id="tab42" onclick="changeCurrentLI(this.id)">Администрирование</a>
             </li>
             <!-- IF TEACHER -->
             <li id="teacherRef" hidden="true">
-                <a role="menuitem" class="withsubmenu" href="teacher_panel" target="_self">Администрирование</a>
+                <a role="menuitem" class="withsubmenu" href="teacher_panel" target="_self" id="tab43" onclick="changeCurrentLI(this.id)">Администрирование</a>
             </li>
             
             <li>
-                <a role="menuitem" class="withsubmenu" href="contacts" target="_self">Контакты</a>
+                <a role="menuitem" class="withsubmenu" href="contacts" target="_self" id="tab5" onclick="changeCurrentLI(this.id)">Контакты</a>
             </li>
         </ul>
     </div>
 <script>
+    var currentLi = JSON.parse(localStorage.getItem("currentLiHeader"));
+    //alert(currentLi);
+    if (currentLi !== null){
+        if($("#"+currentLi).length)
+            $("#"+currentLi).css({ "background-color": "#002956",
+                    "color": "white" });
+        if($("#"+currentLi+"1").length)
+            $("#"+currentLi+"1").css({ "background-color": "#002956",
+                    "color": "white" });
+        if($("#"+currentLi+"2").length)
+            $("#"+currentLi+"2").css({ "background-color": "#002956",
+                    "color": "white" });
+        if($("#"+currentLi+"3").length)
+            $("#"+currentLi+"3").css({ "background-color": "#002956",
+                    "color": "white" });
+    }
     if($("#ADMIN").length || $("#TEACHER").length)
         if ($("#ADMIN").length){
            // alert("admin!");
@@ -73,17 +88,39 @@
         }
         else{
             $("#teacherRef").show();
-            //alert("teacher!");
+           // alert("teacher!");
         }
     else{
-        //alert("user!");
+       // alert("user!");
         $("#userRef").show();
     }
-
+    function changeCurrentLI(id){
+        localStorage.setItem('currentLiHeader', JSON.stringify(id));
+        console.log(localStorage.getItem("currentLiHeader"));
+    }
 </script>
 </#macro>
+<#macro footer_site>
+    <div id="Footer">
+        <div style="width:50%;float: left;margin-top:20px;">
+            <h5 class="h5" style="margin: 70px;">© Training portal</h3>
+        </div>
+        <div style="width:50%;float:left; text-align:right; margin-top:20px;">
+            <h5 class="h5" style="margin: 70px;">МП-35А</h3>
+        </div>
+        <div style="width:100%;float:right; text-align:right;">
+            <h5 class="h5" style="margin: 70px;">Межуев</h3>
+        </div>
+        <div style="width:100%;float:right; text-align:right;">
+            <h5 class="h5" style="margin: 70px;">Смирнов</h3>
+        </div>
+        <div style="width:100%;float:right; text-align:right;">
+            <h5 class="h5" style="margin: 70px;">Соловьев</h3>
+        </div>
+    </div>
+</#macro>
 <#macro logo_site>
-<div  style="padding:20px 0;;width:100%;height:65px;">
+<div  style="padding:20px 0;;width:100%;height:100px;">
     <div style="width:30%;float:left;margin-left:2%;height:65px;text-align:top;">
         <h1 id="Heading"><a href="#" style="color:#FF9700;font-size:50px;" onclick="hrefWithAlert('/index')">Training portal</a></h1>
     </div>

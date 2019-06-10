@@ -21,15 +21,16 @@
 }
 .blueButton
 {
-   margin: 20px 0;
+   display: block;
    font-family: "Exo 2";
-   font-size: 16px;
+   font-weight: 400;
+   font-size: 21px;
    text-decoration: none;
+   border-radius: 4px;
+   cursor: pointer;
    color: #FFFFFF;
    background-color: #044077;
    border: 1px solid #044077;
-   border-radius: 4px;
-   cursor: pointer;
 }
 .redButton
 {
