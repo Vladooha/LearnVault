@@ -329,6 +329,16 @@ public class CourseService {
                             String[] allAnswers = courseTestPage.getAns().split(DELIMITER);
                             String[] allRequestAnswers = ans.split(DELIMITER);
 
+                            logger.debug("All right answers:");
+                            for(String answ : allAnswers) {
+                                logger.debug(answ);
+                            }
+
+                            logger.debug("All request answers:");
+                            for(String answ : allRequestAnswers) {
+                                logger.debug(answ);
+                            }
+
                             String rightAnsNumsInRequest = "";
                             String rightAnsNums = courseTestPage.getRightAns();
                             for (int i = 0; i < allAnswers.length; ++i) {

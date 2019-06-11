@@ -26,14 +26,6 @@ public class TeacherPanelController {
     @Autowired
     private AdminService adminService;
 
-    @GetMapping("/teacher_panel")
-    public String adminPanel(Principal principal) {
-        if (teacherService.isTeacher(principal)) {
-            return "admin_panel";
-        }
-
-        return "forward:/";
-    }
 
     @GetMapping("/teacher_panel/students")
     public String adminPanelWithStudents(

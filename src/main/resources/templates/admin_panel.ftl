@@ -186,8 +186,8 @@
                 <form name="form1" id="form1">
                         <ul class="tabs" role="tablist">
                         <li>
-                            <input type="radio" name="tabs" id="tab2" checked />
-                            <label for="tab2" role="tab" aria-selected="true" aria-controls="panel2" tabindex="0">учителя</label>
+                            <input type="radio" name="tabs" id="tabt" checked />
+                            <label for="tabt" role="tab" aria-selected="true" aria-controls="panel2" tabindex="0">учителя</label>
                             <div id="tab-content2" class="tab-content" role="tabpanel" aria-labelledby="teachers" aria-hidden="false">
                               <div class="tab_container">
                                     <div class="row">
@@ -214,8 +214,8 @@
                         </li>
 
                         <li>
-                            <input type="radio" name="tabs" id="tab3"/>
-                            <label for="tab3" role="tab" aria-selected="false" aria-controls="panel3" tabindex="0">админы</label>
+                            <input type="radio" name="tabs" id="tabc"/>
+                            <label for="tabc" role="tab" aria-selected="false" aria-controls="panel3" tabindex="0">админы</label>
                             <div id="tab-content3" class="tab-content" role="tabpanel" aria-labelledby="admins" aria-hidden="true">
                               <div class="tab_container">
                                     <div class="row">
@@ -266,8 +266,8 @@
                         </li>
 
                         <li>
-                            <input type="radio" name="tabs" id="tab5"/>
-                            <label for="tab5" role="tab" aria-selected="false" aria-controls="panel5" tabindex="0">метатеги</label>
+                            <input type="radio" name="tabs" id="tabm"/>
+                            <label for="tabm" role="tab" aria-selected="false" aria-controls="panel5" tabindex="0">метатеги</label>
                             <div id="tab-content5" class="tab-content" role="tabpanel" aria-labelledby="metatags" aria-hidden="true">
                               <div class="tab_container">
                                     <div class="row">
@@ -393,8 +393,8 @@
         //alert("else tab");
     //}
     //debug
-    form1.onchange = function(e){
-          alert("id=" + e.target.id + " status=" + e.target.value);
+    form1.onclick = function(e){
+          console.log("id=" + e.target.id + " status=" + e.target.value);
     }
     window.onunload = function() {
         changeCurrentTabAdmin();

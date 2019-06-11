@@ -482,7 +482,7 @@ if (!Element.prototype.remove) {
 
 function changeCurrentTabAdmin(){
 	var id = $(":radio[name=tabs]").filter(":checked");
-	alert(id);
+	//alert(id);
 	id = id[0].id;
     localStorage.setItem('currentTabAdmin', JSON.stringify(id));
     console.log(localStorage.getItem("currentTabAdmin"));

@@ -22,7 +22,7 @@
                     <#assign page_iter = 0>
                     <#list pages as page>
                         <#if page_num == page_iter>
-                            <li class="pages" style="background:#6688tFF" id="page" + ${page_iter} onclick="goToPage(${course_id}, ${page_iter});">
+                            <li class="pages" style="background:#6688FF" id="page" + ${page_iter} onclick="goToPage(${course_id}, ${page_iter});">
                         <#else>
                             <li class="pages" id="page" + ${page_iter} onclick="goToPage(${course_id}, ${page_iter});">
                         </#if>
