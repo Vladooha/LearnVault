@@ -1,5 +1,4 @@
 //VLAD------------------------------------
-
 function addTeacher(value) {
 	$.ajax({
 		url: "/ajax/add_teacher",
@@ -256,17 +255,21 @@ function addTag(){
 	  content: "input",
 	})
 	.then((value) => {
-		nameTag = value;
-		swal("Введите его вес:", {
-		  content: "input",
-		})
-		.then((value) => {
-			weightTag = value;
-			addTagToMetaTag(selectedTag, nameTag, weightTag);
-			swal("Тэг успешно добавлен!", {
-			  icon: "success",
+		if(value != null){
+			nameTag = value;
+			swal("Введите его вес:", {
+			  content: "input",
+			})
+			.then((value) => {
+				if(value != null){
+					weightTag = value;
+					addTagToMetaTag(selectedTag, nameTag, weightTag);
+					swal("Тэг успешно добавлен!", {
+					  icon: "success",
+					});
+				}
 			});
-		});
+		}
 	});
 }
 function addGroup(){
@@ -274,13 +277,15 @@ function addGroup(){
 	  content: "input",
 	})
 	.then((value) => {
-		createGroup(value);
-		swal("Новая группа успешно создана!", {
-			  icon: "success",
-			}).then((value) => {
-				location.reload();
-			});
-		setTimeout(function() { location.reload(); }, 2000);
+		if(value != null){
+			createGroup(value);
+			swal("Новая группа успешно создана!", {
+				  icon: "success",
+				}).then((value) => {
+					location.reload();
+				});
+			setTimeout(function() { location.reload(); }, 2000);
+		}
 	});
 }
 function delGroup(){
@@ -292,50 +297,62 @@ function delGroup(){
 	  dangerMode: true,
 	})
 	.then((willDelete) => {
-		deleteGroup(selectedGroup);
-		document.getElementById("delGroup").hidden = true;
-		swal("Группа успешно удалена!", {
-			  icon: "success",
-			}).then((value) => {
-				location.reload();
-			});
-		setTimeout(function() { location.reload(); }, 2000);
+		if (willDelete) {
+			deleteGroup(selectedGroup);
+			document.getElementById("delGroup").hidden = true;
+			swal("Группа успешно удалена!", {
+				  icon: "success",
+				}).then((value) => {
+					location.reload();
+				});
+			setTimeout(function() { location.reload(); }, 2000);
+		}
 	});
 }
-function clickOnUser(id, select = undefined){
+function selecting(id, select = undefined){
 		var lies =  undefined;
 		switch(select){
 			case "user":
 				var buf = id.split('_');
-				lies = document.getElementById('container_users_'+buf[0]).getElementsByTagName("li");
+				alert(buf);
+				lies = document.getElementById('container_users_'+buf[0].substring(1)).getElementsByTagName("li");
 				activatedBtns(false, "U_"+selectedGroup);
 				selectedUser = buf[1];
 				break;
 			case "teacher":
+				var buf = id.substring(1);
+				alert(buf);
 				lies = document.getElementById('container_teachers').getElementsByTagName("li");
 				activatedBtns(false, "T");
-				selectedTeacher = id;
+				selectedTeacher = buf;
 				break;
 			case "category":
+				var buf = id.substring(1);
+				alert(buf);
 				lies = document.getElementById('container_categories').getElementsByTagName("li");
 				activatedBtns(false, "C");
-				selectedCategories = id;
+				selectedCategories = buf;
 				break;
 			case "tag":
+				var buf = id.substring(1);
+				alert(buf);
 				lies = document.getElementById('container_tags').getElementsByTagName("li");
 				activatedBtns(false, "TAG");
-				selectedTag = id;
+				selectedTag = buf;
 				break;	
 			case "teacherG":
 				var buf = id.split('_');
-				lies = document.getElementById('container_teachers_'+buf[0]).getElementsByTagName("li");
+				alert(buf);
+				lies = document.getElementById('container_teachers_'+buf[0].substring(1)).getElementsByTagName("li");
 				activatedBtns(false, "T_"+selectedGroup);
 				selectedTeacherInGroup = buf[1];
 				break;
 			default:
+				var buf = id.substring(1);
+				alert(buf);
 				lies = document.getElementById('container_admins').getElementsByTagName("li");	
 				activatedBtns(false, "A");
-				selectedAdmin = id;
+				selectedAdmin = buf;
 				break;
 		}
 	
@@ -346,8 +363,7 @@ function clickOnUser(id, select = undefined){
 		//добавляем подсветку selected li
 		var userLI = document.getElementById(id);
 		userLI.className = "selectedLi";
-		
-	}
+}
 //включает/выключает кнопки удалить и изменить
 function activatedBtns(flag, type){
 	switch(type){
@@ -364,268 +380,323 @@ function activatedBtns(flag, type){
 	}
 }
 //удалить пользователя 
-function deleteUser(select){
+function deleting(select){
 
 	var currentUserLi;
 
 	swal({
 	  title: "Вы уверены?",
-	  text: "Это действие приведет к безвозвратному удалению всех данных о пользователе!",
+	  text: "Это действие приведет к безвозвратному удалению всех данных!",
 	  icon: "warning",
 	  buttons: true,
 	  dangerMode: true,
 	})
 	.then((willDelete) => {
-
 		if (willDelete) {
-			swal("Пользователь удален!", {
-			  icon: "success",
-			});
 			switch(select){
 				case "user":
 					activatedBtns(true, "U_"+selectedGroup);
 
-					currentUserLi = document.getElementById(selectedGroup+ "_" + selectedUser);
+					currentUserLi = document.getElementById("U" + selectedGroup+ "_" + selectedUser);
 					
 					//DELETE USER 
 					removeStudent(selectedUser, selectedGroup);
-					
+					swal("Пользователь удален!", {
+			  		icon: "success",
+					});
 					break;
 
 				case "teacher":
 					activatedBtns(true, "T");
-					currentUserLi = document.getElementById(selectedTeacher);
+					currentUserLi = document.getElementById("T" + selectedTeacher);
 					
 					//DELETE TEACHER 
 					removeTeacher(selectedTeacher);
-					
+					swal("Учитель удален!", {
+			  		icon: "success",
+					});
 					break;
 
 				case "teacherG":
 					activatedBtns(true, "T_"+selectedGroup);
-					currentUserLi = document.getElementById(selectedGroup+ "_" + selectedTeacherInGroup);
+					alert(selectedGroup);
+					alert(selectedTeacherInGroup);
+					currentUserLi = document.getElementById("T" + selectedGroup + "_" + selectedTeacherInGroup);
 					
 					//DELETE TEACHER 
 					removeTeacherFromGroup(selectedGroup, selectedTeacherInGroup);
-					
+					swal("Учитель удален!", {
+			  		icon: "success",
+					});
 					break;
 
 				case "tag":
 					activatedBtns(true, "TAG");
-					currentUserLi = document.getElementById(selectedTag);
+					currentUserLi = document.getElementById("M" + selectedTag);
 					
 					//DELETE METATAG
 
 					removeMetaTag(selectedTag);
-					
+					swal("Метатег удален!", {
+			  		icon: "success",
+					});
 					break;
 
-				case "admin":
-					currentUserLi = document.getElementById(selectedAdmin);
+				/*case "admin":
+					currentUserLi = document.getElementById("A" + selectedAdmin);
 					activatedBtns(true, "A");
 					
 					//DELETE ADMIN 
 					removeAdmin(selectedAdmin);
-					
+					swal("Админ удален!", {
+			  		icon: "success",
+					});
 					break;
-					
+					*/
 				case "category":
-					currentUserLi = document.getElementById(selectedCategories);
+					currentUserLi = document.getElementById("C" + selectedCategories);
 					activatedBtns(true, "C");
 					
 					//DELETE CATEGORY 
 					removeCategory(selectedCategories);
-					
+					swal("Категория курсов удалена!", {
+			  		icon: "success",
+					});
 					break;
 			}
+			alert(currentUserLi.id);
 			currentUserLi.remove();
+			setTimeout(function() { location.reload(); }, 2000);
 		  } 
 	});
 }
-function addUser(select){
-	swal("Введите новое имя:", {
-	  content: "input",
-	})
-	.then((value) => {
-		if(value != null){
-			//создаем строку
-			var createdLi = document.createElement('li');
 
-			//создаем параграф с текстом внутри строки
-			var createdP = document.createElement('p');
-			if (select != "teacherG")
-				createdP.id = "P" + value;
-			else
-				createdP.id = "P" + selectedGroup + "_" + value;
-			createdP.innerHTML = value;
-			//добавляем параграм в строку
+//переопределения функции remove
+if (!Element.prototype.remove) {
+	Element.prototype.remove = function remove() {
+	  if (this.parentNode) {
+	    this.parentNode.removeChild(this);
+	  }
+	};
+}
+
+function changeCurrentTabAdmin(){
+	var id = $(":radio[name=tabs]").filter(":checked");
+	alert(id);
+	id = id[0].id;
+    localStorage.setItem('currentTabAdmin', JSON.stringify(id));
+    console.log(localStorage.getItem("currentTabAdmin"));
+}
+function alertSuccesWithReload(message){
+	changeCurrentTabAdmin();
+	swal(message, {
+			  icon: "success",
+	}).then((value) => {
+		location.reload();
+	});
+	setTimeout(function() { location.reload(); }, 2000);
+}
+function add(select){
+	//создаем строку
+	var createdLi = document.createElement('li');
+
+	//создаем параграф с текстом внутри строки
+	var createdP = document.createElement('p');
+	//добавляем параграм в строку
+
+	//добавляем строку в список
+	var parent;
+
+	var nameUser = undefined;
+	switch(select){
+		case "user":
+			nameUser = $('#userSelector option:selected').text();
+			
+			$('#students').hide();
+			$('#mask').hide();
+			
+			alert(nameUser);
+			addStudent(nameUser, selectedGroup);
+
+			createdP.innerHTML = nameUser;
+			createdP.id = "PS" + nameUser;
 			createdLi.appendChild(createdP);
+			createdLi.id = "S" + selectedGroup + "_" + nameUser;
+			createdLi.onclick = function(){
+				selecting(createdLi.id, "user");
+			}
 
-			//добавляем строку в список
-			var parent;
+			parent = document.getElementById("container_users_" + selectedGroup);
+			parent.appendChild(createdLi);
 
-			switch(select){
-				case "user":
-					createdLi.id = selectedGroup + "_" + value;
+			//делаем ее выбранной
+			selecting(createdLi.id, "user");
+
+			alertSuccesWithReload("Студент добавлен!");
+			break;
+
+		case "teacher":
+			nameUser = $('#teacherSelector option:selected').text();
+			
+			$('#teachers').hide();
+			$('#mask').hide();
+
+			alert(nameUser);
+			addTeacher(nameUser);
+
+			createdP.innerHTML = nameUser;
+			createdP.id = "PT" + nameUser;
+			createdLi.appendChild(createdP);
+			createdLi.id = "T" + nameUser;
+			createdLi.onclick = function(){
+				selecting(createdLi.id, "teacher");
+			}
+
+			parent = document.getElementById("container_teachers");
+			parent.appendChild(createdLi);
+
+			//делаем ее выбранной
+			selecting(createdLi.id, "teacher");
+
+			alertSuccesWithReload("Учитель добавлен!");
+			break;
+
+		case "teacherG":
+			nameUser = $('#teacherGSelector option:selected').text();
+			
+			$('#teachersG').hide();
+			$('#mask').hide();
+
+			alert(nameUser);
+			addTeacherToGroup(selectedGroup, nameUser);
+
+			createdP.innerHTML = nameUser;
+			createdP.id = "PT" + selectedGroup + "_" + nameUser;
+			createdLi.appendChild(createdP);
+			createdLi.id = "T" + selectedGroup + "_" + nameUser;
+			createdLi.onclick = function(){
+				selecting(createdLi.id, "teacherG");
+			}
+
+			parent = document.getElementById("container_teachers_" + selectedGroup);
+			parent.appendChild(createdLi);
+
+			//делаем ее выбранной
+			selecting(createdLi.id, "teacherG");
+
+			alertSuccesWithReload("Учитель добавлен в группу!");
+			break;
+
+		case "admin":
+			nameUser = $('#adminSelector option:selected').text();
+			$('#admins').hide();
+			$('#mask').hide();
+
+			alert(nameUser);
+			addAdmin(nameUser);
+
+			createdP.innerHTML = nameUser;
+			createdP.id = "PA" + nameUser;
+			createdLi.appendChild(createdP);
+			createdLi.id = "A" + nameUser;
+			createdLi.onclick = function(){
+				selecting(createdLi.id, "admin");
+			}
+
+			parent = document.getElementById("container_admins");
+			parent.appendChild(createdLi);
+
+			//делаем ее выбранной
+			selecting(createdLi.id);
+
+			alertSuccesWithReload("Админ добавлен!");
+			break;
+
+		case "tag":
+			swal("Введите новый Метатег:", {
+			  content: "input",
+			})
+			.then((value) => {
+				if(value != null){
+					createdP.innerHTML = value;
+					createdP.id = "PM" + value;
+					createdLi.appendChild(createdP);
+					createdLi.id = "M" + value;
 					createdLi.onclick = function(){
-						clickOnUser(createdLi.id, "user");
-					}
-
-					parent = document.getElementById("container_users_" + selectedGroup);
-					parent.appendChild(createdLi);
-
-					//делаем ее выбранной
-					clickOnUser(createdLi.id, "user");
-
-					addStudent(value, selectedGroup);
-
-					break;
-
-				case "teacher":
-					createdLi.id = value;
-					createdLi.onclick = function(){
-						clickOnUser(createdLi.id, "teacher");
-					}
-
-					parent = document.getElementById("container_teachers");
-					parent.appendChild(createdLi);
-
-					//делаем ее выбранной
-					clickOnUser(createdLi.id, "teacher");
-
-					//ADD TEACHER
-					addTeacher(value);
-					break;
-
-				case "teacherG":
-					createdLi.id = selectedGroup + "_" + value;
-					createdLi.onclick = function(){
-						clickOnUser(createdLi.id, "teacherG");
-					}
-
-					parent = document.getElementById("container_teachers_" + selectedGroup);
-					parent.appendChild(createdLi);
-
-					//делаем ее выбранной
-					clickOnUser(createdLi.id, "teacherG");
-
-					//ADD TEACHER
-					addTeacherToGroup(selectedGroup, value)
-					break;
-
-				case "admin":
-					createdLi.id = value;
-					createdLi.onclick = function(){
-						clickOnUser(createdLi.id, "admin");
-					}
-
-					parent = document.getElementById("container_admins");
-					parent.appendChild(createdLi);
-
-					//делаем ее выбранной
-					clickOnUser(createdLi.id);
-
-					//ADD ADMIN
-					addAdmin(value)
-					break;
-
-				case "tag":
-					createdLi.id = value;
-					createdLi.onclick = function(){
-						clickOnUser(createdLi.id, "tag");
+						selecting(createdLi.id, "tag");
 					}
 
 					parent = document.getElementById("container_tags");
 					parent.appendChild(createdLi);
 
 					//делаем ее выбранной
-					clickOnUser(createdLi.id, "tag");
+					selecting(createdLi.id, "tag");
 
-					//ADD METATAG
 					addMetatag(value);
 					
-					break;
-					
-				case "category":
-					createdLi.id = value;
+					alertSuccesWithReload("Метатег добавлен!");
+				}
+			});
+			break;
+
+		case "category":
+			swal("Введите новю категорию курсов:", {
+			  content: "input",
+			})
+			.then((value) => {
+				if(value != null){
+					createdP.innerHTML = value;
+					createdP.id = "PC" + value;
+					createdLi.appendChild(createdP);
+					createdLi.id = "C" + value;
 					createdLi.onclick = function(){
-						clickOnUser(createdLi.id, "category");
+						selecting(createdLi.id, "category");
 					}
 					parent = document.getElementById("container_categories");
 					parent.appendChild(createdLi);
 
 					//делаем ее выбранной
-					clickOnUser(createdLi.id, "category");
+					selecting(createdLi.id, "category");
 
-					//ADD CATEGORY
 					addCourseCategory(value);
-					break;
-			}
-				swal("Пользователь добавлен!", {
-					  icon: "success",
-					});
-		}
-	});
+					
+					alertSuccesWithReload("Категория курсов добавлена!");
+				}
+			});
+			break;
+	}
 }
-
-
-function changeUser(select){
+function changing(select){
 	swal("Введите новое имя пользователя (логин):", {
 	  content: "input",
 	})
 	.then((value) => {
 		if(value != null){
 			switch(select){
-				case "user":
-					document.getElementById("P" + selectedUser).innerHTML = value;
-					document.getElementById(selectedUser).id = value;
-					document.getElementById("P" + selectedUser).id = "P" + value;
-
-					changeUserName(selectedUser, value);
-					selectedUser = value;
-					
-					//FUNCTION CHANGE USER HERE
-					
-					break;
-
 				case "teacher":
-					document.getElementById("P" + selectedTeacher).innerHTML = value;
-					document.getElementById(selectedTeacher).id = value;
-					document.getElementById("P" + selectedTeacher).id = "P" + value;
+					document.getElementById("PT" + selectedTeacher).innerHTML = value;
+					document.getElementById("T" + selectedTeacher).id = "T" + value;
+					document.getElementById("PT" + selectedTeacher).id = "PT" + value;
 
 					changeUserName(selectedTeacher, value);
 					selectedTeacher = value;
 					
-					//FUNCTION CHANGE TEACHER HERE
-					
+	 				alertSuccesWithReload("Логин учителя изменен!");
 					break;
-
 				case "admin":
-					document.getElementById("P" + selectedAdmin).innerHTML = value;
-					document.getElementById(selectedAdmin).id = value;
-					document.getElementById("P" + selectedAdmin).id = "P" + value;
+					document.getElementById("PA" + selectedAdmin).innerHTML = value;
+					document.getElementById("A" + selectedAdmin).id = "A" +  value;
+					document.getElementById("PA" + selectedAdmin).id = "PA" + value;
 					
 					changeUserName(selectedAdmin, value);
 					selectedAdmin = value;
 					
 					//FUNCTION CHANGE ADMIN HERE
-					
+					swal("Логин админа изменен!", {
+	 				icon: "success",
+					});
 					break;
-
-				case "teacherG":{
-					document.getElementById("PG" + selectedTeacherInGroup).innerHTML = value;
-					document.getElementById("G"+selectedTeacherInGroup).id = "G" + value;
-					document.getElementById("PG" + selectedTeacherInGroup).id = "PG" + value;
-					
-					changeUserName(selectedTeacherInGroup, value);
-					selectedCategories = value;
-					
-					//FUNCTION CHANGE ADMIN HERE
-				}
 			}	
-		  swal("Имя пользователя изменено!", {
-			  icon: "success",
-			});
 		}
 	});
 }
