@@ -3,30 +3,34 @@
         <div style="width:800px;margin:0 auto;">
             <#if 0 < page_num>
                 <button type="button" name="back" value="back" class="next_back_btn">
-                    <img style="transform: rotate(180deg);" src="../../../static/images/course_next.png" alt="Вперед" onclick="sendAnswer(${course_id}, ${page_num}, ''); goToPage(${course_id}, ${page_num - 1})"/>
+                    <img style="transform: rotate(180deg);" src="../../../static/images/course_next.png" alt="Вперед" onclick="sendAnswer(${course_id}, ${page_num}, ''); goToPage(${course_id}, ${page_num + 1})"/>
                 </button>
             </#if>
             <button type="button" name="forward" value="forward" class="next_back_btn" style="float:right;"><img
                         src="../../../static/images/course_next.png" alt="Назад"
-                        onclick="console.log('next'); sendAnswer(${course_id}, ${page_num}, ''); goToPage(${course_id}, ${page_num + 1});"/>
+                        onclick="console.log('next'); sendAnswer(${course_id}, ${page_num}, ''); goToPage(${course_id}, ${page_num - 1});"/>
             </button>
         </div>
     </form>
 </#macro>
 
-<#macro pagelist course_id, pages>
+<#macro pagelist course_id, pages, page_num>
     <div class="project-explorer-container" id="project_column">
         <div class="project-explorer" style="margin: 30px 10px 0 10px;width: auto">
             <div class="pages-list" style="margin: 20px 0;width: auto">
                 <ul class="col-xl-12" id="list-pages" style="padding: 0;">
-                    <#assign page_num = 0>
+                    <#assign page_iter = 0>
                     <#list pages as page>
-                        <li class="pages" id="page" + ${page_num} onclick="goToPage(${course_id}, ${page_num});">
+                        <#if page_num == page_iter>
+                            <li class="pages" style="background:#6688tFF" id="page" + ${page_iter} onclick="goToPage(${course_id}, ${page_iter});">
+                        <#else>
+                            <li class="pages" id="page" + ${page_iter} onclick="goToPage(${course_id}, ${page_iter});">
+                        </#if>
                             <#if page??>
                                 ${page}
                             </#if>
                         </li>
-                        <#assign page_num += 1>
+                        <#assign page_iter += 1>
                     </#list>
                 </ul>
             </div>

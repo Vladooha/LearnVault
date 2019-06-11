@@ -96,4 +96,19 @@ public class SearchController {
         return "search";
     }
 
+    @GetMapping("/forceSearch")
+    public String forceSearchCourse(
+            @RequestParam(defaultValue = "") Long id,
+            Map<String, Object> model) {
+        List<Course> courses = new ArrayList<>();
+        Course course = courseRepo.getOne(id);
+
+        if (course != null) {
+            courses.add(course);
+        }
+
+        model.put("courses", courses);
+
+        return "search";
+    }
 }

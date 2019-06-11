@@ -112,7 +112,9 @@ public class CourseConstructController {
             @RequestParam long course_id,
             @RequestParam long page_id,
             @RequestParam String title,
-            @RequestParam String text
+            @RequestParam String text,
+            @RequestParam(defaultValue = "") String file,
+            @RequestParam(defaultValue = "") String link
     ) {
         logger.debug("ajax: course_page_text");
         logger.debug("Course id - " + course_id);
@@ -120,7 +122,7 @@ public class CourseConstructController {
         logger.debug("Title - " + title);
         logger.debug("Text - " + text);
 
-        return courseService.fillTextPage(course_id, page_id, title, text);
+        return courseService.fillTextPage(course_id, page_id, title, text, file, link);
     }
 
     @GetMapping("/ajax/course_page_test")

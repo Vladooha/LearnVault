@@ -1,6 +1,7 @@
 package com.vladooha.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,8 @@ import javax.sql.DataSource;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
+    @Value("${upload.path.mask}")
+    private String uploadPathMask;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -25,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                     .antMatchers("/", "/login", "/login_bad", "/reg",
-                            "/static/**", "/ajax/**").permitAll()
+                            "/static/**", "/ajax/**", uploadPathMask + "/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()

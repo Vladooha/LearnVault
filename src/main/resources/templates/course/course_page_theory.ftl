@@ -30,7 +30,7 @@
 				<!-- body code goes here -->
 					<div class="main-layer">
 					<div class="paige_of_course_name" id="name_of_course">${course_name}</div>
-					<@m.pagelist course_id, pages/>
+					<@m.pagelist course_id, pages, page_num/>
 					<div class="theory-panel" id="theory_column">
 						<div class="page_title" id="name_of_page">${title}</div>
 						<#if time??>

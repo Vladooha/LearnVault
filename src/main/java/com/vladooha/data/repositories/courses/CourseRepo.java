@@ -13,6 +13,7 @@ import java.util.List;
 public interface CourseRepo extends JpaRepository<Course, Long> {
     List<Course> findByDescriptionContaining(String description);
     List<Course> findByNameContaining(String name);
+    List<Course> findByName(String name);
     List<Course> findByTags(CourseTag courseTag);
     List<Course> findByCategory(CourseCategory courseCategory);
     List<Course> findByAuthor(String author);

@@ -28,7 +28,7 @@
 			<@i.logo_site/>
 				<div class="main-layer">
 					<div class="paige_of_course_name" id="name_of_course">${course_name}</div>
-					<@m.pagelist course_id, pages/>
+					<@m.pagelist course_id, pages, page_num/>
 					<div class="theory-panel" id="th_panel">
 						<div class="page_title" id="name_of_page">${title}</div>
 						<#if time??>

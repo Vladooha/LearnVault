@@ -223,13 +223,17 @@ public class CourseService {
     public String fillTextPage(long course_id,
                                long page_id,
                                String title,
-                               String text) {
+                               String text,
+                               String file,
+                               String link) {
         Optional<CourseTextPage> courseTextPageQuery = courseTextPageRepo.findById(page_id);
         if (courseTextPageQuery.isPresent()) {
             CourseTextPage courseTextPage = courseTextPageQuery.get();
             if (courseTextPage.getCourse().getId() == course_id) {
                 courseTextPage.setTitle(title);
                 courseTextPage.setText(text);
+                courseTextPage.setFile(file);
+                courseTextPage.setLink(link);
 
                 courseTextPageRepo.save(courseTextPage);
 

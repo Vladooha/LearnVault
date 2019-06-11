@@ -10,6 +10,8 @@ public class CourseTextPage extends CoursePage {
 
     private String text;
 
+    private String file;
+
     private String link;
 
     public String getTitle() {
@@ -26,6 +28,14 @@ public class CourseTextPage extends CoursePage {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
     }
 
     public String getLink() {

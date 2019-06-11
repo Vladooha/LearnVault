@@ -49,7 +49,7 @@
 							</div>
 						</div>
 				<div>
-						<input class="orangeButton" type="button" value="Сохранить курс" style="display: block; margin: 220px auto 0 auto;width: 220px; height: 40px;" onClick="saveCourse()">
+						<input class="orangeButton" type="button" value="Сохранить курс" style="display: block; margin: 220px auto 0 auto;width: 220px; height: 40px;" onClick="saveCТourse()">
 					</div>
 			</div>
 
